@@ -73,6 +73,7 @@ export function Icon({ name, size = 22 }: { name: string; size?: number }) {
         <path d="m3 21 10-10M15 3a6 6 0 0 0 6 8l-5-2-1-4 3-2Z" />
       </>
     ),
+    message: <path d="M21 11a9 9 0 0 1-9 9H4l-3 2 2-6a9 9 0 1 1 18-5ZM7 10h10M7 14h6" />,
     menu: <path d="M4 6h16M4 12h16M4 18h16" />,
     arrow: <path d="m9 5 7 7-7 7" />,
     close: <path d="m5 5 14 14M5 19 19 5" />,

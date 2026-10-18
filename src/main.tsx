@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
 import { Link, usePath, useLocation, navigate } from "./lib/router";
 import { Landing } from "./landing";
+import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
 import { BusinessDashboard, Administration } from "./business-pages";
@@ -10,11 +11,12 @@ import { Empty, Icon, Loading } from "./ui";
 import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
 import "./landing.css";
+import "./marketplace-home.css";
 function Site() {
   const path = useLocation().split("?")[0];
   useEffect(() => {
     // Preserve old links and the existing Google callback while canonicalizing navigation.
-    if (path === "/marktplace") navigate("/");
+    if (["/marktplace", "/markrplace"].includes(path)) navigate("/");
     else if (path !== "/" && path !== "/auth/callback" && !path.startsWith("/marketplace/") && path !== "/marketplace") {
       history.replaceState({}, "", "/marketplace" + location.pathname + location.search + location.hash);
       dispatchEvent(new PopStateEvent("popstate"));
@@ -86,6 +88,7 @@ function App() {
     );
   else if (path === "/entrar") page = <Login />;
   else if (path === "/auth/callback") page = <AuthCallback />;
+  else if (path === "/ajuda") page = <MarketplaceHelp />;
   else if (path === "/primeiro-acesso")
     page = (
       <Protected onboarding>
@@ -227,31 +230,7 @@ function App() {
       <main id="main" tabIndex={-1} className="container">
         {page}
       </main>
-      <footer>
-        <div className="container footer-inner">
-          <div>
-            <strong>NoriEco</strong>
-            <p>O Amazonas, mais perto de você.</p>
-          </div>
-          <nav aria-label="Rodapé">
-            <a href="/">Ecossistema NoriEco</a>
-            <Link href="/sobre">Sobre</Link>
-            <Link href="/termos">Termos</Link>
-            <Link href="/privacidade">Privacidade</Link>
-            <a
-              href={contactLink(
-                import.meta.env.VITE_SUPPORT_WHATSAPP || "5547992739983",
-                "Olá! Preciso de suporte na NoriEco.",
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Suporte no WhatsApp ↗
-            </a>
-            <a href="https://gestao.norieco.com.br/">Nori Gestão</a>
-          </nav>
-        </div>
-      </footer>
+      <MarketplaceFooter />
       {!!cart.length && !["/carrinho", "/finalizar"].includes(path) && (
         <Link className="floating-cart" href="/carrinho">
           <Icon name="bag" size={20} />

@@ -11,6 +11,7 @@ import type {
 } from "./lib/types";
 import { BusinessCard, Empty, Field, Icon, Loading, Notice, Photo } from "./ui";
 import { useApp } from "./state";
+import { discoverySections } from "./lib/discovery.mjs";
 export const categoryNames = [
   "Restaurantes",
   "Lanches",
@@ -69,6 +70,7 @@ export function Home({
       clearTimeout(timer);
     };
   }, [query, city, category]);
+  const discovery = discoverySections(rows);
   const section = (
     title: string,
     description: string,
@@ -94,14 +96,14 @@ export function Home({
       </section>
     ) : null;
   return (
-    <>
-      <section className="intro">
+    <div className="mkt-home">
+      <section className="intro mkt-hero">
         <div className="intro-copy">
-          <span className="eyebrow">FEITO PARA O AMAZONAS</span>
+          <span className="eyebrow">COMPRE LOCAL. VALORIZE QUEM É DAQUI.</span>
           <h1>
             Tudo o que você procura
             <br />
-            <span>na sua cidade</span>
+            <span>no comércio da sua cidade</span>
           </h1>
           <p>Lojas, sabores, serviços e experiências em um só lugar.</p>
           <label className="hero-search">
@@ -128,6 +130,7 @@ export function Home({
             <Icon name="pin" size={15} />
             {city || "Explore todas as cidades do Amazonas"}
           </small>
+          <Link className="mkt-how" href="/ajuda">Como funciona o marketplace <Icon name="arrow" size={14} /></Link>
         </div>
         <div className="intro-art">
           <img
@@ -137,7 +140,8 @@ export function Home({
           <span>Da nossa região. Para o seu dia.</span>
         </div>
       </section>
-      <nav className="categories" aria-label="Categorias">
+      <div className="mkt-category-title"><h2>Categorias da sua cidade</h2><p>Da refeição de hoje ao serviço que você precisa.</p></div>
+      <nav className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}
           onClick={() => setCategory("")}
@@ -200,46 +204,13 @@ export function Home({
           </section>
         ) : (
           <>
-            {section(
-              "Peça agora",
-              "DO CARDÁPIO PARA SUA MESA",
-              rows.filter((b) => b.listing_type === "INTEGRATED"),
-              "food",
-            )}
-            {section(
-              "Perto de você",
-              city || "DESCUBRA O COMÉRCIO LOCAL",
-              rows.filter(
-                (b) =>
-                  ![
-                    "Serviços",
-                    "Beleza",
-                    "Balneários",
-                    "Diversão",
-                    "Pôr do sol",
-                    "Passeios",
-                  ].includes(b.category_name),
-              ),
-              "pin",
-            )}
-            {section(
-              "Serviços",
-              "QUEM RESOLVE PARA VOCÊ",
-              rows.filter((b) =>
-                ["Serviços", "Beleza"].includes(b.category_name),
-              ),
-              "tools",
-            )}
-            {section(
-              "Lugares e experiências",
-              "SEU PRÓXIMO BOM MOMENTO",
-              rows.filter((b) =>
-                ["Balneários", "Diversão", "Pôr do sol", "Passeios"].includes(
-                  b.category_name,
-                ),
-              ),
-              "sun",
-            )}
+            {section("Em destaque", "UMA VITRINE DO COMÉRCIO LOCAL", discovery.featured, "star")}
+            <section className="home-section mkt-ranking">
+              <div className="section-heading"><div><span className="eyebrow"><Icon name="star" size={18} /> QUEM MOVIMENTA A REGIÃO</span><h2>Top 3 vendedores</h2><p>Os mais avaliados entre as lojas desta seleção. A ordem considera a quantidade de avaliações publicadas.</p></div></div>
+              {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/loja/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
+            </section>
+            {section("Melhores lojas", "MAIORES NOTAS NESTA SELEÇÃO · DESEMPATE POR AVALIAÇÕES", discovery.bestRated, "check")}
+            {section("Explore as lojas", city || "COMPRE DE QUEM ESTÁ PERTO", rows, "shop")}
           </>
         )}
       </div>
@@ -254,7 +225,7 @@ export function Home({
           <Icon name="arrow" size={18} />
         </Link>
       </section>
-    </>
+    </div>
   );
 }
 export function BusinessPage({ slug }: { slug: string }) {

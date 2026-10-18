@@ -44,8 +44,9 @@ const business = {
   address: "Rua de teste, 10",
   whatsapp: "5592999990000",
   is_open: true,
-  rating: null,
-  review_count: 0,
+  rating: 4.8,
+  review_count: 12,
+  featured: true,
   delivery_fee: 5,
   accepts_delivery: true,
   opening_hours: [],
@@ -259,6 +260,12 @@ try {
       .first()
       .waitFor();
     await noOverflow(page, `home ${width}`);
+    await page.getByRole("heading", {name:"Em destaque",exact:true}).waitFor();
+    await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
+    await page.getByRole("heading", {name:"Melhores lojas",exact:true}).waitFor();
+    assert.equal(await page.locator('.mkt-rank-card').count(),2);
+    for (const name of ["Acesso rápido", "Minha conta", "Suporte", "Informações legais"])
+      assert.equal(await page.locator('.marketplace-footer').getByRole('navigation',{name,exact:true}).count(),1);
     const accountIcon = page.locator(".header").getByRole("link", {name: "Entrar na minha conta", exact: true});
     assert.equal(await accountIcon.isVisible(), true, "Ícone da conta oculto no celular");
     const accountBox = await accountIcon.boundingBox();
@@ -270,10 +277,16 @@ try {
     await page.getByRole("button", {name: "Continuar com Google"}).waitFor();
     assert.equal(new URL(page.url()).pathname, "/marketplace/entrar");
     await page.goto(base);
+    await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
+    await noOverflow(page, `rankings ${width}`);
     await page.screenshot({
       path: `test-results/home-${width}.png`,
       fullPage: true,
     });
+    await page.locator('.marketplace-footer').getByRole('link',{name:'Central de ajuda',exact:true}).click();
+    await page.getByRole('heading',{name:'Compre perto. Entenda cada etapa.'}).waitFor();
+    await noOverflow(page, `ajuda ${width}`);
+    await page.goto(base);
     for (const route of ["/conta", "/conta/pedidos"]) {
       await page.goto(base + route);
       await page

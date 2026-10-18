@@ -1,0 +1,25 @@
+import { Link } from "./lib/router";
+import { contactLink } from "./lib/core.mjs";
+import { Icon } from "./ui";
+
+const support = () => contactLink(import.meta.env.VITE_SUPPORT_WHATSAPP || "5547992739983", "Olá! Preciso de ajuda com o marketplace NoriEco.");
+export function MarketplaceFooter() {
+  return <footer className="marketplace-footer"><div className="container"><div className="mkt-footer-grid">
+    <div className="mkt-footer-brand"><Link href="/" className="brand"><img src={`${import.meta.env.BASE_URL}nori-logo.png`} alt="" /><strong>Nori<span>Eco</span></strong></Link><p>Lojas, produtos, serviços e experiências. O comércio da sua cidade, mais perto de você.</p><a href={support()} target="_blank" rel="noopener noreferrer" className="mkt-support-icon" aria-label="Falar com o suporte no WhatsApp"><Icon name="message" size={20} /></a></div>
+    <nav aria-label="Acesso rápido"><h2>Acesso rápido</h2><Link href="/">Início</Link><Link href="/">Lojas e categorias</Link><Link href="/carrinho">Carrinho</Link><Link href="/ajuda">Como funciona</Link><a href="/">Ecossistema NoriEco</a></nav>
+    <nav aria-label="Minha conta"><h2>Minha conta</h2><Link href="/conta">Acessar minha conta</Link><Link href="/conta/pedidos">Meus pedidos</Link><Link href="/cadastrar-empresa">Quero vender</Link><Link href="/empresa">Painel do vendedor</Link></nav>
+    <nav aria-label="Suporte"><h2>Suporte</h2><Link href="/ajuda">Central de ajuda</Link><Link href="/ajuda">Perguntas frequentes</Link><a href={support()} target="_blank" rel="noopener noreferrer">Fale com a NoriEco ↗</a></nav>
+    <nav aria-label="Informações legais"><h2>Legal</h2><Link href="/termos">Termos de uso</Link><Link href="/privacidade">Política de privacidade</Link><Link href="/ajuda">Compras e cancelamentos</Link></nav>
+  </div><div className="mkt-footer-bottom"><p>Dúvidas sobre a plataforma ou privacidade? <a href={support()} target="_blank" rel="noopener noreferrer">Fale com a NoriEco.</a></p><small>© {new Date().getFullYear()} NoriEco. Conectando o comércio local no Amazonas.</small></div></div></footer>;
+}
+export function MarketplaceHelp() {
+  return <section className="narrow mkt-help"><span className="eyebrow">AJUDA NORIECO</span><h1>Compre perto. Entenda cada etapa.</h1><p>Informações para descobrir lojas, comprar e vender no marketplace.</p>{[
+    ["Como encontro lojas da minha cidade?", "Use o seletor de cidade no topo, escolha uma categoria ou pesquise por loja, produto ou serviço. Sem cidade selecionada, você explora o Amazonas."],
+    ["Preciso entrar para navegar?", "Não. Lojas, produtos e carrinho são públicos. Para finalizar uma compra ou cadastrar sua empresa, entre com Google e complete seu perfil."],
+    ["Como faço meu pedido?", "Nas lojas integradas, adicione os produtos, confira o carrinho e escolha as opções disponíveis para entrega, retirada e pagamento. O pedido segue para a empresa responsável. Outros perfis oferecem contato direto pelo WhatsApp."],
+    ["Como funcionam pagamento e entrega?", "Confira os meios de pagamento, taxa e área de entrega apresentados pela loja antes de confirmar. O pagamento é combinado com a empresa; a plataforma não oferece carteira nem cobrança por gateway nesta versão."],
+    ["Como são escolhidos os destaques e rankings?", "Em destaque reúne perfis selecionados pela administração. Top 3 vendedores considera a quantidade de avaliações publicadas, com desempate pela nota. Melhores lojas considera a nota média, com desempate pela quantidade de avaliações. Os rankings usam as lojas da seleção atual, não representam volume de vendas."],
+    ["Preciso cancelar ou resolver um problema com a compra", "Acesse Meus pedidos e entre em contato com a loja responsável para solicitar cancelamento, correção ou reembolso e verificar o andamento. Se precisar de ajuda com a plataforma, fale com o suporte NoriEco. Não há cancelamento automático nesta página."],
+    ["Como minha empresa aparece no marketplace?", "Cadastre sua empresa, complete os dados e documentos e envie para análise. O perfil será exibido depois da aprovação. Produtos e pedidos das lojas integradas são administrados no Nori Gestão."],
+  ].map(([question,answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}<div className="actions"><Link href="/" className="button primary">Explorar marketplace</Link><a href={support()} target="_blank" rel="noopener noreferrer" className="button secondary">Falar com o suporte ↗</a></div></section>;
+}

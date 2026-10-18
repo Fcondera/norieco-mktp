@@ -18,6 +18,8 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 
 O callback Google existente `/auth/callback` continua aceito para não invalidar a configuração de autenticação. Ao concluir, retorna à área `/marketplace`. Links antigos da loja/conta continuam acessíveis e são normalizados. A LP não exige login; a sessão e o carrinho permanecem os mesmos.
 
+Na descoberta do marketplace, destaques são perfis selecionados pela administração. Top 3 vendedores usa a quantidade de avaliações publicadas, com desempate pela nota; melhores lojas usa nota média, com desempate pela quantidade de avaliações. As listas usam as lojas da seleção atual retornada pela busca (até 60), nunca números de vendas ou dados fictícios. Sem avaliações, não há posições inventadas. O filtro de cidade restringe todas essas listas. `/marketplace/ajuda` explica o funcionamento e os critérios. O rodapé contém acesso rápido, conta, suporte e informações legais, com links funcionais e contato oficial disponível.
+
 ## Desenvolvimento
 
 ```powershell
