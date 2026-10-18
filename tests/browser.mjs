@@ -1,7 +1,8 @@
 import { chromium } from "@playwright/test";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
-const base = process.env.TEST_BASE_URL || "http://127.0.0.1:5174";
+const origin = process.env.TEST_BASE_URL || "http://127.0.0.1:5174";
+const base = origin + "/marketplace";
 const browser = await chromium.launch({
   executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
   headless: true,
@@ -242,7 +243,13 @@ try {
       errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await mock(page);
-    await page.goto(base);
+    await page.goto(origin);
+    await page.locator(".eco-hero h1").waitFor();
+    await noOverflow(page, `institucional ${width}`);
+    await page.screenshot({path: `test-results/landing-${width}.png`, fullPage:true});
+    assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/"]').count(), 1);
+    await page.locator(".eco-hero").getByRole("link", {name: "Conhecer o marketplace"}).click();
+    assert.equal(new URL(page.url()).pathname, "/marketplace");
     await page.getByRole("heading", { name: /Tudo o que/ }).waitFor();
     await page
       .getByRole("link", { name: /Restaurante de teste/ })
@@ -260,7 +267,7 @@ try {
         .waitFor();
       assert.equal(
         new URL(page.url()).pathname,
-        route,
+        "/marketplace" + route,
         "Navegação pública forçou login",
       );
       assert.equal(

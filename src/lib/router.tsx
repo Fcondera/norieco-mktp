@@ -1,10 +1,16 @@
 import { useSyncExternalStore, type AnchorHTMLAttributes } from "react";
+export const MARKETPLACE = "/marketplace";
+export function marketplacePath(path: string) {
+  if (!path.startsWith("/") || path.startsWith("//")) return path;
+  if (path === MARKETPLACE || path.startsWith(MARKETPLACE + "/") || path.startsWith(MARKETPLACE + "?")) return path;
+  return MARKETPLACE + (path === "/" ? "" : path);
+}
 export function navigate(path: string) {
-  history.pushState({}, "", path);
+  history.pushState({}, "", marketplacePath(path));
   dispatchEvent(new PopStateEvent("popstate"));
   window.scrollTo(0, 0);
 }
-export function usePath() {
+export function useLocation() {
   return useSyncExternalStore(
     (cb) => {
       addEventListener("popstate", cb);
@@ -12,6 +18,10 @@ export function usePath() {
     },
     () => location.pathname + location.search,
   );
+}
+export function usePath() {
+  const path = useLocation();
+  return path === MARKETPLACE ? "/" : path.startsWith(MARKETPLACE + "/") ? path.slice(MARKETPLACE.length) : path.startsWith(MARKETPLACE + "?") ? "/" + path.slice(MARKETPLACE.length) : path;
 }
 export function Link({
   href = "/",
@@ -21,7 +31,7 @@ export function Link({
   return (
     <a
       {...props}
-      href={href}
+      href={marketplacePath(href)}
       onClick={(e) => {
         onClick?.(e);
         if (

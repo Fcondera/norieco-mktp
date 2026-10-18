@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
-import { Link, usePath, navigate } from "./lib/router";
+import { Link, usePath, useLocation, navigate } from "./lib/router";
+import { Landing } from "./landing";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
 import { BusinessDashboard, Administration } from "./business-pages";
 import { Empty, Icon, Loading } from "./ui";
 import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
+import "./landing.css";
+function Site() {
+  const path = useLocation().split("?")[0];
+  useEffect(() => {
+    // Preserve old links and the existing Google callback while canonicalizing navigation.
+    if (path === "/marktplace") navigate("/");
+    else if (path !== "/" && path !== "/auth/callback" && !path.startsWith("/marketplace/") && path !== "/marketplace") {
+      history.replaceState({}, "", "/marketplace" + location.pathname + location.search + location.hash);
+      dispatchEvent(new PopStateEvent("popstate"));
+    }
+  }, [path]);
+  return path === "/" ? <Landing /> : <App />;
+}
 function Protected({
   children,
   admin = false,
@@ -227,6 +241,7 @@ function App() {
             <p>O Amazonas, mais perto de você.</p>
           </div>
           <nav aria-label="Rodapé">
+            <a href="/">Ecossistema NoriEco</a>
             <Link href="/sobre">Sobre</Link>
             <Link href="/termos">Termos</Link>
             <Link href="/privacidade">Privacidade</Link>
@@ -465,7 +480,7 @@ class ErrorBoundary extends React.Component<
           <p>Seu carrinho foi preservado.</p>
           <button
             className="button primary"
-            onClick={() => location.assign("/")}
+            onClick={() => location.assign("/marketplace")}
           >
             Voltar ao início
           </button>
@@ -480,7 +495,7 @@ createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <Provider>
-        <App />
+        <Site />
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>,

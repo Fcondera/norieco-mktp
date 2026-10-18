@@ -4,6 +4,19 @@ Fonte oficial: https://github.com/Fcondera/norieco-mktp
 
 Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV e catálogos permanecem no repositório `vendapeixe`. Navegação e carrinho públicos; login ao comprar ou vender.
 
+## Divisão de endereços
+
+- `https://norieco.com.br/`: landing page institucional do ecossistema.
+- `https://norieco.com.br/marketplace`: descoberta de lojas e serviços.
+- `/marketplace/loja/:slug`: página da empresa.
+- `/marketplace/carrinho` e `/marketplace/finalizar`: compra.
+- `/marketplace/conta` e `/marketplace/conta/pedidos`: cliente.
+- `/marketplace/cadastrar-empresa` e `/marketplace/empresa`: vendedor.
+- `/marketplace/administracao`: administração do marketplace.
+- `https://gestao.norieco.com.br`: Gestão/PDV, no projeto original.
+
+O callback Google existente `/auth/callback` continua aceito para não invalidar a configuração de autenticação. Ao concluir, retorna à área `/marketplace`. Links antigos da loja/conta continuam acessíveis e são normalizados. A LP não exige login; a sessão e o carrinho permanecem os mesmos.
+
 ## Desenvolvimento
 
 ```powershell
@@ -37,7 +50,7 @@ As migrações `202610180003`, `202610180004` e `202610180005` já foram aplicad
 
 Durante a transição, o site atual continua publicado no projeto Netlify antigo. A cópia em `vendapeixe/apps/norieco` permanece congelada para não interromper o site antes da transferência. Este repositório é a fonte oficial; não edite nem sincronize as duas cópias. O script antigo de exportação foi removido.
 
-O bundle mantém `/marketplace/`, com rewrite no Netlify, preservando URLs de assets e o encerramento do antigo worker Flutter. A mudança de hospedagem não exige migração de dados nem troca do armazenamento de login/carrinho.
+O bundle publica assets na raiz e usa fallback SPA no Netlify para a LP e todas as rotas `/marketplace`. A regra do antigo worker Flutter permanece para retirar caches antigos. A mudança de hospedagem não exige migração de dados nem troca do armazenamento de login/carrinho.
 
 ## Operação e testes
 

@@ -5,7 +5,8 @@ export const brl = (value) =>
 export function safeReturn(value) {
   return typeof value === "string" &&
     /^\/(?!\/)[^\\]*$/.test(value) &&
-    !value.startsWith("/auth/")
+    !value.startsWith("/auth/") &&
+    !value.startsWith("/marketplace/auth/")
     ? value
     : "/";
 }
