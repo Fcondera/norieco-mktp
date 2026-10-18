@@ -1,0 +1,19 @@
+# Partial remote configuration: preserve all existing authentication settings.
+project_id = "norieco-marketplace"
+[auth]
+additional_redirect_urls = [
+  "https://gestao.norieco.com.br",
+  "https://gestao.norieco.com.br/",
+  "https://gestao.norieco.com.br/auth/callback",
+  "https://gestao.norieco.com.br/auth/recovery",
+  "https://gestao.norieco.com.br/entrega",
+  "https://gestao.renatopescados.com.br",
+  "https://gestao.renatopescados.com.br/**",
+  "https://app.renatopescados.com.br",
+  "https://app.renatopescados.com.br/**",
+  "https://renatopescados.com.br",
+  "https://renatopescados.com.br/**",
+  "https://norieco.com.br/auth/callback",
+  "http://127.0.0.1:5174/auth/callback",
+  "http://localhost:5174/auth/callback"
+]

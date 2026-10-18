@@ -1,0 +1,39 @@
+# Independent marketplace deployment; management/catalogs stay on their own site.
+[build]
+  command = "node scripts/netlify-build.mjs"
+  publish = "dist"
+[build.environment]
+  NODE_VERSION = "24"
+[[redirects]]
+  from = "https://www.norieco.com.br/*"
+  to = "https://norieco.com.br/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/flutter_service_worker.js"
+  to = "/reset-legacy-worker.js"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/marketplace/*"
+  to = "/:splat"
+  status = 200
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/flutter_service_worker.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=()"

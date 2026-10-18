@@ -1,0 +1,11 @@
+import type { CartItem } from "./types";
+export function brl(value: number): string;
+export function safeReturn(value: unknown): string;
+export function safeImage(value: unknown): string;
+export function contactLink(number: string, message?: string): string;
+export function subtotal(item: CartItem): number;
+export function validCart(items: unknown): boolean;
+export function readCart(storage: Storage, key: string): CartItem[];
+export function distanceLabel(value: number | null): string;
+export const orderStatus: Record<string, string>;
+export const verificationStatus: Record<string, string>;
