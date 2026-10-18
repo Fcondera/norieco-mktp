@@ -248,7 +248,10 @@ try {
     await noOverflow(page, `institucional ${width}`);
     await page.screenshot({path: `test-results/landing-${width}.png`, fullPage:true});
     assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/"]').count(), 1);
-    await page.locator(".eco-hero").getByRole("link", {name: "Conhecer o marketplace"}).click();
+    for (const name of ["Nori Gestão", "Controle de ponto", "NoriEco Sites"])
+      await page.getByRole("heading", { name, exact: true }).waitFor();
+    assert.equal(await page.locator('.eco-solutions a[href^="https://wa.me/"]').count(), 3);
+    await page.locator(".eco-header").getByRole("link", {name: "Marketplace", exact: true}).click();
     assert.equal(new URL(page.url()).pathname, "/marketplace");
     await page.getByRole("heading", { name: /Tudo o que/ }).waitFor();
     await page
@@ -256,6 +259,17 @@ try {
       .first()
       .waitFor();
     await noOverflow(page, `home ${width}`);
+    const accountIcon = page.locator(".header").getByRole("link", {name: "Entrar na minha conta", exact: true});
+    assert.equal(await accountIcon.isVisible(), true, "Ícone da conta oculto no celular");
+    const accountBox = await accountIcon.boundingBox();
+    const cartBox = await page.locator(".header .cart-top").boundingBox();
+    assert.ok(accountBox && cartBox && Math.abs(accountBox.y - cartBox.y) < 8, "Carrinho quebrou a linha do cabeçalho");
+    assert.equal((await accountIcon.innerText()).trim(), "", "Cabeçalho exibiu texto de login");
+    assert.equal(await page.locator(".header").getByText("Cadastrar empresa", {exact:true}).count(), 0);
+    await accountIcon.click();
+    await page.getByRole("button", {name: "Continuar com Google"}).waitFor();
+    assert.equal(new URL(page.url()).pathname, "/marketplace/entrar");
+    await page.goto(base);
     await page.screenshot({
       path: `test-results/home-${width}.png`,
       fullPage: true,

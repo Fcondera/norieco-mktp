@@ -7,6 +7,7 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 ## Divisão de endereços
 
 - `https://norieco.com.br/`: landing page institucional do ecossistema.
+- A LP apresenta Nori Gestão, controle de ponto e NoriEco Sites. Propostas são solicitadas pelo WhatsApp, com mensagem específica de cada solução, sem preços ou planos inventados. O marketplace tem botão próprio no navbar; o cabeçalho de compras mostra o acesso à conta somente pelo ícone, também no celular.
 - `https://norieco.com.br/marketplace`: descoberta de lojas e serviços.
 - `/marketplace/loja/:slug`: página da empresa.
 - `/marketplace/carrinho` e `/marketplace/finalizar`: compra.

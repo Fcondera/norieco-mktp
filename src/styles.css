@@ -189,6 +189,9 @@ main:focus {
 .header-login {
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   gap: 8px;
   font-size: 14px;
   white-space: nowrap;
@@ -1092,7 +1095,9 @@ footer {
     padding: 8px 0;
   }
   .header-login {
-    display: none;
+    display: flex;
+    min-width: 36px;
+    min-height: 44px;
   }
   .cart-top {
     padding: 8px;

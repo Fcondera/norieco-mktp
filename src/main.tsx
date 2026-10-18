@@ -169,7 +169,7 @@ function App() {
             <span>{city || "Todo o Amazonas"}</span>
             <span aria-hidden="true">⌄</span>
           </button>
-          <Link className="header-login" href={user ? "/conta" : "/entrar"}>
+          <Link className="header-login" href={user ? "/conta" : "/entrar"} aria-label={user ? "Minha conta" : "Entrar na minha conta"} title={user ? "Minha conta" : "Entrar na minha conta"}>
             {safeImage(profile?.avatar_url || "") ? (
               <img
                 className="avatar"
@@ -179,13 +179,6 @@ function App() {
             ) : (
               <Icon name="user" size={20} />
             )}
-            <span>{user ? "Minha conta" : "Entrar"}</span>
-          </Link>
-          <Link
-            className="button secondary register-header"
-            href="/cadastrar-empresa"
-          >
-            Cadastrar empresa
           </Link>
           <Link
             className="cart-top"
