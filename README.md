@@ -49,9 +49,9 @@ As migrações `202610180003`, `202610180004` e `202610180005` já foram aplicad
 4. Valide o endereço temporário Netlify. Para testar Google nele, adicione seu callback exato à lista de URLs permitidas no Supabase.
 5. Transfira apenas `norieco.com.br` e `www.norieco.com.br` ao novo projeto e ajuste DNS/HTTPS conforme a Netlify. Preserve o projeto e os domínios do Gestão e dos catálogos.
 6. O callback definitivo continua `https://norieco.com.br/auth/callback`; preserve os callbacks do Gestão e o `site_url` atual. Não precisa de novo provedor Google.
-7. Depois de confirmar o novo site, retire `apps/norieco`, o build do marketplace e suas regras exclusivas de domínio do `vendapeixe`.
+7. A cópia `apps/norieco` e a etapa de build React já foram retiradas do `vendapeixe`. Depois da transferência, confirme que os aliases raiz pertencem somente ao projeto deste repositório.
 
-Durante a transição, o site atual continua publicado no projeto Netlify antigo. A cópia em `vendapeixe/apps/norieco` permanece congelada para não interromper o site antes da transferência. Este repositório é a fonte oficial; não edite nem sincronize as duas cópias. O script antigo de exportação foi removido.
+Este repositório é a única fonte do site e marketplace. A duplicação em `vendapeixe/apps/norieco` e a página institucional Flutter antiga foram retiradas. O projeto antigo exibe somente um aviso de atualização caso o domínio raiz ainda aponte para ele; a publicação deste site depende de conectar este Git na Netlify e transferir os aliases raiz. O script antigo de exportação foi removido. Não exporte o marketplace de volta para o Gestão.
 
 O bundle publica assets na raiz e usa fallback SPA no Netlify para a LP e todas as rotas `/marketplace`. A regra do antigo worker Flutter permanece para retirar caches antigos. A mudança de hospedagem não exige migração de dados nem troca do armazenamento de login/carrinho.
 
