@@ -245,7 +245,7 @@ try {
     page.on("pageerror", (e) => errors.push(e.message));
     await mock(page);
     await page.goto(origin);
-    await page.locator(".eco-hero h1").waitFor();
+    await page.locator(".eco-hero .is-active h1").waitFor();
     await noOverflow(page, `institucional ${width}`);
     await page.screenshot({path: `test-results/landing-${width}.png`, fullPage:true});
     assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/"]').count(), 1);

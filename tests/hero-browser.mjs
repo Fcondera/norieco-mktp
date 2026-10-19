@@ -1,0 +1,81 @@
+import { chromium } from '@playwright/test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+
+const browser = await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const origin = process.env.TEST_BASE_URL || 'http://127.0.0.1:5174';
+try {
+  await fs.mkdir('test-results',{recursive:true});
+  for (const width of [1440,390,320]) {
+    const context = await browser.newContext({viewport:{width,height:950}});
+    const page = await context.newPage();
+    const errors=[];page.on('pageerror',e=>errors.push(e.message));
+    await page.clock.install();
+    await page.goto(origin);
+    const hero=page.locator('.eco-carousel');
+    await hero.locator('.is-active h1').waitFor();
+    const initial=await hero.boundingBox();
+    assert.equal(await hero.getByRole('heading',{level:1}).count(),1);
+    await page.clock.runFor(6100);
+    assert.equal(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),'2 de 4: MARKETPLACE NORIECO');
+    await hero.hover();
+    await page.clock.runFor(12000);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    await page.mouse.move(1,1);
+    await page.clock.runFor(6100);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^3 de 4/);
+    await hero.getByRole('button',{name:'Slide anterior',exact:true}).focus();
+    await page.keyboard.press('Enter');
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    await page.clock.runFor(10000);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    const messages=[];
+    for(let i=0;i<4;i++) {
+      await hero.getByRole('button',{name:new RegExp(`Ir para slide ${i+1}:`)}).focus();
+      await page.keyboard.press('Enter');
+      const active=hero.locator('.eco-slide.is-active');
+      const primary=active.locator('.eco-slide-actions a').first();
+      const href=await primary.getAttribute('href');
+      assert.equal(href,i===1?'/marketplace':'#solucoes');
+      if(href.startsWith('#')) assert.equal(await page.locator(href).count(),1);
+      const contact=new URL(await active.locator('.eco-slide-secondary').getAttribute('href'));
+      assert.equal(contact.hostname,'wa.me');assert.equal(contact.pathname,'/5547992739983');
+      messages.push(contact.searchParams.get('text'));
+      const image=active.locator('img');
+      await image.evaluate(image=>image.decode());
+      await page.clock.runFor(900);
+      const box=await hero.boundingBox();assert.equal(box.height,initial.height);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+      await hero.screenshot({path:`test-results/hero-${width}-${i+1}.png`,animations:'disabled'});
+    }
+    assert.equal(new Set(messages).size,4);
+    await hero.getByRole('button',{name:'Pausar reprodução automática',exact:true}).focus();
+    await page.keyboard.press('Enter');
+    await page.locator('.eco-header a').first().focus();
+    await page.clock.runFor(15000);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^4 de 4/);
+    await hero.getByRole('button',{name:'Ativar reprodução automática',exact:true}).focus();
+    await page.keyboard.press('Enter');
+    await page.locator('.eco-header a').first().focus();
+    await page.clock.runFor(6100);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 4/);
+    await hero.dispatchEvent('pointerdown',{pointerType:'touch',clientX:260,clientY:100,pointerId:1});
+    await hero.dispatchEvent('pointerup',{pointerType:'touch',clientX:100,clientY:110,pointerId:1});
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    await hero.locator('.eco-slide.is-active .eco-button').first().click();
+    await page.getByRole('heading',{name:/Tudo o que/}).waitFor();
+    assert.equal(new URL(page.url()).pathname,'/marketplace');
+    assert.deepEqual(errors,[]);
+    await context.close();
+  }
+  const context=await browser.newContext({reducedMotion:'reduce'});
+  const page=await context.newPage();await page.clock.install();await page.goto(origin);
+  const hero=page.locator('.eco-carousel');await hero.locator('.is-active h1').waitFor();
+  await page.clock.runFor(24000);
+  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 4/);
+  assert.equal(await hero.locator('.eco-carousel-progress').count(),0);
+  await hero.getByRole('button',{name:'Próximo slide',exact:true}).click();
+  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+  await context.close();
+  console.log('Hero OK: 4 slides, autoplay, hover/focus/pause, keyboard, swipe, CTAs, images, fixed layout and reduced motion at 1440/390/320px.');
+} finally { await browser.close(); }
