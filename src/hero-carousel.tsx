@@ -5,10 +5,9 @@ import "./hero-carousel.css";
 
 const INTERVAL = 6000;
 const slides = [
-  { key: "gestao", label: "NORI GESTÃO", title: "Seu negócio mais organizado, do caixa ao estoque.", description: "Controle vendas, pedidos, produtos e toda a operação em um só sistema. Mais praticidade para administrar seu estabelecimento.", primary: "Conhecer Nori Gestão", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o Nori Gestão para organizar o caixa, os pedidos e o estoque da minha empresa." },
+  { key: "gestao", label: "PDV NORI GESTÃO", title: "Seu negócio mais organizado, do caixa ao estoque.", description: "Controle vendas, pedidos, produtos, mesas e cozinha em um só sistema, conectado ao catálogo online da sua empresa.", primary: "Conhecer o PDV", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o PDV Nori Gestão para organizar as vendas e o estoque da minha empresa." },
+  { key: "catalogo", label: "CATÁLOGO ONLINE", title: "Seus produtos online. Seus pedidos no PDV.", description: "Um catálogo com a sua marca, produtos e carrinho. Receba os pedidos diretamente no Nori Gestão e acompanhe sua operação em um só lugar.", primary: "Conhecer o catálogo", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o catálogo online com carrinho e pedidos integrados ao Nori Gestão." },
   { key: "marketplace", label: "MARKETPLACE NORIECO", title: "O comércio da sua região, em um só lugar.", description: "Descubra lojas, restaurantes, produtos e serviços perto de você. Os catálogos integrados ao Nori Gestão também aparecem no marketplace regional.", primary: "Explorar Marketplace", href: "/marketplace", secondary: "Quero divulgar minha loja", message: "Olá! Quero divulgar minha loja no marketplace regional NoriEco. Como faço para participar?" },
-  { key: "ponto", label: "CONTROLE DE PONTO", title: "A rotina da sua equipe, sob controle.", description: "Organize entradas, saídas e registros de horário com mais clareza e praticidade para o dia a dia da empresa.", primary: "Conhecer Controle de Ponto", href: "#solucoes", secondary: "Solicitar proposta", message: "Olá! Quero solicitar uma proposta para o controle de ponto da equipe no Nori Gestão." },
-  { key: "sites", label: "PRESENÇA DIGITAL", title: "Sua empresa merece uma presença digital de verdade.", description: "Sites institucionais, landing pages e catálogos digitais para apresentar seu negócio de forma profissional.", primary: "Conhecer NoriEco Sites", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o NoriEco Sites e solicitar uma proposta de site, landing page ou catálogo digital para minha empresa." },
 ];
 
 export function HeroCarousel() {
@@ -70,7 +69,7 @@ export function HeroCarousel() {
       const dx = event.clientX - start.x, dy = event.clientY - start.y;
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.25) select(index + (dx < 0 ? 1 : -1));
     }}>
-    {slides.map((slide, position) => <div key={slide.key} className={`eco-slide${index === position ? " is-active" : ""}`} role="group" aria-roledescription="slide" aria-label={`${position + 1} de 4: ${slide.label}`} aria-hidden={index !== position} inert={index !== position}>
+    {slides.map((slide, position) => <div key={slide.key} className={`eco-slide${index === position ? " is-active" : ""}`} role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${slides.length}: ${slide.label}`} aria-hidden={index !== position} inert={index !== position}>
       <img className="eco-slide-image" src={`${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg`} srcSet={`${import.meta.env.BASE_URL}hero/${slide.key}-800.jpg 800w, ${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg 1600w`} sizes="100vw" width="1600" height="900" alt="" decoding="async" loading={position === 0 ? "eager" : "lazy"} fetchPriority={position === 0 ? "high" : "low"} />
       <div className="eco-slide-shade" />
       <div className="eco-slide-inner"><div className="eco-slide-copy">
@@ -82,7 +81,7 @@ export function HeroCarousel() {
       </div></div>
     </div>)}
     <div className="eco-carousel-controls"><div className="eco-carousel-pagination" role="group" aria-label="Escolher slide">{slides.map((slide, position) => <button key={slide.key} type="button" aria-label={`Ir para slide ${position + 1}: ${slide.label}`} aria-current={index === position ? "true" : undefined} onClick={() => select(position)}><span className={index === position ? "is-active" : ""} /></button>)}</div>
-      <div className="eco-carousel-actions"><span aria-hidden="true" className="eco-slide-count">0{index+1} / 04</span><button type="button" aria-label="Slide anterior" onClick={() => select(index - 1)}>←</button><button type="button" aria-label="Próximo slide" onClick={() => select(index + 1)}>→</button>{!reduced && <button type="button" aria-label={stopped ? "Ativar reprodução automática" : "Pausar reprodução automática"} aria-pressed={stopped} onClick={() => setStopped(value => !value)}>{stopped ? "▶" : "Ⅱ"}</button>}</div>
+      <div className="eco-carousel-actions"><span aria-hidden="true" className="eco-slide-count">{String(index+1).padStart(2,"0")} / {String(slides.length).padStart(2,"0")}</span><button type="button" aria-label="Slide anterior" onClick={() => select(index - 1)}>←</button><button type="button" aria-label="Próximo slide" onClick={() => select(index + 1)}>→</button>{!reduced && <button type="button" aria-label={stopped ? "Ativar reprodução automática" : "Pausar reprodução automática"} aria-pressed={stopped} onClick={() => setStopped(value => !value)}>{stopped ? "▶" : "Ⅱ"}</button>}</div>
     </div>
     {!reduced && <div className="eco-carousel-progress" aria-hidden="true"><span key={`${index}-${cycle}`} style={{ animationPlayState: paused ? "paused" : "running" }} /></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>

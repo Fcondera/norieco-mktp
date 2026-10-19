@@ -2,7 +2,7 @@
 
 Generated using the built-in image_gen tool, one original image per slide. Illustrative scenes, not screenshots or photographs of actual customers or product installations. Approved originals remain in Codex generated_images. These local responsive JPEG exports are the production assets; no remote image dependency.
 
-Files: `gestao-{800,1600}.jpg`, `marketplace-{800,1600}.jpg`, `ponto-{800,1600}.jpg`, `sites-{800,1600}.jpg`. JPEG quality 83; desktop sources total approximately 608 KB, mobile sources approximately 223 KB.
+Current files: `gestao-{800,1600}.jpg`, `catalogo-{800,1600}.jpg`, `marketplace-{800,1600}.jpg`. JPEG quality 83. The workspace photograph originally generated as `sites` is reused as `catalogo`, illustrating the digital storefront rather than advertising site creation. Attendance photographs are no longer published.
 
 ## Final prompt set
 

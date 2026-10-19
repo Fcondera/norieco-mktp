@@ -17,26 +17,26 @@ try {
     const initial=await hero.boundingBox();
     assert.equal(await hero.getByRole('heading',{level:1}).count(),1);
     await page.clock.runFor(6100);
-    assert.equal(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),'2 de 4: MARKETPLACE NORIECO');
+    assert.equal(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),'2 de 3: CATÁLOGO ONLINE');
     await hero.hover();
     await page.clock.runFor(12000);
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 3/);
     await page.mouse.move(1,1);
     await page.clock.runFor(6100);
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^3 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^3 de 3/);
     await hero.getByRole('button',{name:'Slide anterior',exact:true}).focus();
     await page.keyboard.press('Enter');
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 3/);
     await page.clock.runFor(10000);
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 3/);
     const messages=[];
-    for(let i=0;i<4;i++) {
+    for(let i=0;i<3;i++) {
       await hero.getByRole('button',{name:new RegExp(`Ir para slide ${i+1}:`)}).focus();
       await page.keyboard.press('Enter');
       const active=hero.locator('.eco-slide.is-active');
       const primary=active.locator('.eco-slide-actions a').first();
       const href=await primary.getAttribute('href');
-      assert.equal(href,i===1?'/marketplace':'#solucoes');
+      assert.equal(href,i===2?'/marketplace':'#solucoes');
       if(href.startsWith('#')) assert.equal(await page.locator(href).count(),1);
       const contact=new URL(await active.locator('.eco-slide-secondary').getAttribute('href'));
       assert.equal(contact.hostname,'wa.me');assert.equal(contact.pathname,'/5547992739983');
@@ -48,20 +48,21 @@ try {
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
       await hero.screenshot({path:`test-results/hero-${width}-${i+1}.png`,animations:'disabled'});
     }
-    assert.equal(new Set(messages).size,4);
+    assert.equal(new Set(messages).size,3);
     await hero.getByRole('button',{name:'Pausar reprodução automática',exact:true}).focus();
     await page.keyboard.press('Enter');
     await page.locator('.eco-header a').first().focus();
     await page.clock.runFor(15000);
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^4 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^3 de 3/);
     await hero.getByRole('button',{name:'Ativar reprodução automática',exact:true}).focus();
     await page.keyboard.press('Enter');
     await page.locator('.eco-header a').first().focus();
     await page.clock.runFor(6100);
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 3/);
     await hero.dispatchEvent('pointerdown',{pointerType:'touch',clientX:260,clientY:100,pointerId:1});
     await hero.dispatchEvent('pointerup',{pointerType:'touch',clientX:100,clientY:110,pointerId:1});
-    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+    assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 3/);
+    await hero.getByRole('button',{name:/Ir para slide 3:/}).click();
     await hero.locator('.eco-slide.is-active .eco-button').first().click();
     await page.getByRole('heading',{name:/Tudo o que/}).waitFor();
     assert.equal(new URL(page.url()).pathname,'/marketplace');
@@ -72,10 +73,10 @@ try {
   const page=await context.newPage();await page.clock.install();await page.goto(origin);
   const hero=page.locator('.eco-carousel');await hero.locator('.is-active h1').waitFor();
   await page.clock.runFor(24000);
-  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 4/);
+  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^1 de 3/);
   assert.equal(await hero.locator('.eco-carousel-progress').count(),0);
   await hero.getByRole('button',{name:'Próximo slide',exact:true}).click();
-  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 4/);
+  assert.match(await hero.locator('.eco-slide.is-active').getAttribute('aria-label'),/^2 de 3/);
   await context.close();
-  console.log('Hero OK: 4 slides, autoplay, hover/focus/pause, keyboard, swipe, CTAs, images, fixed layout and reduced motion at 1440/390/320px.');
+  console.log('Hero OK: 3 slides, autoplay, hover/focus/pause, keyboard, swipe, CTAs, images, fixed layout and reduced motion at 1440/390/320px.');
 } finally { await browser.close(); }

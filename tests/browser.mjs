@@ -249,9 +249,11 @@ try {
     await noOverflow(page, `institucional ${width}`);
     await page.screenshot({path: `test-results/landing-${width}.png`, fullPage:true});
     assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/"]').count(), 1);
-    for (const name of ["Nori Gestão", "Controle de ponto", "NoriEco Sites"])
+    for (const name of ["Nori Gestão", "Catálogo online", "Marketplace regional"])
       await page.getByRole("heading", { name, exact: true }).waitFor();
-    assert.equal(await page.locator('.eco-solutions a[href^="https://wa.me/"]').count(), 3);
+    assert.equal(await page.locator('.eco-solutions a[href^="https://wa.me/"]').count(), 2);
+    assert.equal(await page.locator('.eco-solutions a[href="/marketplace"]').count(), 1);
+    assert.equal(await page.locator('.eco-site').getByText(/Controle de ponto|NoriEco Sites|Sites e landing pages/).count(), 0);
     await page.locator(".eco-header").getByRole("link", {name: "Marketplace", exact: true}).click();
     assert.equal(new URL(page.url()).pathname, "/marketplace");
     await page.getByRole("heading", { name: /Tudo o que/ }).waitFor();
