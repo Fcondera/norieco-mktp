@@ -105,6 +105,7 @@ Deno.test(
           ),
         ),
       );
+      await db.exec(await Deno.readTextFile(new URL('../migrations/202610190001_starter_business_portal.sql', import.meta.url)));
       await db.exec(
         `delete from marketplace_businesses;insert into auth.users(id,email) values('${admin}','superabufari@gmail.com'),('${ownerB}','business@example.test'),('${buyer}','buyer@example.test'),('${stranger}','stranger@example.test');set request.jwt.claim.sub='${admin}';`,
       );

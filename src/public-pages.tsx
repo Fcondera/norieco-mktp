@@ -12,6 +12,7 @@ import type {
 import { BusinessCard, Empty, Field, Icon, Loading, Notice, Photo } from "./ui";
 import { useApp } from "./state";
 import { discoverySections } from "./lib/discovery.mjs";
+import { BusinessInquiry } from "./business-inquiry";
 export const categoryNames = [
   "Restaurantes",
   "Lanches",
@@ -455,21 +456,25 @@ export function BusinessPage({ slug }: { slug: string }) {
             Falar no WhatsApp
             <Icon name="arrow" size={18} />
           </button>
-          <h2>Serviços</h2>
+          <h2>Produtos e serviços</h2>
           <div className="business-grid">
             {b.services?.map((s) => (
               <article className="panel" key={s.id}>
+                {s.image_url && <Photo src={s.image_url} alt={s.name} className="starter-offer-image" />}
                 <h3>{s.name}</h3>
                 <p>{s.description}</p>
+                <p>{s.kind === "PRODUCT" ? "Produto" : "Serviço"} · {s.price == null ? "Preço sob consulta" : brl(s.price)}</p>
                 <button className="button secondary" onClick={contact}>
                   Solicitar orçamento
                 </button>
+                <BusinessInquiry slug={b.slug} offer={s.id} name={s.name} />
               </article>
             ))}
           </div>
           {!b.services?.length && (
             <p>Entre em contato para conhecer as opções.</p>
           )}
+          <BusinessInquiry slug={b.slug} offer={null} name={b.name} />
         </section>
       )}
       <div className="details-grid">

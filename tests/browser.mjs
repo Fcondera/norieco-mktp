@@ -61,6 +61,7 @@ const standard = {
   listing_type: "STANDARD",
   category_id: "12",
   category_name: "Serviços",
+  services: [{id:"offer-test",business_id:"20000000-0000-4000-8000-000000000002",name:"Atendimento local",description:"Oferta apenas de testes",kind:"SERVICE",price:20,image_url:""}],
 };
 const product = {
   id: "30000000-0000-4000-8000-000000000001",
@@ -101,6 +102,7 @@ let orders = [],
   searches = [],
   checkout = null;
 let logoutScope = null;
+let inquiry = null;
 async function mock(
   page,
   { logged = false, onboarding = false, fail = false, empty = false } = {},
@@ -128,6 +130,10 @@ async function mock(
         json: { message: "Serviço indisponível. Tente novamente." },
       });
     switch (name) {
+      case "marketplace_send_inquiry":
+        inquiry = args;
+        data = null;
+        break;
       case "marketplace_categories":
         data = categories;
         break;
@@ -200,6 +206,7 @@ async function mock(
     }
     await route.fulfill({ json: data });
   });
+  await page.route('https://gestao.norieco.com.br/inicio',route=>route.fulfill({contentType:'text/html',body:'<h1>Nori Gestao inicial</h1>'}));
   if (logged)
     await page.addInitScript(
       ({ user }) => {
@@ -348,6 +355,16 @@ try {
       "Perfil padrão exibiu checkout",
     );
     await noOverflow(page, `standard ${width}`);
+    const offer = page.locator('article').filter({has:page.getByRole('heading',{name:'Atendimento local',exact:true})});
+    await offer.getByRole('button',{name:'Enviar solicitação',exact:true}).click();
+    await offer.getByLabel('Seu nome').fill('Cliente Teste');
+    await offer.getByLabel('WhatsApp com DDD').fill('92999990000');
+    await offer.getByLabel('O que você precisa?').fill('Quero mais informações');
+    await offer.getByRole('button',{name:'Enviar para a empresa',exact:true}).click();
+    await offer.getByText('Solicitação enviada para a empresa. Aguarde o contato dela.').waitFor();
+    assert.equal(inquiry.p_slug,standard.slug);
+    assert.equal(inquiry.p_offer,'offer-test');
+    assert.ok(!('tenant_id' in inquiry));
     await page.goto(`${base}/loja/${business.slug}`);
     assert.equal(
       await page.getByRole("button", { name: "Salvar", exact: true }).count(),
@@ -422,7 +439,7 @@ try {
   await p2.getByLabel("Bairro", { exact: true }).fill("Centro");
   await p2.getByRole("checkbox").first().check();
   await p2.getByRole("button", { name: "Concluir cadastro" }).click();
-  await p2.getByRole("heading", { name: "Cadastrar minha empresa" }).waitFor();
+  await p2.getByRole("heading", { name: "Nori Gestao inicial" }).waitFor();
   await p2.goto(`${base}/conta`);
   await p2.getByRole("heading", { name: "Olá, Cliente." }).waitFor();
   await p2.goto(`${base}/conta/dados`);
@@ -430,45 +447,9 @@ try {
   await p2.getByRole("button", { name: "Salvar alterações" }).click();
   await p2.getByText("Seus dados foram atualizados.").waitFor();
   await p2.goto(`${base}/cadastrar-empresa`);
-  await p2.getByRole("heading", { name: "Cadastrar minha empresa" }).waitFor();
-  for (const [label, value] of [
-    ["Nome da empresa", "Negócio automatizado"],
-    ["WhatsApp com DDD", "92999991234"],
-    ["E-mail comercial", "loja@example.test"],
-    ["Cidade", "Manaus"],
-    ["Bairro", "Centro"],
-    ["Endereço completo", "Rua teste, 10"],
-    ["Descrição curta", "Empresa somente de testes automatizados."],
-    ["Nome do responsável legal", "Pessoa Teste"],
-    ["CPF do responsável", "52998224725"],
-  ])
-    await p2.getByLabel(label, { exact: true }).fill(value);
-  await p2.getByLabel("Categoria", { exact: true }).selectOption("1");
-  const png = Buffer.from(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jWYQAAAAASUVORK5CYII=",
-    "base64",
-  );
-  await p2.getByLabel(/Documento de identidade/).setInputFiles({
-    name: "identidade-teste.png",
-    mimeType: "image/png",
-    buffer: png,
-  });
-  await p2.getByLabel(/Registro ou comprovante de atividade/).setInputFiles({
-    name: "atividade-teste.png",
-    mimeType: "image/png",
-    buffer: png,
-  });
-  await p2.getByRole("checkbox", { name: /Confirmo que os dados/ }).check();
-  await noOverflow(p2, "formulário de empresa");
-  await p2.evaluate(() => window.scrollTo(0, 0));
-  await p2.screenshot({
-    path: "test-results/business-form-mobile.png",
-    fullPage: true,
-  });
-  await p2.setViewportSize({ width: 320, height: 844 });
-  await noOverflow(p2, "formulário de empresa em 320 px");
-  await p2.getByRole("button", { name: "Enviar para análise" }).click();
-  await p2.getByText("Em análise", { exact: true }).waitFor();
+  await p2.getByRole("heading", { name: "Nori Gestao inicial" }).waitFor();
+  assert.equal(new URL(p2.url()).hostname,'gestao.norieco.com.br');
+  assert.equal(new URL(p2.url()).pathname,'/inicio');
   await p2.goto(`${base}/administracao`);
   await p2.getByRole("heading", { name: "Acesso restrito" }).waitFor();
   await p2.goto(`${base}/conta`);

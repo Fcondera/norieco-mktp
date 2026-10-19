@@ -5,6 +5,7 @@ additional_redirect_urls = [
   "https://gestao.norieco.com.br",
   "https://gestao.norieco.com.br/",
   "https://gestao.norieco.com.br/auth/callback",
+  "https://gestao.norieco.com.br/inicio",
   "https://gestao.norieco.com.br/auth/recovery",
   "https://gestao.norieco.com.br/entrega",
   "https://gestao.renatopescados.com.br",

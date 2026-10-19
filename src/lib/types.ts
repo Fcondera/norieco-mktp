@@ -49,6 +49,9 @@ export type Service = {
   name: string;
   description: string;
   category_id: string;
+  kind?: "PRODUCT" | "SERVICE";
+  price?: number | null;
+  image_url?: string;
 };
 export type Review = {
   id: string;

@@ -35,6 +35,14 @@ Pasta de trabalho atual: `C:\Users\maric\OneDrive\Documentos\norieco`. Acesso: h
 
 ## Backend compartilhado
 
+### Painel inicial para empresas
+
+Após entrar e concluir o cadastro pessoal, `/marketplace/cadastrar-empresa` e `/marketplace/empresa` encaminham para `https://gestao.norieco.com.br/inicio`. O mesmo usuário Google acessa três módulos: Minha empresa, Produtos e serviços, Contatos e solicitações. As sessões são independentes entre domínios; não se transfere JWT/refresh token por URL. A empresa cria sua página no Gestão e continua sujeita à verificação antes da publicação.
+
+O plano inicial usa o vínculo `marketplace_members` e RPCs restritas; não ativa perfis de funcionário nem libera tabelas do PDV. O botão de contratar registra uma solicitação comercial e permite contato com a equipe. A concessão de acesso PDV continua administrativa, sem cobrança ou ativação automática. Lojas integradas mantêm o fluxo atual de estoque, carrinho, cozinha e pedidos.
+
+Migração `202610190001_starter_business_portal.sql` aplicada e registrada em 19/10/2026. Acrescenta campos públicos de ofertas, solicitações privadas, pedidos comerciais de plano e RPCs de acesso inicial. Preserva dados e permissões existentes. Callback Google adicionado somente para `/inicio` no domínio do Gestão.
+
 Mantém o Supabase `nwksgeqkstbbcjpcwvqa`, Google, usuários, tenants, produtos e pedidos existentes. Separar o Git não duplica nem altera o banco. Login usa PKCE e armazenamento `norieco-marketplace-auth-v1`; sair encerra somente a sessão local do marketplace.
 
 Tabelas `marketplace_*` têm RLS e operações por RPC. O checkout resolve a empresa pelo slug verificado, valida itens, preços, endereço, estoque e idempotência e cria o pedido real no Gestão, incluindo cozinha. Produtos continuam administrados no Gestão. Documentos são privados; imagens públicas ficam em bucket separado.

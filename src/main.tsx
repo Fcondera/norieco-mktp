@@ -6,7 +6,8 @@ import { Landing } from "./landing";
 import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
-import { BusinessDashboard, Administration } from "./business-pages";
+import { Administration } from "./business-pages";
+import { StarterAccess } from "./starter-access";
 import { Empty, Icon, Loading } from "./ui";
 import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
@@ -107,13 +108,13 @@ function App() {
   else if (path === "/cadastrar-empresa")
     page = (
       <Protected>
-        <BusinessDashboard key="register" register />
+        <StarterAccess />
       </Protected>
     );
   else if (path === "/empresa" || path.startsWith("/empresa/"))
     page = (
       <Protected>
-        <BusinessDashboard key="dashboard" />
+        <StarterAccess />
       </Protected>
     );
   else if (path === "/administracao" || path.startsWith("/administracao/"))
