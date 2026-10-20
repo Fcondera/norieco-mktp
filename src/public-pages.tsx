@@ -349,9 +349,9 @@ export function BusinessPage({ slug }: { slug: string }) {
           <span className="eyebrow">{b.category_name}</span>
           <h1>
             {b.name}
-            <span className="verified" title="Empresa verificada">
+            {b.document_verified === true && <span className="verified" title="Documentação verificada">
               <Icon name="check" size={17} />
-            </span>
+            </span>}
           </h1>
           <p>{b.description}</p>
           <div className="business-meta">

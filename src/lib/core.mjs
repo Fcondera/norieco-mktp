@@ -104,7 +104,7 @@ export const orderStatus = {
 export const verificationStatus = {
   DRAFT: "Rascunho",
   PENDING: "Em análise",
-  VERIFIED: "Verificado",
+  VERIFIED: "Publicado",
   REJECTED: "Reprovado",
   SUSPENDED: "Suspenso",
 };

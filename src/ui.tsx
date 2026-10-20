@@ -204,10 +204,10 @@ export function BusinessCard({ business: b }: { business: Business }) {
       <div className="card-body">
         <div className="card-heading">
           <h3>{b.name}</h3>
-          <span className="verified" title="Empresa verificada">
+          {b.document_verified === true && <span className="verified" title="Documentação verificada">
             <Icon name="check" size={14} />
             <span className="sr-only">Verificada</span>
-          </span>
+          </span>}
         </div>
         <p>
           {b.category_name} <span aria-hidden="true">·</span> {b.city}

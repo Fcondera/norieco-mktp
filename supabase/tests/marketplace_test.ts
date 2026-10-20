@@ -106,6 +106,7 @@ Deno.test(
         ),
       );
       await db.exec(await Deno.readTextFile(new URL('../migrations/202610190001_starter_business_portal.sql', import.meta.url)));
+      await db.exec(await Deno.readTextFile(new URL('../migrations/202610200001_pdv_marketplace_publication.sql', import.meta.url)));
       await db.exec(
         `delete from marketplace_businesses;insert into auth.users(id,email) values('${admin}','superabufari@gmail.com'),('${ownerB}','business@example.test'),('${buyer}','buyer@example.test'),('${stranger}','stranger@example.test');set request.jwt.claim.sub='${admin}';`,
       );
@@ -171,7 +172,24 @@ Deno.test(
           ]),
         ],
       );
+      // PDV publication needs platform approval; it never reviews documents or opens a store.
+      await db.query("update marketplace_businesses set verification_status='DRAFT' where id=$1", [bB]);
+      const categoryB = await value("select id from marketplace_categories where name='Restaurantes'");
+      await as(ownerB);
+      await rejects("select marketplace_publish_pdv($1,$2)", [bB,categoryB]);
+      await rejects("select marketplace_publish_pdv_internal($1,$2)", [bB,categoryB]);
+      await as(admin);
+      await rejects("select marketplace_publish_pdv($1,gen_random_uuid())", [bB]);
+      await db.query("select marketplace_publish_pdv($1,$2)", [bB,categoryB]);
+      await db.exec("reset role");
+      assert(await value("select reviewed_at is null from marketplace_verifications where business_id=$1",[bB]),"Publication forged document review");
+      assert(await value("select marketplace_is_open from app_settings where tenant_id=$1",[tB])===true,"Publication changed opening settings");
+      assert(await value("select count(*)::int from marketplace_audit where action='PDV_PUBLICATION_APPROVED' and entity_id=$1",[bB])===1,"Publication missing audit");
+      await db.query("update marketplace_businesses set verification_status='SUSPENDED' where id=$1",[bB]);
+      await as(admin);await rejects("select marketplace_publish_pdv($1,$2)",[bB,categoryB]);
+      await db.exec("reset role");await db.query("update marketplace_businesses set verification_status='VERIFIED' where id=$1",[bB]);
       await as("", "anon");
+      await rejects("select marketplace_publish_pdv($1,$2)",[bB,categoryB]);
       const data = (await value("select marketplace_business('loja-b')")) as {
         products: Record<string, unknown>[];
         business: Record<string, unknown>;
@@ -180,6 +198,7 @@ Deno.test(
         data.products.length === 1 && data.products[0].id === productB,
         "Catálogo misturou produtos",
       );
+      assert(data.business.document_verified===false,"PDV publication displayed a documentary badge");
       assert(
         !("tenant_id" in data.business) &&
           !("cpf" in data.business) &&
@@ -435,6 +454,7 @@ Deno.test(
       await db.query("select marketplace_admin_action('approve',$1,'{}')", [
         draft.id,
       ]);
+      assert(((await value("select marketplace_search('Profissional teste','','')")) as any[])[0].document_verified===true,"Documentary approval lost its badge");
       assert(
         (
           (await value(

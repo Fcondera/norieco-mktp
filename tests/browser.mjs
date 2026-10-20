@@ -35,6 +35,7 @@ const business = {
   category_name: "Restaurantes",
   listing_type: "INTEGRATED",
   verification_status: "VERIFIED",
+  document_verified: false,
   description: "Perfil fictício usado somente nos testes automatizados.",
   logo_url: "",
   cover_url: "",
@@ -270,6 +271,7 @@ try {
       .waitFor();
     await noOverflow(page, `home ${width}`);
     await page.getByRole("heading", {name:"Em destaque",exact:true}).waitFor();
+    assert.equal(await page.locator('.business-card .verified').count(),0,'PDV listing received documentary badge');
     await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
     await page.getByRole("heading", {name:"Melhores lojas",exact:true}).waitFor();
     assert.equal(await page.locator('.mkt-rank-card').count(),2);
@@ -366,6 +368,8 @@ try {
     assert.equal(inquiry.p_offer,'offer-test');
     assert.ok(!('tenant_id' in inquiry));
     await page.goto(`${base}/loja/${business.slug}`);
+    await page.getByRole('heading',{name:business.name,exact:true}).waitFor();
+    assert.equal(await page.locator('.business-profile .verified').count(),0,'PDV profile received documentary badge');
     assert.equal(
       await page.getByRole("button", { name: "Salvar", exact: true }).count(),
       0,

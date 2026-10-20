@@ -14,6 +14,7 @@ export type Business = {
   category_name: string;
   listing_type: "INTEGRATED" | "STANDARD";
   verification_status: string;
+  document_verified?: boolean;
   description: string;
   logo_url: string;
   cover_url: string;

@@ -567,6 +567,7 @@ export function Administration() {
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [reasons, setReasons] = useState<Record<string, string>>({}),
+    [publicationCategories, setPublicationCategories] = useState<Record<string, string>>({}),
     [tenants, setTenants] = useState<Record<string, string>>({});
   const load = () =>
     rpc<AdminData>("marketplace_admin_data")
@@ -604,6 +605,16 @@ export function Administration() {
       w?.close();
       setError("Não foi possível abrir o documento privado.");
     } else if (w) w.location.href = data.signedUrl;
+  };
+  const publishPdv = async (b: AdminData['businesses'][number]) => {
+    if (!confirm(`Publicar ${b.name} com os produtos do PDV, sem conceder selo documental?`)) return;
+    setBusy(true);
+    setError("");
+    try {
+      await rpc("marketplace_publish_pdv", {p_business:b.id,p_category:publicationCategories[b.id] || b.category_id});
+      await load();
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusy(false); }
   };
   if (!data) return error ? <Notice error>{error}</Notice> : <Loading />;
   return (
@@ -683,6 +694,11 @@ export function Administration() {
                   </select>
                 </Field>
               )}
+              {b.listing_type === "INTEGRATED" && b.tenant_id && <Field label="Categoria no marketplace">
+                <select value={publicationCategories[b.id] || b.category_id} onChange={e => setPublicationCategories({...publicationCategories,[b.id]:e.target.value})}>
+                  {data.categories.filter(c => c.active).map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </Field>}
               <Field label="Motivo da decisão (obrigatório para reprovar ou suspender)">
                 <input
                   maxLength={500}
@@ -693,6 +709,7 @@ export function Administration() {
                 />
               </Field>
               <div className="actions">
+                {b.listing_type === "INTEGRATED" && b.tenant_id && <button disabled={busy || b.verification_status === 'SUSPENDED' || b.verification_status === 'REJECTED'} className="button secondary" onClick={() => publishPdv(b)}>Publicar loja do PDV sem selo documental</button>}
                 <button
                   disabled={busy}
                   className="button primary"
@@ -706,7 +723,7 @@ export function Administration() {
                     })
                   }
                 >
-                  Aprovar
+                  Aprovar documentação
                 </button>
                 <button
                   disabled={busy}
