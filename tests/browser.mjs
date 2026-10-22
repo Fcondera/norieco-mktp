@@ -208,6 +208,8 @@ async function mock(
     await route.fulfill({ json: data });
   });
   await page.route('https://gestao.norieco.com.br/inicio',route=>route.fulfill({contentType:'text/html',body:'<h1>Nori Gestao inicial</h1>'}));
+  await page.context().route('https://gestao.norieco.com.br/auth/bridge**',route=>route.fulfill({contentType:'text/html',body:`<h1>Abrindo painel</h1><script>const nonce=new URLSearchParams(location.search).get('state')||location.hash.slice(1);addEventListener('message',e=>{if(e.data.type==='norieco-auth-session'&&e.data.nonce===nonce){if('refresh_token'in e.data)throw Error('Refresh token transferred');opener.postMessage({type:'norieco-auth-complete',nonce},${JSON.stringify(new URL(origin).origin)});document.querySelector('h1').textContent='Nori Gestao inicial';}});opener.postMessage({type:'norieco-auth-ready',nonce},${JSON.stringify(new URL(origin).origin)});</script>`}));
+
   if (logged)
     await page.addInitScript(
       ({ user }) => {
@@ -256,7 +258,7 @@ try {
     await page.locator(".eco-hero .is-active h1").waitFor();
     await noOverflow(page, `institucional ${width}`);
     await page.screenshot({path: `test-results/landing-${width}.png`, fullPage:true});
-    assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/"]').count(), 1);
+    assert.equal(await page.locator('.eco-header a[href="https://gestao.norieco.com.br/inicio"]').count(), 1);
     for (const name of ["Nori Gestão", "Catálogo online", "Marketplace regional"])
       await page.getByRole("heading", { name, exact: true }).waitFor();
     assert.equal(await page.locator('.eco-solutions a[href^="https://wa.me/"]').count(), 2);
@@ -367,7 +369,8 @@ try {
     assert.equal(inquiry.p_slug,standard.slug);
     assert.equal(inquiry.p_offer,'offer-test');
     assert.ok(!('tenant_id' in inquiry));
-    await page.goto(`${base}/loja/${business.slug}`);
+    await page.goto(`${origin}/${business.slug}`);
+    assert.equal(new URL(page.url()).pathname,"/"+business.slug);
     await page.getByRole('heading',{name:business.name,exact:true}).waitFor();
     assert.equal(await page.locator('.business-profile .verified').count(),0,'PDV profile received documentary badge');
     assert.equal(
@@ -433,7 +436,12 @@ try {
   await p2
     .getByRole("link", { name: "Cadastrar minha empresa", exact: true })
     .click();
-  await p2.getByRole("heading", { name: "Falta só conhecer você." }).waitFor();
+  await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
+  const sellerPopup=c2.waitForEvent('page');
+  await p2.getByRole('link',{name:'Abrir meu painel',exact:true}).click();
+  const panel=await sellerPopup;await panel.getByRole('heading',{name:'Nori Gestao inicial'}).waitFor();await panel.close();
+  await p2.goto(base+'/primeiro-acesso');
+  await p2.getByRole('heading',{name:'Falta só conhecer você.'}).waitFor();
   assert.equal(
     await p2.getByLabel("Nome completo").inputValue(),
     "Cliente Teste",
@@ -443,7 +451,7 @@ try {
   await p2.getByLabel("Bairro", { exact: true }).fill("Centro");
   await p2.getByRole("checkbox").first().check();
   await p2.getByRole("button", { name: "Concluir cadastro" }).click();
-  await p2.getByRole("heading", { name: "Nori Gestao inicial" }).waitFor();
+  await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
   await p2.goto(`${base}/conta`);
   await p2.getByRole("heading", { name: "Olá, Cliente." }).waitFor();
   await p2.goto(`${base}/conta/dados`);
@@ -451,9 +459,7 @@ try {
   await p2.getByRole("button", { name: "Salvar alterações" }).click();
   await p2.getByText("Seus dados foram atualizados.").waitFor();
   await p2.goto(`${base}/cadastrar-empresa`);
-  await p2.getByRole("heading", { name: "Nori Gestao inicial" }).waitFor();
-  assert.equal(new URL(p2.url()).hostname,'gestao.norieco.com.br');
-  assert.equal(new URL(p2.url()).pathname,'/inicio');
+  await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
   await p2.goto(`${base}/administracao`);
   await p2.getByRole("heading", { name: "Acesso restrito" }).waitFor();
   await p2.goto(`${base}/conta`);
@@ -491,7 +497,8 @@ try {
   await p4
     .getByRole("link", { name: "Cadastrar minha empresa", exact: true })
     .click();
-  await p4.getByRole("button", { name: "Continuar com Google" }).waitFor();
+  await p4.getByRole("heading", { name: "Nori Gestao inicial" }).waitFor();
+  assert.equal(new URL(p4.url()).hostname,"gestao.norieco.com.br");
   await c4.close();
   console.log(
     "OK: desktop 1440, mobile 390/320, filtros, perfis padrão, carrinho persistente, acesso, onboarding, checkout e erros. Login Google real exige conta interativa.",

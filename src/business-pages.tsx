@@ -4,6 +4,7 @@ import { Link, navigate } from "./lib/router";
 import type { Category, OwnBusiness, Hours } from "./lib/types";
 import { brl, verificationStatus } from "./lib/core.mjs";
 import { Empty, Field, Loading, Notice } from "./ui";
+import { ManagementLink } from "./management-link";
 const defaultHours: Hours = Array.from({ length: 7 }, (_, day) => ({
   day,
   enabled: day !== 0,
@@ -356,14 +357,9 @@ export function BusinessDashboard({
                 </Link>
               )}
               {b.listing_type === "INTEGRATED" ? (
-                <a
-                  className="button primary"
-                  href="https://gestao.norieco.com.br/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <ManagementLink className="button primary">
                   Acessar Nori Gestão ↗
-                </a>
+                </ManagementLink>
               ) : (
                 <button
                   className="button secondary"

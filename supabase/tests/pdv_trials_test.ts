@@ -1,0 +1,62 @@
+import {saasDatabase} from '../../../vendapeixe/supabase/tests/helpers/saas_database.ts';
+const assert=(ok:unknown,message:string)=>{if(!ok)throw Error(message)};
+Deno.test('PDV: own tenant, 15 day trial, no reset/escalation, expiry and owner-only continuation',async()=>{
+ const db=await saasDatabase();
+ try{
+ for(const file of ['202610170001_direct_product_stock.sql','202610170002_paid_direct_stock.sql','202610170003_dining_sale_movement_type.sql','202610170004_supply_inventory_workflow.sql','202610170005_item_codes.sql','202610170006_kitchen_workflow.sql','202610180001_catalog_recipe_availability.sql','202610180002_invalid_legacy_recipe_availability.sql','202610180003_marketplace.sql','202610180004_marketplace_access_audit.sql','202610180005_marketplace_store_validation.sql','202610190001_starter_business_portal.sql','202610200001_pdv_marketplace_publication.sql','202610220001_self_service_pdv_trials.sql','202610220002_optional_pdv_verification.sql','202610220003_sso_rate_limit.sql'])await db.exec(await Deno.readTextFile(new URL('../../../vendapeixe/supabase/migrations/'+file,import.meta.url)));
+ const a='10000000-0000-4000-8000-000000000401',b='10000000-0000-4000-8000-000000000402',owner='10000000-0000-4000-8000-000000000403';
+ const value=async(sql:string,args:unknown[]=[])=>Object.values((await db.query<Record<string,unknown>>(sql,args)).rows[0])[0];
+ const as=async(user:string,role='authenticated')=>{await db.exec(`reset role;set role ${role}`);await db.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claim.role',$2,false)",[user,role]);};
+ const rejects=async(sql:string,args:unknown[]=[])=>{let failed=false;try{await db.query(sql,args)}catch{failed=true}assert(failed,'Unexpectedly allowed '+sql)};
+ await db.exec(`insert into auth.users(id,email)values('${a}','trial-a@example.test'),('${b}','trial-b@example.test'),('${owner}','superabufari@gmail.com');`);
+ const signup={full_name:'Pessoa Teste',name:'Adega Junior',slug:'adegajunior',business_type:'RESTAURANT',whatsapp:'92999990000',city:'Manacapuru',terms:true};
+ await as(a);await rejects('select pdv_start_trial_internal($1,$2)',[a,signup]);
+ await as('','service_role');
+ await rejects('select pdv_start_trial_internal($1,$2)',[a,{...signup,slug:'marketplace'}]);
+ await rejects('select pdv_start_trial_internal($1,$2)',[a,{...signup,role:'ADMINISTRATOR'}]);
+ const first=await value('select pdv_start_trial_internal($1,$2)',[a,signup]) as any;
+ const again=await value('select pdv_start_trial_internal($1,$2)',[a,{...signup,slug:'reset-store'}]) as any;
+ assert(first.tenant_id===again.tenant_id&&first.ends_at===again.ends_at,'Trial reset or duplicated');
+ await rejects('select pdv_start_trial_internal($1,$2)',[b,signup]);
+ const second=await value('select pdv_start_trial_internal($1,$2)',[b,{...signup,name:'Outra Loja',slug:'outraloja'}]) as any;
+ await as(a);
+ assert(await value('select current_tenant_id()')===first.tenant_id,'Own tenant absent');
+ assert(await value('select count(*)::int from products')===0,'Copied products from another tenant');
+ assert(await value('select count(*)::int from supplies')===0,'Copied raw materials');
+ await rejects('select * from pdv_trials');await rejects('select pdv_trial_admin_action($1,\'continue\')',[first.tenant_id]);
+ const status=await value('select pdv_trial_status()') as any;
+ assert(status.has_pdv&&status.status==='TRIAL'&&status.public_url==='https://norieco.com.br/adegajunior','Trial status incorrect');
+ await db.query("insert into products(tenant_id,name,slug,species,price_per_kg,sale_mode,physical_stock_kg,safety_stock_kg,online_stock_limit_kg,preparation_options)values($1,'Produto A','produto-a','Comida',10,'UNIT',5,0,5,'[]')",[first.tenant_id]);
+ await as(b);assert(await value('select count(*)::int from products')===0,'Other tenant products visible');
+ await rejects("insert into products(tenant_id,name,slug,species,price_per_kg)values($1,'Invasão','invasao','Comida',10)",[first.tenant_id]);
+
+ await db.exec('reset role;grant select,insert on storage.objects to authenticated');
+ await as(a);const businessId=first.business_id;
+ await rejects('select pdv_save_documents($1,$2,true)',[businessId,{legal_name:'Pessoa Teste',cpf:'52998224725'}]);
+
+ const identity=a+'/'+businessId+'/identity.jpg',proof=a+'/'+businessId+'/proof.pdf';
+ await db.query("insert into storage.objects(bucket_id,name)values('marketplace-verifications',$1),('marketplace-verifications',$2)",[identity,proof]);
+ await db.query('select pdv_save_documents($1,$2,true)',[businessId,{legal_name:'Pessoa Teste',cpf:'52998224725',identity_path:identity,proof_path:proof}]);
+ assert((await value("select marketplace_business('adegajunior')->'business'->>'document_verified'"))==='false','Unreviewed documents gained a badge');
+ await as(b);await rejects('select pdv_save_documents($1,$2,false)',[businessId,{legal_name:'Invasor'}]);
+ await db.exec('reset role');
+ await db.query("update app_settings set marketplace_is_open=true,marketplace_opening_hours=$1 where tenant_id=$2",[JSON.stringify(Array.from({length:7},(_,day)=>({day,enabled:true,open:'00:00',close:'00:00'}))),first.tenant_id]);
+ await as(b);const product=await value("select marketplace_business('adegajunior')->'products'->0->>'id'");assert(product,'New store catalog missing product');
+ const created=await value("select marketplace_checkout('adegajunior',gen_random_uuid(),$1,'pickup',null,'Pix','',10)",[[{productId:product,quantity:1}]]) as any;
+ await as(a);assert(await value('select tenant_id from orders where id=$1',[created.id])===first.tenant_id,'Catalog order routed to wrong panel');
+ await as(b);assert(await value('select count(*)::int from orders where id=$1',[created.id])===0,'Order leaked to another panel');
+ await db.exec('reset role');assert(await value('select (ends_at-started_at)=interval \'15 days\' from pdv_trials where tenant_id=$1',[first.tenant_id]),'Wrong trial duration');
+ await db.query("update pdv_trials set started_at=now()-interval '16 days',ends_at=now()-interval '1 day' where tenant_id=$1",[first.tenant_id]);
+ await as(a);assert(await value('select current_tenant_id()')===null,'Expired trial kept backend access');
+ assert((await value('select pdv_trial_status()') as any).status==='EXPIRED','Expired trial status incorrect');
+ await rejects("insert into products(tenant_id,name,slug,species,price_per_kg)values($1,'Após prazo','apos-prazo','Comida',10)",[first.tenant_id]);
+ await as('','anon');await rejects('select pdv_trial_admin_list()');await rejects('select pdv_trial_status()');
+ await as(owner);await db.query("select pdv_trial_admin_action($1,'continue')",[first.tenant_id]);
+ await as(a);assert(await value('select current_tenant_id()')===first.tenant_id,'Owner continuation did not restore access');
+ assert(await value('select count(*)::int from products')===1,'Trial expiry lost stock/products');
+ await as(owner);await db.query("select pdv_trial_admin_action($1,'pause')",[first.tenant_id]);
+ await as(a);assert(await value('select current_tenant_id()')===null,'Owner pause bypassed');
+ await as(b);assert(await value('select current_tenant_id()')===second.tenant_id,'Other trial disrupted');
+ await as(owner);assert(await value('select current_tenant_id()')!==null,'Existing paid tenant disrupted');
+ }finally{await db.close()}
+});

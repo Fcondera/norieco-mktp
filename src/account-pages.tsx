@@ -4,6 +4,7 @@ import { Link, navigate } from "./lib/router";
 import { brl, orderStatus, safeReturn, safeImage } from "./lib/core.mjs";
 import type { Address, Business, Order, Review } from "./lib/types";
 import { useApp } from "./state";
+import {ManagementLink} from './management-link';
 import { BusinessCard, Empty, Field, Loading, Notice } from "./ui";
 export function Login() {
   const { user, profile, authLoading } = useApp();
@@ -59,6 +60,7 @@ export function Login() {
       <Link href="/" className="text-link">
         Continuar explorando
       </Link>
+      <ManagementLink className="text-link">Criar loja e testar o Gestão por 15 dias</ManagementLink>
     </section>
   );
 }
@@ -267,6 +269,7 @@ export function Account({ tab }: { tab: string }) {
           <>
             <h1>Olá, {profile?.full_name.split(" ")[0]}.</h1>
             <p>Seus pedidos e lugares favoritos, sempre por perto.</p>
+            <ManagementLink className="button primary">Acessar Nori Gestão</ManagementLink>
             <div className="details-grid">
               <Link className="panel" href="/conta/pedidos">
                 <h3>Meus pedidos →</h3>
@@ -497,7 +500,7 @@ function Orders() {
               <span>Total</span>
               <strong>{brl(o.total)}</strong>
             </div>
-            <Link className="text-link" href={`/loja/${o.business_slug}`}>
+            <Link className="text-link" href={`/${o.business_slug}`}>
               Ver loja
             </Link>
           </article>

@@ -8,6 +8,7 @@ import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
 import { Administration } from "./business-pages";
 import { StarterAccess } from "./starter-access";
+import {publicStoreSlug} from './lib/store-path.mjs';
 import { Empty, Icon, Loading } from "./ui";
 import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
@@ -15,15 +16,16 @@ import "./landing.css";
 import "./marketplace-home.css";
 function Site() {
   const path = useLocation().split("?")[0];
+  const storeSlug = publicStoreSlug(path);
   useEffect(() => {
     // Preserve old links and the existing Google callback while canonicalizing navigation.
     if (["/marktplace", "/markrplace"].includes(path)) navigate("/");
-    else if (path !== "/" && path !== "/auth/callback" && !path.startsWith("/marketplace/") && path !== "/marketplace") {
+    else if (!storeSlug && path !== "/" && path !== "/auth/callback" && !path.startsWith("/marketplace/") && path !== "/marketplace") {
       history.replaceState({}, "", "/marketplace" + location.pathname + location.search + location.hash);
       dispatchEvent(new PopStateEvent("popstate"));
     }
   }, [path]);
-  return path === "/" ? <Landing /> : <App />;
+  return path === "/" ? <Landing /> : <App publicSlug={storeSlug} />;
 }
 function Protected({
   children,
@@ -56,7 +58,7 @@ function Protected({
     );
   return children;
 }
-function App() {
+function App({publicSlug}:{publicSlug?:string|null}) {
   const pathWithQuery = usePath(),
     path = pathWithQuery.split("?")[0];
   const { user, profile, cart, total, authLoading } = useApp();
@@ -78,7 +80,8 @@ function App() {
     if (path !== "/") navigate("/");
   };
   let page: React.ReactNode;
-  if (path === "/")
+  if (publicSlug) page = <BusinessPage key={publicSlug} slug={publicSlug} />;
+  else if (path === "/")
     page = <Home query={query} city={city} onQuery={setQuery} />;
   else if (path.startsWith("/loja/"))
     page = (
@@ -105,18 +108,8 @@ function App() {
         <Checkout />
       </Protected>
     );
-  else if (path === "/cadastrar-empresa")
-    page = (
-      <Protected>
-        <StarterAccess />
-      </Protected>
-    );
-  else if (path === "/empresa" || path.startsWith("/empresa/"))
-    page = (
-      <Protected>
-        <StarterAccess />
-      </Protected>
-    );
+  else if (path === "/cadastrar-empresa") page = <StarterAccess />;
+  else if (path === "/empresa" || path.startsWith("/empresa/")) page = <StarterAccess />;
   else if (path === "/administracao" || path.startsWith("/administracao/"))
     page = (
       <Protected admin>
@@ -339,7 +332,7 @@ function Legal({ type }: { type: string }) {
             ? "Termos de uso"
             : "Política de privacidade"}
       </h1>
-      <p>Atualizado em 18 de outubro de 2026.</p>
+      <p>Atualizado em 22 de outubro de 2026.</p>
       {type === "/sobre" ? (
         <>
           <p>
@@ -349,7 +342,7 @@ function Legal({ type }: { type: string }) {
             uma empresa.
           </p>
           <p>
-            Empresas passam por análise antes da publicação. Produtos, preços,
+            Lojas do PDV podem publicar sua página sem selo documental. O selo exige análise dos documentos. Produtos, preços,
             atendimento, entrega e execução dos serviços são responsabilidade de
             cada empresa.
           </p>
@@ -375,6 +368,7 @@ function Legal({ type }: { type: string }) {
             legislação brasileira permanecem assegurados.
           </p>
           <h2>Empresas e avaliações</h2>
+          <p>Novas lojas podem testar o Nori Gestão por 15 dias, contados da criação da loja, sem cartão ou cobrança automática. Documentos não são obrigatórios nessa etapa. Ao vencer, novas operações ficam suspensas até a NoriEco liberar ou prorrogar o acesso; os dados não são apagados pelo vencimento.</p>
           <p>
             Somente pessoas autorizadas podem cadastrar uma empresa. A análise
             do cadastro não garante a qualidade de produtos ou serviços. Não

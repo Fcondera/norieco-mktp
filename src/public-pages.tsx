@@ -208,7 +208,7 @@ export function Home({
             {section("Em destaque", "UMA VITRINE DO COMÉRCIO LOCAL", discovery.featured, "star")}
             <section className="home-section mkt-ranking">
               <div className="section-heading"><div><span className="eyebrow"><Icon name="star" size={18} /> QUEM MOVIMENTA A REGIÃO</span><h2>Top 3 vendedores</h2><p>Os mais avaliados entre as lojas desta seleção. A ordem considera a quantidade de avaliações publicadas.</p></div></div>
-              {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/loja/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
+              {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
             </section>
             {section("Melhores lojas", "MAIORES NOTAS NESTA SELEÇÃO · DESEMPATE POR AVALIAÇÕES", discovery.bestRated, "check")}
             {section("Explore as lojas", city || "COMPRE DE QUEM ESTÁ PERTO", rows, "shop")}
@@ -688,7 +688,7 @@ export function CartPage() {
   return (
     <section className="narrow">
       <h1>Seu carrinho</h1>
-      <Link href={`/loja/${cart[0].business_slug}`} className="text-link">
+      <Link href={`/${cart[0].business_slug}`} className="text-link">
         Voltar ao cardápio
       </Link>
       <div className="panel">

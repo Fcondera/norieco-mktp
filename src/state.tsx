@@ -77,6 +77,12 @@ export function Provider({ children }: { children: ReactNode }) {
     }
     return true;
   };
+  useEffect(()=>{
+    if(!user)return;
+    const refresh=()=>{void refreshProfile().catch(()=>{});};
+    window.addEventListener('focus',refresh);
+    return()=>window.removeEventListener('focus',refresh);
+  },[user?.id]);
   const logout = async () => {
     await supabase.auth.signOut({ scope: "local" });
     setProfile(null);

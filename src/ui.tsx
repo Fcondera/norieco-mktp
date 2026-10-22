@@ -195,7 +195,7 @@ export function Photo({
 }
 export function BusinessCard({ business: b }: { business: Business }) {
   return (
-    <Link className="business-card" href={`/loja/${b.slug}`}>
+    <Link className="business-card" href={`/${b.slug}`}>
       <Photo
         src={b.cover_url || b.logo_url}
         alt={b.name}

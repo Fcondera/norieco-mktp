@@ -9,7 +9,7 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 - `https://norieco.com.br/`: landing page institucional do ecossistema.
 - A LP apresenta somente as ofertas atuais: PDV Nori Gestão, catálogo online integrado e marketplace regional. O hero tem três slides. PDV e catálogo têm contato pelo WhatsApp; o marketplace tem acesso direto. Não são anunciados serviços de criação de sites ou controle de ponto. Funcionalidades internas do Gestão continuam preservadas. O cabeçalho de compras mostra o acesso à conta somente pelo ícone, também no celular.
 - `https://norieco.com.br/marketplace`: descoberta de lojas e serviços.
-- `/marketplace/loja/:slug`: página da empresa.
+- `/:slug`: página da empresa (ex.: `/adega-asvluth`). `/marketplace/loja/:slug` continua aceito.
 - `/marketplace/carrinho` e `/marketplace/finalizar`: compra.
 - `/marketplace/conta` e `/marketplace/conta/pedidos`: cliente.
 - `/marketplace/cadastrar-empresa` e `/marketplace/empresa`: vendedor.
@@ -37,9 +37,9 @@ Pasta de trabalho atual: `C:\Users\maric\OneDrive\Documentos\norieco`. Acesso: h
 
 ### Painel inicial para empresas
 
-Após entrar e concluir o cadastro pessoal, `/marketplace/cadastrar-empresa` e `/marketplace/empresa` encaminham para `https://gestao.norieco.com.br/inicio`. O mesmo usuário Google acessa três módulos: Minha empresa, Produtos e serviços, Contatos e solicitações. As sessões são independentes entre domínios; não se transfere JWT/refresh token por URL. A empresa cria sua página no Gestão e continua sujeita à verificação antes da publicação.
+Desde 22/10/2026, `/marketplace/cadastrar-empresa` e `/marketplace/empresa` levam diretamente a `https://gestao.norieco.com.br/inicio`. Quem já entrou no marketplace abre o Gestão sem outro login por uma ponte de sessão com origem, janela e nonce verificados. Tokens não são colocados na URL; o painel recebe uma sessão independente. Novos vendedores criam a empresa e sua página `/:slug` com teste completo de 15 dias, sem documentos iniciais e sem cobrança automática. Empresas existentes mantêm seu acesso e dados.
 
-O plano inicial usa o vínculo `marketplace_members` e RPCs restritas; não ativa perfis de funcionário nem libera tabelas do PDV. O botão de contratar registra uma solicitação comercial e permite contato com a equipe. A concessão de acesso PDV continua administrativa, sem cobrança ou ativação automática. Lojas integradas mantêm o fluxo atual de estoque, carrinho, cozinha e pedidos.
+O servidor provisiona um tenant vazio e seu administrador. Ao vencer o teste, preserva os dados e suspende operações até a administração liberar, prorrogar ou pausar em Clientes do sistema. Documentos podem ser enviados depois; o selo exige análise. O portal antigo de três módulos continua em `/pagina`. Lojas integradas mantêm estoque, carrinho, cozinha e pedidos. Consulte [acesso único e testes](docs/SELF_SERVICE_TRIALS_AND_SSO.md) para migrações, segurança e validação.
 
 Migração `202610190001_starter_business_portal.sql` aplicada e registrada em 19/10/2026. Acrescenta campos públicos de ofertas, solicitações privadas, pedidos comerciais de plano e RPCs de acesso inicial. Preserva dados e permissões existentes. Callback Google adicionado somente para `/inicio` no domínio do Gestão.
 

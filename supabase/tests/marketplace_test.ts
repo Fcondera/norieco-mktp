@@ -107,6 +107,7 @@ Deno.test(
       );
       await db.exec(await Deno.readTextFile(new URL('../migrations/202610190001_starter_business_portal.sql', import.meta.url)));
       await db.exec(await Deno.readTextFile(new URL('../migrations/202610200001_pdv_marketplace_publication.sql', import.meta.url)));
+      for(const file of ['202610220001_self_service_pdv_trials.sql','202610220002_optional_pdv_verification.sql'])await db.exec(await Deno.readTextFile(new URL('../migrations/'+file,import.meta.url)));
       await db.exec(
         `delete from marketplace_businesses;insert into auth.users(id,email) values('${admin}','superabufari@gmail.com'),('${ownerB}','business@example.test'),('${buyer}','buyer@example.test'),('${stranger}','stranger@example.test');set request.jwt.claim.sub='${admin}';`,
       );
