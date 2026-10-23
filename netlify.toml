@@ -183,6 +183,14 @@
     # The landing page runs only the compiled, same-origin application scripts.
     Content-Security-Policy = "script-src 'self'"
 [[headers]]
+  for = "/marketplace"
+  [headers.values]
+    Content-Security-Policy = "script-src 'self'"
+[[headers]]
+  for = "/marketplace/*"
+  [headers.values]
+    Content-Security-Policy = "script-src 'self'"
+[[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "no-cache"

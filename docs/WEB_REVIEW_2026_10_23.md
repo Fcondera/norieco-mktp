@@ -26,7 +26,9 @@ Revisão de código, build de produção, navegação em Chrome, acessibilidade 
 | Seletor de cidade não restaurava o valor atual; limpar exigia ação extra | Rascunho sincronizado ao abrir; Todo o Amazonas aplica a limpeza; Escape fecha e devolve foco | Testes de filtro e persistência |
 | Resposta de perfil pendente podia chegar após logout/troca de sessão | Respostas são aceitas apenas na geração de autenticação que as iniciou; troca de usuário limpa o perfil anterior; refresh da mesma sessão preserva a página | Teste segura a resposta do perfil, encerra sessão, libera a resposta e verifica que o avatar anterior não retorna |
 | Carrinho do catálogo sem nome acessível | Nome com quantidade de itens para leitor de tela | Teste Flutter de semântica e auditoria do catálogo |
+| Logo padrão do Renato sem descrição alternativa | Descrição com o nome da empresa | Inspeção da árvore semântica e nova validação do catálogo |
 | Banner sem título gerava imagem sem identificação | Descrição alternativa padrão e semântica de imagem/ação sem filhos duplicados | Auditoria do catálogo compilado |
+| Selo injetado pela hospedagem cobria o menu inferior do marketplace | Mesma política de scripts locais já usada na landing page aplicada às rotas do marketplace | Captura e inspeção em produção; política não é aplicada aos catálogos Flutter por proxy |
 | Arquivos Flutter sem hash tinham cache imutável por um ano | `/assets/*` passa a exigir revalidação HTTP | Configuração Netlify; arquivos principais continuam com revalidação |
 | Teste público de produtos ainda simulava consulta antiga | Fixture passa a exigir `public_catalog_products`, mantendo verificações do domínio e chave pública | Suíte Flutter completa: 158 testes aprovados |
 | Ajuda ainda descrevia compra dentro do marketplace e exigia Google para o catálogo | Texto orienta perfil → Abrir catálogo → pedido da loja; criação/administração passa pelo Gestão | Revisão de conteúdo e teste de navegador |
@@ -51,9 +53,9 @@ Os testes de banco e os fluxos autenticados usam fixtures. A visita aos sites re
 
 ## Infraestrutura, dados e publicação
 
-Não há migração SQL, alteração de dados, variáveis de ambiente, DNS, certificado, CORS ou configuração de login nesta entrega. A alteração de infraestrutura é o cabeçalho de cache no projeto Gestão. A chave pública permanece pública; nenhuma chave administrativa foi adicionada ao navegador. A entrega é web; o pacote Windows existente não foi substituído por alterações apenas de apresentação/acessibilidade.
+Não há migração SQL, alteração de dados, variáveis de ambiente, DNS, certificado, CORS ou configuração de login nesta entrega. As alterações de infraestrutura são o cabeçalho de cache no projeto Gestão e a política de scripts nas rotas React do marketplace. A chave pública permanece pública; nenhuma chave administrativa foi adicionada ao navegador. A entrega é web; o pacote Windows existente não foi substituído por alterações apenas de apresentação/acessibilidade.
 
-Arquivos principais: `src/public-pages.tsx`, `src/main.tsx`, `src/state.tsx`, `src/styles.css`, `src/marketplace-footer.tsx`, `tests/browser.mjs`, `tests/web-audit.mjs`; no Gestão: `lib/widgets/store_app_bar.dart`, `lib/screens/home_screen.dart`, `test/storefront_test.dart`, `netlify.toml`. Dependências e lockfiles incluem a ferramenta axe.
+Arquivos principais: `src/public-pages.tsx`, `src/main.tsx`, `src/state.tsx`, `src/styles.css`, `src/marketplace-footer.tsx`, `tests/browser.mjs`, `tests/web-audit.mjs`, `netlify.toml`; no Gestão: `lib/widgets/store_app_bar.dart`, `lib/widgets/store_identity.dart`, `lib/screens/home_screen.dart`, `test/storefront_test.dart`, `netlify.toml`. Dependências e lockfiles incluem a ferramenta axe.
 
 Rollback: reverter os commits desta revisão nos respectivos repositórios e publicar novamente. Não depende de restauração de banco.
 
