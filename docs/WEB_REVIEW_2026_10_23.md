@@ -18,6 +18,7 @@ Revisão de código, build de produção, navegação em Chrome, acessibilidade 
 | Link de suporte distinguível apenas pela cor | Sublinhado nos links dentro de textos, avisos e estados vazios | Auditoria axe em três larguras |
 | Rodapé mudava de posição enquanto dados chegavam | Altura mínima da área principal durante carregamento | No perfil Asvluth, CLS observado caiu de 0,23/0,50/0,54 para 0 nas medições locais de 1440/390/320 px |
 | Perfil sem capa reservava uma faixa vazia | Capa só é exibida quando há URL cadastrada | Teste de navegador com perfil sem capa |
+| Capa com texto era cortada nas laterais no celular | Área proporcional e imagem inteira, sem recortar o anúncio | Inspeção visual com a capa real da Asvluth |
 | Busca não tinha envio por Enter | Formulário de pesquisa com rótulo explícito e envio por teclado; respeita movimento reduzido | Teste de busca e deslocamento até resultados |
 | Tentar novamente recarregava a página e perdia filtros | Repetição da consulta mantendo termo/cidade/categoria | Falha 503 simulada, recuperação e termo preservado |
 | Perfil indisponível ou consulta com falha sem saída útil | Recuperação de consulta, link para outras lojas e título claro para perfil ausente | Teste de falha/recuperação e auditoria de loja inexistente |
