@@ -40,7 +40,8 @@ export function Home({
     [category, setCategory] = useState(""),
     [rows, setRows] = useState<Business[]>([]),
     [loading, setLoading] = useState(true),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [retry, setRetry] = useState(0);
   useEffect(() => {
     rpc<Category[]>("marketplace_categories")
       .then(setCategories)
@@ -70,7 +71,7 @@ export function Home({
       active = false;
       clearTimeout(timer);
     };
-  }, [query, city, category]);
+  }, [query, city, category, retry]);
   const discovery = discoverySections(rows);
   const section = (
     title: string,
@@ -107,10 +108,15 @@ export function Home({
             <span>no comércio da sua cidade</span>
           </h1>
           <p>Lojas, sabores, serviços e experiências em um só lugar.</p>
-          <label className="hero-search">
+          <form className="hero-search" role="search" onSubmit={(event) => {
+            event.preventDefault();
+            document.getElementById("resultados")?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? "instant" : "smooth" });
+          }}>
             <Icon name="search" />
-            <span className="sr-only">Buscar lojas, produtos ou serviços</span>
+            <label className="sr-only" htmlFor="marketplace-query">Buscar lojas, produtos ou serviços</label>
             <input
+              id="marketplace-query"
+              type="search"
               value={query}
               onChange={(e) => onQuery(e.target.value)}
               placeholder="Buscar lojas, produtos ou serviços"
@@ -118,15 +124,11 @@ export function Home({
             />
             <button
               className="button primary"
-              onClick={() =>
-                document
-                  .getElementById("resultados")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
+              type="submit"
             >
               Buscar
             </button>
-          </label>
+          </form>
           <small>
             <Icon name="pin" size={15} />
             {city || "Explore todas as cidades do Amazonas"}
@@ -174,7 +176,7 @@ export function Home({
         ) : error ? (
           <Notice error>
             {error}
-            <button className="text-button" onClick={() => location.reload()}>
+            <button className="text-button" onClick={() => setRetry((n) => n + 1)}>
               Tentar novamente
             </button>
           </Notice>
@@ -200,7 +202,7 @@ export function Home({
         ) : !rows.length ? (
           <section className="home-section">
             <Empty title="Ainda não há empresas publicadas nesta seleção">
-              Os perfis aparecem aqui após a verificação dos cadastros.
+              As lojas aparecem aqui após a aprovação dos cadastros.
             </Empty>
           </section>
         ) : (
@@ -234,8 +236,10 @@ export function BusinessPage({ slug }: { slug: string }) {
   const [business, setBusiness] = useState<Business | null>(null),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),
+    [retry, setRetry] = useState(0);
   useEffect(() => {
+    let active = true;
     setLoading(true);
     setError("");
     rpc<{ business: Business | null; products: Product[] }>(
@@ -243,18 +247,23 @@ export function BusinessPage({ slug }: { slug: string }) {
       { p_slug: slug },
     )
       .then((d) => {
-        setBusiness(d.business);
+        if (active) setBusiness(d.business);
       })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [slug]);
+      .catch((e) => active && setError(e.message))
+      .finally(() => active && setLoading(false));
+    return () => { active = false; };
+  }, [slug, retry]);
+  useEffect(() => {
+    if (business) document.title = `${business.name} · NoriEco`;
+  }, [business]);
   if (loading) return <Loading />;
-  if (error) return <Notice error>{error}</Notice>;
+  if (error) return <Notice error>{error} <button className="text-button" onClick={() => setRetry((n) => n + 1)}>Tentar novamente</button></Notice>;
   if (!business)
     return (
-      <Empty title="Empresa indisponível">
-        Este perfil ainda não está publicado ou não foi encontrado.
-      </Empty>
+      <section className="empty"><h1>Empresa indisponível</h1>
+        <p>Este perfil ainda não está publicado ou não foi encontrado.</p>
+        <Link className="text-link" href="/">Explorar outras lojas</Link>
+      </section>
     );
   const b = business;
   const contact = async () => {
@@ -279,11 +288,11 @@ export function BusinessPage({ slug }: { slug: string }) {
       <Link className="back" href="/">
         ← Explorar empresas
       </Link>
-      <Photo
+      {b.cover_url && <Photo
         className="profile-cover"
         src={b.cover_url}
         alt={`Capa de ${b.name}`}
-      />
+      />}
       <section className="business-profile">
         <Photo
           className="profile-logo"

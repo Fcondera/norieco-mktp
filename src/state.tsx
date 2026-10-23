@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -24,6 +25,8 @@ type State = {
 const Context = createContext<State>(null!);
 const cartKey = "norieco-cart-v1";
 export function Provider({ children }: { children: ReactNode }) {
+  const authGeneration = useRef(0);
+  const activeUserId = useRef<string | null>(null);
   const [user, setUser] = useState<User | null>(null),
     [profile, setProfile] = useState<Profile | null>(null),
     [authLoading, setAuthLoading] = useState(true);
@@ -40,8 +43,9 @@ export function Provider({ children }: { children: ReactNode }) {
     }
   };
   const refreshProfile = async () => {
+    const generation = authGeneration.current;
     const p = await rpc<Profile | null>("marketplace_my_profile");
-    setProfile(p);
+    if (generation === authGeneration.current) setProfile(p);
   };
   useEffect(() => {
     if (!configured) {
@@ -51,18 +55,29 @@ export function Provider({ children }: { children: ReactNode }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      const generation = ++authGeneration.current;
+      const nextUserId = session?.user.id || null;
+      const changedUser = activeUserId.current !== nextUserId;
+      activeUserId.current = nextUserId;
       setUser(session?.user || null);
       if (!session) {
         setProfile(null);
         setAuthLoading(false);
-      } else
+      } else {
+        // Refreshing the same session should not hide the current page.
+        if (changedUser) {
+          setProfile(null);
+          setAuthLoading(true);
+        }
         setTimeout(() => {
+          if (generation !== authGeneration.current) return;
           refreshProfile()
-            .catch(() => setProfile(null))
-            .finally(() => setAuthLoading(false));
+            .catch(() => { if (generation === authGeneration.current) setProfile(null); })
+            .finally(() => { if (generation === authGeneration.current) setAuthLoading(false); });
         }, 0);
+      }
     });
-    return () => subscription.unsubscribe();
+    return () => { ++authGeneration.current; subscription.unsubscribe(); };
   }, []);
   const requireLogin = (path = location.pathname + location.search) => {
     if (!user) {

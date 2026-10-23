@@ -165,7 +165,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           </label>
           <button
             className="city-button"
-            onClick={() => setCityOpen((v) => !v)}
+            onClick={() => { setCityDraft(city); setCityOpen((v) => !v); }}
             aria-expanded={cityOpen}
           >
             <Icon name="pin" size={18} />
@@ -197,6 +197,12 @@ function App({publicSlug}:{publicSlug?:string|null}) {
         {cityOpen && (
           <form
             className="city-picker"
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setCityOpen(false);
+                document.querySelector<HTMLButtonElement>('.city-button')?.focus();
+              }
+            }}
             onSubmit={(e) => {
               e.preventDefault();
               changeCity(cityDraft.trim());
@@ -218,7 +224,13 @@ function App({publicSlug}:{publicSlug?:string|null}) {
               <button
                 type="button"
                 className="button secondary"
-                onClick={() => setCityDraft("")}
+                onClick={() => {
+                  setCityDraft("");
+                  changeCity("");
+                  localStorage.setItem("norieco-city", "");
+                  setCityOpen(false);
+                  document.querySelector<HTMLButtonElement>('.city-button')?.focus();
+                }}
               >
                 Todo o Amazonas
               </button>

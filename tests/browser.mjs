@@ -474,8 +474,24 @@ try {
   await p2.goto(`${base}/administracao`);
   await p2.getByRole("heading", { name: "Acesso restrito" }).waitFor();
   await p2.goto(`${base}/conta/compras`);
+  // A delayed focus refresh must not resurrect the profile after logout.
+  await p2.getByRole('button', {name:'Sair da conta'}).waitFor();
+  let finishProfile;
+  const pendingProfile = new Promise(resolve => { finishProfile = resolve; });
+  await p2.route('**/rest/v1/rpc/marketplace_my_profile', async route => {
+    await pendingProfile;
+    await route.fulfill({json:{...profile,avatar_url:'https://example.test/old-profile.png'}});
+  });
+  const profileRequest=p2.waitForRequest('**/rest/v1/rpc/marketplace_my_profile');
+  await p2.evaluate(()=>window.dispatchEvent(new Event('focus')));
+  await profileRequest;
   await p2.getByRole("button", { name: "Sair da conta" }).click();
   await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
+  const staleResponse=p2.waitForResponse('**/rest/v1/rpc/marketplace_my_profile');
+  finishProfile();
+  await staleResponse;
+  await p2.waitForTimeout(150);
+  assert.equal(await p2.locator('.header .avatar').count(),0,'Resposta atrasada restaurou o perfil encerrado');
   assert.equal(
     logoutScope,
     "local",
@@ -487,6 +503,29 @@ try {
   await mock(p3, { fail: true });
   await p3.goto(base);
   await p3.getByRole("alert").waitFor();
+  await p3.getByPlaceholder('Buscar lojas, produtos ou serviços').fill('Restaurante');
+  await p3.getByRole('alert').waitFor();
+  await p3.route('**/rest/v1/rpc/marketplace_search',route=>route.fulfill({json:[business]}));
+  await p3.getByRole('button',{name:'Tentar novamente'}).click();
+  await p3.getByRole('link',{name:/Restaurante de teste/}).first().waitFor();
+  assert.equal(await p3.getByPlaceholder('Buscar lojas, produtos ou serviços').inputValue(),'Restaurante');
+  await p3.getByPlaceholder('Buscar lojas, produtos ou serviços').press('Enter');
+  await p3.waitForFunction(()=>document.getElementById('resultados').getBoundingClientRect().top<200);
+  await p3.locator('.city-button').click();
+  await p3.getByLabel('Cidade no Amazonas').fill('Manaus');
+  await p3.getByRole('button',{name:'Aplicar',exact:true}).click();
+  await p3.locator('.city-button').click();
+  await p3.getByRole('button',{name:'Todo o Amazonas',exact:true}).click();
+  assert.equal(await p3.evaluate(()=>localStorage.getItem('norieco-city')),'');
+  assert.equal(await p3.locator('.city-picker').count(),0);
+  await p3.route('**/rest/v1/rpc/marketplace_business',route=>route.fulfill({status:503,json:{message:'temporarily unavailable'}}));
+  await p3.goto(base+'/loja/'+business.slug);
+  await p3.getByRole('alert').waitFor();
+  await p3.route('**/rest/v1/rpc/marketplace_business',route=>route.fulfill({json:{business,products:[]}}));
+  await p3.getByRole('button',{name:'Tentar novamente'}).click();
+  await p3.getByRole('heading',{name:business.name,exact:true}).waitFor();
+  assert.equal(await p3.title(),business.name+' · NoriEco');
+  assert.equal(await p3.locator('.profile-cover').count(),0,'Capa vazia ocupou espaço no perfil');
   await c3.close();
   const c4 = await browser.newContext({
       viewport: { width: 320, height: 844 },
