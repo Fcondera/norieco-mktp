@@ -11,8 +11,9 @@ empresa ativa abre o painel existente, sem repetir cadastro ou iniciar outro tes
 do service role. O browser não escolhe IDs, roles, aprovação ou datas. O servidor
 cria um tenant vazio, o administrador da própria empresa, a página sem selo e um
 teste de exatamente 15 dias. Não copia produtos, estoque, contatos ou configurações
-do Renato. O endereço público é `norieco.com.br/slug`; o perfil pode ser publicado
-sem documentação, mas o recebimento de pedidos depende do atendimento no PDV.
+do Renato. O catálogo padrão é `norieco.com.br/slug`; o perfil informativo fica em
+`norieco.com.br/marketplace/loja/slug`, com link para o catálogo. O perfil pode ser
+publicado sem documentação, mas o recebimento de pedidos depende do atendimento no PDV.
 Não é necessário DNS ou outro deploy para cada caminho. Rotas da plataforma são
 reservadas. Domínios próprios e `/marketplace/loja/slug` continuam funcionando.
 

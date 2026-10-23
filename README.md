@@ -9,8 +9,9 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 - `https://norieco.com.br/`: landing page institucional do ecossistema.
 - A LP apresenta somente as ofertas atuais: PDV Nori Gestão, catálogo online integrado e marketplace regional. O hero tem três slides. PDV e catálogo têm contato pelo WhatsApp; o marketplace tem acesso direto. Não são anunciados serviços de criação de sites ou controle de ponto. Funcionalidades internas do Gestão continuam preservadas. O cabeçalho de compras mostra o acesso à conta somente pelo ícone, também no celular.
 - `https://norieco.com.br/marketplace`: descoberta de lojas e serviços.
-- `/:slug`: página da empresa (ex.: `/adega-asvluth`). `/marketplace/loja/:slug` continua aceito.
-- `/marketplace/carrinho` e `/marketplace/finalizar`: compra.
+- `/:slug`: catálogo padrão Flutter da empresa, com logo, banners, cores, categorias, carrinho e pedidos (ex.: `/adega-asvluth`). A URL permanece no domínio NoriEco.
+- `/marketplace/loja/:slug`: perfil informativo da empresa; lojas integradas têm um botão e link para seu catálogo. Cards e rankings levam ao perfil, sem encaminhamento automático.
+- `/marketplace/carrinho` e `/marketplace/finalizar`: compatibilidade com carrinhos anteriores. O novo fluxo de compra fica no catálogo padrão da loja.
 - O ícone de usuário e o item Gestão da barra inferior abrem o PWA existente em `gestao.norieco.com.br/inicio`, com sessão única e teste de 15 dias. Não abrem um painel de comprador.
 - `/marketplace/conta`: entrada antiga encaminhada ao Gestão. Visitantes seguem direto; usuários já autenticados podem transferir a sessão pelo botão, sem repetir o login.
 - `/marketplace/conta/compras` e `/marketplace/conta/pedidos`: área secundária de compras e acompanhamento de pedidos.
@@ -46,6 +47,8 @@ O servidor provisiona um tenant vazio e seu administrador. Ao vencer o teste, pr
 Migração `202610190001_starter_business_portal.sql` aplicada e registrada em 19/10/2026. Acrescenta campos públicos de ofertas, solicitações privadas, pedidos comerciais de plano e RPCs de acesso inicial. Preserva dados e permissões existentes. Callback Google adicionado somente para `/inicio` no domínio do Gestão.
 
 Mantém o Supabase `nwksgeqkstbbcjpcwvqa`, Google, usuários, tenants, produtos e pedidos existentes. Separar o Git não duplica nem altera o banco. Login usa PKCE e armazenamento `norieco-marketplace-auth-v1`; sair encerra somente a sessão local do marketplace.
+
+O catálogo compartilha o build público do Gestão por rewrites HTTP 200 na Netlify. Arquivos React e rotas reservadas têm prioridade. O Flutter resolve `/slug` pelo alias empresarial já cadastrado no backend; carrinho e preenchimento são separados por tenant. Não há cópia do PDV neste repositório. O catálogo nesse domínio não instala worker/manifesto na raiz; o PWA do Gestão continua em seu domínio. `npm run test:catalog` valida o Flutter compilado em `../vendapeixe/build/web` com dois tenants simulados e sem gravar pedidos reais.
 
 Tabelas `marketplace_*` têm RLS e operações por RPC. O checkout resolve a empresa pelo slug verificado, valida itens, preços, endereço, estoque e idempotência e cria o pedido real no Gestão, incluindo cozinha. Produtos continuam administrados no Gestão. Documentos são privados; imagens públicas ficam em bucket separado.
 

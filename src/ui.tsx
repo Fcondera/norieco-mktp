@@ -195,7 +195,7 @@ export function Photo({
 }
 export function BusinessCard({ business: b }: { business: Business }) {
   return (
-    <Link className="business-card" href={`/${b.slug}`}>
+    <Link className="business-card" href={`/loja/${b.slug}`}>
       <Photo
         src={b.cover_url || b.logo_url}
         alt={b.name}
@@ -221,9 +221,7 @@ export function BusinessCard({ business: b }: { business: Business }) {
         </div>
         <p className="card-description">{b.description}</p>
         <div className="card-action">
-          {b.listing_type === "INTEGRATED"
-            ? "Ver cardápio"
-            : "Conhecer empresa"}
+          Conhecer loja
           <Icon name="arrow" size={16} />
         </div>
         {b.listing_type === "INTEGRATED" && (

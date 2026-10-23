@@ -208,7 +208,7 @@ export function Home({
             {section("Em destaque", "UMA VITRINE DO COMÉRCIO LOCAL", discovery.featured, "star")}
             <section className="home-section mkt-ranking">
               <div className="section-heading"><div><span className="eyebrow"><Icon name="star" size={18} /> QUEM MOVIMENTA A REGIÃO</span><h2>Top 3 vendedores</h2><p>Os mais avaliados entre as lojas desta seleção. A ordem considera a quantidade de avaliações publicadas.</p></div></div>
-              {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
+              {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/loja/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
             </section>
             {section("Melhores lojas", "MAIORES NOTAS NESTA SELEÇÃO · DESEMPATE POR AVALIAÇÕES", discovery.bestRated, "check")}
             {section("Explore as lojas", city || "COMPRE DE QUEM ESTÁ PERTO", rows, "shop")}
@@ -230,20 +230,11 @@ export function Home({
   );
 }
 export function BusinessPage({ slug }: { slug: string }) {
-  const { cart, setCart, requireLogin, profile } = useApp();
+  const { requireLogin, profile } = useApp();
   const [business, setBusiness] = useState<Business | null>(null),
-    [products, setProducts] = useState<Product[]>([]),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true),
-    [selected, setSelected] = useState<Product | null>(null),
-    [quantity, setQuantity] = useState(1),
-    [option, setOption] = useState(""),
-    [notes, setNotes] = useState(""),
     [message, setMessage] = useState("");
-  const dialogTrigger = useRef<HTMLElement | null>(null);
-  useEffect(() => {
-    if (!selected) dialogTrigger.current?.focus();
-  }, [selected]);
   useEffect(() => {
     setLoading(true);
     setError("");
@@ -253,7 +244,6 @@ export function BusinessPage({ slug }: { slug: string }) {
     )
       .then((d) => {
         setBusiness(d.business);
-        setProducts(d.products || []);
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -284,51 +274,6 @@ export function BusinessPage({ slug }: { slug: string }) {
       setMessage((e as Error).message);
     }
   };
-  const add = () => {
-    if (!selected) return;
-    if (
-      cart.length &&
-      cart[0].business_slug !== slug &&
-      !confirm(
-        "Seu carrinho é de outra loja. Substituir pelos itens desta loja?",
-      )
-    )
-      return;
-    const base = cart[0]?.business_slug === slug ? cart : [];
-    const key = `${selected.id}:${option}:${notes.trim()}`;
-    const existing = base.find((i) => i.key === key);
-    setCart(
-      existing
-        ? base.map((i) =>
-            i.key === key
-              ? { ...i, quantity: Math.min(999, i.quantity + quantity) }
-              : i,
-          )
-        : [
-            ...base,
-            {
-              key,
-              business_slug: slug,
-              product: selected,
-              quantity,
-              option_id: option,
-              notes: notes.trim(),
-            },
-          ],
-    );
-    setSelected(null);
-    setMessage("Produto adicionado ao carrinho.");
-  };
-  const draft: CartItem | null = selected
-    ? {
-        key: "",
-        business_slug: slug,
-        product: selected,
-        quantity,
-        option_id: option,
-        notes,
-      }
-    : null;
   return (
     <>
       <Link className="back" href="/">
@@ -393,63 +338,12 @@ export function BusinessPage({ slug }: { slug: string }) {
       </section>
       {message && <Notice>{message}</Notice>}
       {b.listing_type === "INTEGRATED" ? (
-        <>
-          <div className="section-heading">
-            <div>
-              <h2>Cardápio</h2>
-              <p>
-                Integrado ao Nori Gestão ·{" "}
-                {b.accepts_delivery
-                  ? `Entrega a partir de ${brl(b.delivery_fee)} ou retirada`
-                  : "Retirada na loja"}
-              </p>
-            </div>
-          </div>
-          {!b.is_open && (
-            <Notice>
-              A loja está fechada. Você pode consultar o cardápio e voltar
-              quando abrir.
-            </Notice>
-          )}
-          <div className="product-grid">
-            {products.map((p) => (
-              <article className="product-card" key={p.id}>
-                <Photo src={p.image_url} alt={p.name} />
-                <div>
-                  <h3>{p.name}</h3>
-                  <p>{p.description}</p>
-                  <strong>
-                    {brl(p.price)}
-                    {p.sale_mode === "KG" ? "/kg" : ""}
-                  </strong>
-                  {p.sale_mode === "KG" && (
-                    <small>
-                      Peso médio {p.average_weight.toLocaleString("pt-BR")} kg
-                    </small>
-                  )}
-                  <button
-                    className="button primary"
-                    disabled={!b.is_open}
-                    onClick={(event) => {
-                      dialogTrigger.current = event.currentTarget;
-                      setSelected(p);
-                      setQuantity(p.min_quantity || 1);
-                      setNotes("");
-                      setOption(p.options[0]?.id || "");
-                    }}
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-          {!products.length && (
-            <Empty title="Sem produtos disponíveis">
-              O cardápio é atualizado pela loja.
-            </Empty>
-          )}
-        </>
+        <section className="panel">
+          <h2>Catálogo da loja</h2>
+          <p>Veja os produtos, monte seu carrinho e envie seu pedido diretamente para a loja.</p>
+          <a className="button primary" href={`/${b.slug}`}>Abrir catálogo</a>
+          <p><a className="text-link" href={`/${b.slug}`}>norieco.com.br/{b.slug}</a></p>
+        </section>
       ) : (
         <section>
           <button className="button primary" onClick={contact}>
@@ -590,90 +484,6 @@ export function BusinessPage({ slug }: { slug: string }) {
           )}
         </section>
       </div>
-      {selected && (
-        <div className="dialog-backdrop" onClick={() => setSelected(null)}>
-          <section
-            className="dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="product-title"
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setSelected(null);
-              if (e.key === "Tab") {
-                const nodes = [
-                  ...e.currentTarget.querySelectorAll<HTMLElement>(
-                    "button:not(:disabled), input, select, textarea",
-                  ),
-                ];
-                if (e.shiftKey && document.activeElement === nodes[0]) {
-                  e.preventDefault();
-                  nodes.at(-1)?.focus();
-                } else if (
-                  !e.shiftKey &&
-                  document.activeElement === nodes.at(-1)
-                ) {
-                  e.preventDefault();
-                  nodes[0]?.focus();
-                }
-              }
-            }}
-          >
-            <button
-              className="close"
-              aria-label="Fechar produto"
-              autoFocus
-              onClick={() => setSelected(null)}
-            >
-              <Icon name="close" />
-            </button>
-            <h2 id="product-title">{selected.name}</h2>
-            <p>{selected.description}</p>
-            {selected.sale_mode !== "COMBO" && selected.options.length > 0 && (
-              <Field label="Preparo">
-                <select
-                  value={option}
-                  onChange={(e) => setOption(e.target.value)}
-                >
-                  {selected.options.map((o) => (
-                    <option key={o.id} value={o.id}>
-                      {o.label}
-                      {o.fee_per_kg ? ` (+${brl(o.fee_per_kg)})` : ""}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-            )}
-            <Field label="Quantidade">
-              <input
-                type="number"
-                min={selected.min_quantity || 1}
-                max={999}
-                value={quantity}
-                onChange={(e) =>
-                  setQuantity(
-                    Math.max(
-                      selected.min_quantity || 1,
-                      Math.min(999, Math.trunc(Number(e.target.value))),
-                    ),
-                  )
-                }
-              />
-            </Field>
-            <Field label="Observações (opcional)">
-              <textarea
-                maxLength={500}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Ex.: retirar a cebola"
-              />
-            </Field>
-            <button className="button primary wide" onClick={add}>
-              Adicionar · {draft && brl(subtotal(draft))}
-            </button>
-          </section>
-        </div>
-      )}
     </>
   );
 }

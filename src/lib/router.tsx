@@ -44,6 +44,7 @@ export function Link({
           !e.altKey &&
           e.button === 0 &&
           href.startsWith("/") &&
+          !publicStoreSlug(href.split("?")[0]) &&
           !href.startsWith("//")
         ) {
           e.preventDefault();

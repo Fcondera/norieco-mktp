@@ -373,8 +373,8 @@ try {
     assert.equal(inquiry.p_slug,standard.slug);
     assert.equal(inquiry.p_offer,'offer-test');
     assert.ok(!('tenant_id' in inquiry));
-    await page.goto(`${origin}/${business.slug}`);
-    assert.equal(new URL(page.url()).pathname,"/"+business.slug);
+    await page.goto(`${base}/loja/${business.slug}`);
+    assert.equal(new URL(page.url()).pathname,"/marketplace/loja/"+business.slug);
     await page.getByRole('heading',{name:business.name,exact:true}).waitFor();
     assert.equal(await page.locator('.business-profile .verified').count(),0,'PDV profile received documentary badge');
     assert.equal(
@@ -386,9 +386,11 @@ try {
       await page.getByRole("link", { name: "Escrever avaliação" }).count(),
       0,
     );
-    await page.getByRole("button", { name: "Adicionar", exact: true }).click();
-    await page.getByRole("button", { name: "Adicionar · R$ 25,00" }).click();
-    await page.getByRole("link", { name: /Ver carrinho/ }).click();
+    assert.equal(await page.getByRole('button',{name:'Adicionar',exact:true}).count(),0,'Marketplace profile must not duplicate the catalog');
+    assert.equal(await page.getByRole('link',{name:'Abrir catálogo',exact:true}).getAttribute('href'),'/'+business.slug);
+    // Existing buyer carts can still be completed after the catalog moves.
+    await page.evaluate(({product,slug})=>localStorage.setItem('norieco-cart-v1',JSON.stringify([{key:product.id+'::',business_slug:slug,product,quantity:1,option_id:'',notes:''}])) ,{product,slug:business.slug});
+    await page.goto(base+'/carrinho');
     await page.getByRole("heading", { name: "Seu carrinho" }).waitFor();
     await page.getByRole("button", { name: "Continuar pedido" }).click();
     await page.getByRole("button", { name: "Continuar com Google" }).waitFor();
@@ -409,8 +411,8 @@ try {
     page = await context.newPage();
   await mock(page, { logged: true });
   await page.goto(`${base}/loja/${business.slug}`);
-  await page.getByRole("button", { name: "Adicionar", exact: true }).click();
-  await page.getByRole("button", { name: "Adicionar · R$ 25,00" }).click();
+  await page.getByRole('link',{name:'Abrir catálogo',exact:true}).waitFor();
+  await page.evaluate(({product,slug})=>localStorage.setItem('norieco-cart-v1',JSON.stringify([{key:product.id+'::',business_slug:slug,product,quantity:1,option_id:'',notes:''}])) ,{product,slug:business.slug});
   await page.goto(`${base}/finalizar`);
   await page
     .getByRole("button", { name: "Confirmar pedido · R$ 25,00" })

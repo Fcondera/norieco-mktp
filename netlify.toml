@@ -14,6 +14,164 @@
   to = "/reset-legacy-worker.js"
   status = 200
   force = true
+# Public catalogs reuse the shared Flutter build, with HTTP 200 (no redirect).
+# Keep every platform root route on the React site before matching store slugs.
+[[redirects]]
+  from = "/marketplace"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/marktplace"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/markrplace"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/entrar"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/sair"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/auth"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/admin"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/administracao"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/gestao"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/inicio"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/conta"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/empresa"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/cadastrar-empresa"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/primeiro-acesso"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/carrinho"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/finalizar"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/ajuda"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/termos"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/privacidade"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/sobre"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/loja"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/assets"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/downloads"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/api"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/www"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/suporte"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/favicon"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/robots"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/sitemap"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/flutter_bootstrap.js"
+  to = "https://gestao.norieco.com.br/flutter_bootstrap.js"
+  status = 200
+[[redirects]]
+  from = "/main.dart.js"
+  to = "https://gestao.norieco.com.br/main.dart.js"
+  status = 200
+[[redirects]]
+  from = "/flutter.js"
+  to = "https://gestao.norieco.com.br/flutter.js"
+  status = 200
+[[redirects]]
+  from = "/version.json"
+  to = "https://gestao.norieco.com.br/version.json"
+  status = 200
+[[redirects]]
+  from = "/manifest.json"
+  to = "https://gestao.norieco.com.br/manifest.json"
+  status = 200
+[[redirects]]
+  from = "/assets/*"
+  to = "https://gestao.norieco.com.br/assets/:splat"
+  status = 200
+[[redirects]]
+  from = "/canvaskit/*"
+  to = "https://gestao.norieco.com.br/canvaskit/:splat"
+  status = 200
+[[redirects]]
+  from = "/icons/*"
+  to = "https://gestao.norieco.com.br/icons/:splat"
+  status = 200
+[[redirects]]
+  from = "/:slug"
+  to = "https://gestao.norieco.com.br/index.html"
+  status = 200
+[[redirects]]
+  from = "/:slug/"
+  to = "https://gestao.norieco.com.br/index.html"
+  status = 200
 [[redirects]]
   from = "/*"
   to = "/index.html"

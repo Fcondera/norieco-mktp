@@ -501,7 +501,7 @@ function Orders() {
               <span>Total</span>
               <strong>{brl(o.total)}</strong>
             </div>
-            <Link className="text-link" href={`/${o.business_slug}`}>
+            <Link className="text-link" href={`/loja/${o.business_slug}`}>
               Ver loja
             </Link>
           </article>

@@ -10,7 +10,8 @@
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "test:database": "npx --yes deno test --node-modules-dir=auto --allow-read --allow-env supabase/tests/marketplace_test.ts supabase/tests/starter_portal_test.ts supabase/tests/pdv_trials_test.ts ../vendapeixe/supabase/tests/trial_onboarding_handler_test.ts ../vendapeixe/supabase/tests/panel_session_handler_test.ts",
-    "test:bridge": "node tests/management-bridge-browser.mjs"
+    "test:bridge": "node tests/management-bridge-browser.mjs",
+    "test:catalog": "node tests/catalog-browser.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",

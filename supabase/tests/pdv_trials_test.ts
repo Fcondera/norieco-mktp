@@ -45,6 +45,20 @@ Deno.test('PDV: own tenant, 15 day trial, no reset/escalation, expiry and owner-
  const created=await value("select marketplace_checkout('adegajunior',gen_random_uuid(),$1,'pickup',null,'Pix','',10)",[[{productId:product,quantity:1}]]) as any;
  await as(a);assert(await value('select tenant_id from orders where id=$1',[created.id])===first.tenant_id,'Catalog order routed to wrong panel');
  await as(b);assert(await value('select count(*)::int from orders where id=$1',[created.id])===0,'Order leaked to another panel');
+ // The Flutter catalog at /slug resolves the registered internal alias. It does
+ // not depend on a marketplace login or accept a tenant supplied in the order.
+ await as('','anon');
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-catalog-domain':'adegajunior.norieco.com.br'})]);
+ assert(await value("select public_catalog_settings()->>'tenant_id'")===first.tenant_id,'Path catalog resolved a different company');
+ const directPayload={requestKey:crypto.randomUUID(),customer:{name:'Cliente catalogo',phone:'92999990000'},items:[{productId:product,quantity:1}],receivingType:'Retirada no local',paymentMethod:'Pix'};
+ const direct=await value('select create_website_order($1::jsonb)',[JSON.stringify(directPayload)]);
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-catalog-domain':'outraloja.norieco.com.br'})]);
+ await rejects('select create_website_order($1::jsonb)',[JSON.stringify({...directPayload,requestKey:crypto.randomUUID()})]);
+ await db.query("select set_config('request.headers',$1,false)",[JSON.stringify({'x-catalog-domain':'missing-store.norieco.com.br'})]);
+ assert(await value('select public_catalog_settings()')===null,'Unknown slug fell back to Renato');
+ await db.query("select set_config('request.headers','{}',false)");
+ await as(a);assert(await value('select tenant_id from orders where id=$1',[direct])===first.tenant_id,'Direct catalog order did not reach its panel');
+ await as(b);assert(await value('select count(*)::int from orders where id=$1',[direct])===0,'Direct catalog order leaked');
  await db.exec('reset role');assert(await value('select (ends_at-started_at)=interval \'15 days\' from pdv_trials where tenant_id=$1',[first.tenant_id]),'Wrong trial duration');
  await db.query("update pdv_trials set started_at=now()-interval '16 days',ends_at=now()-interval '1 day' where tenant_id=$1",[first.tenant_id]);
  await as(a);assert(await value('select current_tenant_id()')===null,'Expired trial kept backend access');
