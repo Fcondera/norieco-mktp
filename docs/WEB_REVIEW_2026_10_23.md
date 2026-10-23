@@ -53,6 +53,12 @@ Os testes de banco e os fluxos autenticados usam fixtures. A visita aos sites re
 
 ## Infraestrutura, dados e publicação
 
+Validação final dos sites publicados: **31 cenários aprovados**, com zero erros de JavaScript, zero rolagem horizontal, zero imagens quebradas, zero requisições falhas e zero violações graves/críticas de acessibilidade nas páginas e larguras visitadas. Permanecem somente os avisos `region` do Flutter descritos abaixo. Resultado detalhado local: `test-results/web-audit-published.json`.
+
+O teste de navegação também foi executado sobre os arquivos React publicados, com APIs de autenticação/pedidos simuladas. O perfil real da Asvluth foi inspecionado em 390 px: capa inteira e menu inferior livre do selo. O iframe do selo continua no DOM, com recorte de área zero pela política da hospedagem; a conferência não depende de `isVisible()`.
+
+Confirmados por HTTPS: LP, marketplace, Asvluth em `/adega-asvluth`, Renato em `/renato-pescados` e catálogo antigo do Renato respondem HTTP 200. O endereço antigo do Gestão responde HTTP 301 para `gestao.norieco.com.br`, preservando caminho e parâmetros. Arquivos Flutter via domínio NoriEco também apresentam os cabeçalhos de revalidação. Publicações funcionais: Gestão `bf245d8`; marketplace `3abd9d2`.
+
 Não há migração SQL, alteração de dados, variáveis de ambiente, DNS, certificado, CORS ou configuração de login nesta entrega. As alterações de infraestrutura são o cabeçalho de cache no projeto Gestão e a política de scripts nas rotas React do marketplace. A chave pública permanece pública; nenhuma chave administrativa foi adicionada ao navegador. A entrega é web; o pacote Windows existente não foi substituído por alterações apenas de apresentação/acessibilidade.
 
 Arquivos principais: `src/public-pages.tsx`, `src/main.tsx`, `src/state.tsx`, `src/styles.css`, `src/marketplace-footer.tsx`, `tests/browser.mjs`, `tests/web-audit.mjs`, `netlify.toml`; no Gestão: `lib/widgets/store_app_bar.dart`, `lib/widgets/store_identity.dart`, `lib/screens/home_screen.dart`, `test/storefront_test.dart`, `netlify.toml`. Dependências e lockfiles incluem a ferramenta axe.
