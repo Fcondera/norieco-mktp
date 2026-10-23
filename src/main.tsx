@@ -8,6 +8,7 @@ import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
 import { Administration } from "./business-pages";
 import { StarterAccess } from "./starter-access";
+import { ManagementLink } from "./management-link";
 import {publicStoreSlug} from './lib/store-path.mjs';
 import { Empty, Icon, Loading } from "./ui";
 import { brl, contactLink, safeImage } from "./lib/core.mjs";
@@ -25,6 +26,11 @@ function Site() {
       dispatchEvent(new PopStateEvent("popstate"));
     }
   }, [path]);
+  // The ecosystem account belongs to the existing Gestão PWA. Buyer details
+  // remain secondary routes and never gate creating a store or using the PDV.
+  if (["/conta", "/marketplace/conta"].includes(path.replace(/\/$/, ""))) {
+    return <main className="container"><StarterAccess /></main>;
+  }
   return path === "/" ? <Landing /> : <App publicSlug={storeSlug} />;
 }
 function Protected({
@@ -116,14 +122,14 @@ function App({publicSlug}:{publicSlug?:string|null}) {
         <Administration />
       </Protected>
     );
-  else if (path === "/conta" || path.startsWith("/conta/"))
+  else if (path.startsWith("/conta/"))
     page = authLoading ? (
       <Loading />
     ) : !user || !profile?.completed_at ? (
       <VisitorAccount />
     ) : (
       <Protected>
-        <Account key={path} tab={path.split("/")[2] || ""} />
+        <Account key={path} tab={path.split("/")[2] === "compras" ? "" : path.split("/")[2] || ""} />
       </Protected>
     );
   else if (["/termos", "/privacidade", "/sobre"].includes(path))
@@ -166,17 +172,17 @@ function App({publicSlug}:{publicSlug?:string|null}) {
             <span>{city || "Todo o Amazonas"}</span>
             <span aria-hidden="true">⌄</span>
           </button>
-          <Link className="header-login" href={user ? "/conta" : "/entrar"} aria-label={user ? "Minha conta" : "Entrar na minha conta"} title={user ? "Minha conta" : "Entrar na minha conta"}>
+          <ManagementLink className="header-login" ariaLabel="Acessar Nori Gestão">
             {safeImage(profile?.avatar_url || "") ? (
               <img
                 className="avatar"
                 src={profile!.avatar_url}
-                alt="Minha conta"
+                alt=""
               />
             ) : (
               <Icon name="user" size={20} />
             )}
-          </Link>
+          </ManagementLink>
           <Link
             className="cart-top"
             href="/carrinho"
@@ -261,10 +267,10 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           <Icon name="bag" />
           Pedidos
         </Link>
-        <Link href="/conta" className={path === "/conta" ? "active" : ""}>
+        <ManagementLink ariaLabel="Acessar Nori Gestão">
           <Icon name="user" />
-          Conta
-        </Link>
+          Gestão
+        </ManagementLink>
       </nav>
     </>
   );

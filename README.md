@@ -11,7 +11,9 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 - `https://norieco.com.br/marketplace`: descoberta de lojas e serviços.
 - `/:slug`: página da empresa (ex.: `/adega-asvluth`). `/marketplace/loja/:slug` continua aceito.
 - `/marketplace/carrinho` e `/marketplace/finalizar`: compra.
-- `/marketplace/conta` e `/marketplace/conta/pedidos`: cliente.
+- O ícone de usuário e o item Gestão da barra inferior abrem o PWA existente em `gestao.norieco.com.br/inicio`, com sessão única e teste de 15 dias. Não abrem um painel de comprador.
+- `/marketplace/conta`: entrada antiga encaminhada ao Gestão. Visitantes seguem direto; usuários já autenticados podem transferir a sessão pelo botão, sem repetir o login.
+- `/marketplace/conta/compras` e `/marketplace/conta/pedidos`: área secundária de compras e acompanhamento de pedidos.
 - `/marketplace/cadastrar-empresa` e `/marketplace/empresa`: vendedor.
 - `/marketplace/administracao`: administração do marketplace.
 - `https://gestao.norieco.com.br`: Gestão/PDV, no projeto original.

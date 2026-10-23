@@ -18,6 +18,13 @@ reservadas. Domínios próprios e `/marketplace/loja/slug` continuam funcionando
 
 ## Quem já entrou no marketplace
 
+O ícone de usuário, o item Gestão da barra inferior e os links do rodapé abrem
+o PWA existente do Nori Gestão. Não há um segundo painel de usuário para criar
+a loja. Compras, dados de entrega e pedidos continuam como área secundária em
+`/marketplace/conta/compras` e `/marketplace/conta/pedidos`.
+O endereço antigo `/marketplace/conta` encaminha visitantes ao Gestão e oferece
+a transferência de sessão para quem já entrou (a abertura de aba exige clique).
+
 O botão abre `/auth/bridge?state=nonce`. O browser confere origem, janela e nonce;
 somente o JWT temporário e o ID esperado são enviados por postMessage à origem
 exata do Gestão. Não há JWT, refresh token ou senha na URL. O estado é capturado

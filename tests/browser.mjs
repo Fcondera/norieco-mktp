@@ -277,9 +277,9 @@ try {
     await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
     await page.getByRole("heading", {name:"Melhores lojas",exact:true}).waitFor();
     assert.equal(await page.locator('.mkt-rank-card').count(),2);
-    for (const name of ["Acesso rápido", "Minha conta", "Suporte", "Informações legais"])
+    for (const name of ["Acesso rápido", "Nori Gestão", "Suporte", "Informações legais"])
       assert.equal(await page.locator('.marketplace-footer').getByRole('navigation',{name,exact:true}).count(),1);
-    const accountIcon = page.locator(".header").getByRole("link", {name: "Entrar na minha conta", exact: true});
+    const accountIcon = page.locator(".header").getByRole("link", {name: "Acessar Nori Gestão", exact: true});
     assert.equal(await accountIcon.isVisible(), true, "Ícone da conta oculto no celular");
     const accountBox = await accountIcon.boundingBox();
     const cartBox = await page.locator(".header .cart-top").boundingBox();
@@ -287,8 +287,9 @@ try {
     assert.equal((await accountIcon.innerText()).trim(), "", "Cabeçalho exibiu texto de login");
     assert.equal(await page.locator(".header").getByText("Cadastrar empresa", {exact:true}).count(), 0);
     await accountIcon.click();
-    await page.getByRole("button", {name: "Continuar com Google"}).waitFor();
-    assert.equal(new URL(page.url()).pathname, "/marketplace/entrar");
+    await page.getByRole("heading", {name: "Nori Gestao inicial"}).waitFor();
+    assert.equal(new URL(page.url()).origin, "https://gestao.norieco.com.br");
+    assert.equal(new URL(page.url()).pathname, "/inicio");
     await page.goto(base);
     await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
     await noOverflow(page, `rankings ${width}`);
@@ -300,7 +301,10 @@ try {
     await page.getByRole('heading',{name:'Compre perto. Entenda cada etapa.'}).waitFor();
     await noOverflow(page, `ajuda ${width}`);
     await page.goto(base);
-    for (const route of ["/conta", "/conta/pedidos"]) {
+    await page.goto(base + '/conta');
+    await page.getByRole('heading', {name:'Nori Gestao inicial'}).waitFor();
+    assert.equal(new URL(page.url()).origin, 'https://gestao.norieco.com.br');
+    for (const route of ["/conta/compras", "/conta/pedidos"]) {
       await page.goto(base + route);
       await page
         .getByRole("heading", { name: "O marketplace é aberto para você." })
@@ -430,13 +434,9 @@ try {
     p2 = await c2.newPage();
   await mock(p2, { logged: true, onboarding: true });
   await p2.goto(`${base}/conta`);
-  await p2
-    .getByRole("heading", { name: "O marketplace é aberto para você." })
-    .waitFor();
-  await p2
-    .getByRole("link", { name: "Cadastrar minha empresa", exact: true })
-    .click();
   await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
+  assert.equal(await p2.getByRole('heading',{name:'Minha conta',exact:true}).count(),0);
+  assert.equal(await p2.getByRole('heading',{name:'Falta só conhecer você.',exact:true}).count(),0,'Seller access required a buyer profile');
   const sellerPopup=c2.waitForEvent('page');
   await p2.getByRole('link',{name:'Abrir meu painel',exact:true}).click();
   const panel=await sellerPopup;await panel.getByRole('heading',{name:'Nori Gestao inicial'}).waitFor();await panel.close();
@@ -453,7 +453,16 @@ try {
   await p2.getByRole("button", { name: "Concluir cadastro" }).click();
   await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
   await p2.goto(`${base}/conta`);
+  await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
+  await p2.goto(`${base}/conta/compras`);
   await p2.getByRole("heading", { name: "Olá, Cliente." }).waitFor();
+  assert.equal(await p2.locator('.account-layout aside h2').textContent(),'Minhas compras');
+  const accountPopup=c2.waitForEvent('page');
+  await p2.locator('.header').getByRole('link',{name:'Acessar Nori Gestão',exact:true}).click();
+  const accountPanel=await accountPopup;
+  await accountPanel.getByRole('heading',{name:'Nori Gestao inicial'}).waitFor();
+  assert.equal(new URL(accountPanel.url()).pathname,'/auth/bridge');
+  await accountPanel.close();
   await p2.goto(`${base}/conta/dados`);
   await p2.getByLabel("Nome completo").fill("Cliente Atualizado");
   await p2.getByRole("button", { name: "Salvar alterações" }).click();
@@ -462,7 +471,7 @@ try {
   await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
   await p2.goto(`${base}/administracao`);
   await p2.getByRole("heading", { name: "Acesso restrito" }).waitFor();
-  await p2.goto(`${base}/conta`);
+  await p2.goto(`${base}/conta/compras`);
   await p2.getByRole("button", { name: "Sair da conta" }).click();
   await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
   assert.equal(

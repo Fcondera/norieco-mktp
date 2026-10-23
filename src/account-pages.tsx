@@ -42,7 +42,7 @@ export function Login() {
       />
       <h1>Que bom ter você por aqui.</h1>
       <p>
-        Entre para finalizar sua compra ou vender na NoriEco. Você pode
+        Entre para finalizar sua compra e acompanhar seus pedidos. Você pode
         continuar explorando sem cadastro.
       </p>
       {error && <Notice error>{error}</Notice>}
@@ -250,13 +250,14 @@ export function Account({ tab }: { tab: string }) {
   return (
     <div className="account-layout">
       <aside>
-        <h2>Minha conta</h2>
+        <h2>Minhas compras</h2>
         <nav className="account-nav">
+          <ManagementLink>Acessar Nori Gestão ↗</ManagementLink>
           {links.map(([key, name]) => (
             <Link
               key={key}
               className={tab === key ? "active" : ""}
-              href={`/conta${key ? "/" + key : ""}`}
+              href={`/conta/${key || "compras"}`}
             >
               {name}
             </Link>
