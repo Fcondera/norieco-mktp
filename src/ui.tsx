@@ -208,9 +208,9 @@ export function BusinessCard({ business: b }: { business: Business }) {
   return (
     <Link className="business-card" href={`/loja/${b.slug}`}>
       <Photo
-        src={b.cover_url || b.logo_url}
+        src={b.logo_url}
         alt={b.name}
-        className="business-cover"
+        className="business-cover business-logo"
       />
       <div className="card-body">
         <div className="card-heading">
