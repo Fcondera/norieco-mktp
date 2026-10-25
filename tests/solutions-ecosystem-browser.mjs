@@ -6,8 +6,8 @@ const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chr
 try{
  for(const width of [1440,820,390,320]){
   const context=await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base);const section=page.locator('#solucoes');await section.scrollIntoViewIfNeeded();
-  assert.equal(await section.locator('article').count(),3);assert.equal(await section.locator('.ecosystem-pos,.ecosystem-phone,.ecosystem-map').count(),3);
+  await page.goto(base);const section=page.locator('#solucoes');await section.scrollIntoViewIfNeeded();await section.locator('.ecosystem-render img').evaluateAll(async images=>Promise.all(images.map(async image=>{image.loading='eager';await image.decode();})));
+  assert.equal(await section.locator('article').count(),3);assert.equal(await section.locator('.ecosystem-pos,.ecosystem-phone,.ecosystem-map').count(),3);assert.equal(await section.locator('.ecosystem-render img[loading=eager]').count(),3);assert.equal(await section.locator('.ecosystem-render img').evaluateAll(images=>images.every(image=>image.naturalWidth>0&&image.currentSrc.includes('/ecosystem/'))),true);
   const links=section.locator('.eco-product-link');assert.equal(await links.count(),3);
   for(const [index,product] of [[0,'o Nori Gest\u00e3o'],[1,'o cat\u00e1logo online']]){const href=new URL(await links.nth(index).getAttribute('href'));assert.equal(href.hostname,'wa.me');assert.equal(href.searchParams.get('text'),`Ol\u00e1! Quero conhecer ${product}.`);}
   assert.equal(await links.nth(2).getAttribute('href'),'/marketplace');
