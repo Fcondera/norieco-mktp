@@ -1,0 +1,24 @@
+.halloween-toy{position:relative;display:block;flex:0 0 220px;width:220px;height:184px;padding:0;border:0;border-radius:20px;background:transparent;color:inherit;cursor:pointer;isolation:isolate;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.halloween-toy:focus-visible{outline:2px solid #b983f5;outline-offset:4px}
+.halloween-toy img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.halloween-toy-shadow{position:absolute;bottom:5px;left:20%;width:70%;height:16px;background:radial-gradient(ellipse,#7c399d55,transparent 70%);filter:blur(4px)}
+.halloween-toy-coffin{position:absolute;width:174px;height:174px;left:-4px;bottom:9px;perspective:550px}
+.halloween-toy-coffin img{position:absolute;inset:0}
+.halloween-toy-interior{opacity:0;transition:opacity .18s .24s}
+.halloween-toy-lid{transform-origin:30% 50%;transform:rotateY(0deg);transition:transform .8s cubic-bezier(.2,.65,.3,1),filter .8s;backface-visibility:visible;filter:brightness(1)}
+.halloween-toy[data-open=true] .halloween-toy-interior{opacity:1;transition-delay:.06s}
+.halloween-toy[data-open=true] .halloween-toy-lid{transform:rotateY(-115deg);filter:brightness(.65)}
+.halloween-toy-pumpkin{position:absolute;width:114px;height:114px;right:7px;bottom:0;filter:drop-shadow(0 0 10px #ff8d3233);animation:toy-candle 3.7s infinite ease-in-out}
+.halloween-toy-bat{position:absolute;width:62px;height:62px;left:75px;top:35px;opacity:0;pointer-events:none;--fly-x:100px;--fly-y:-30px;--fly-rotate:22deg}
+.halloween-toy-bat.bat-1{--fly-x:-64px;--fly-y:-22px;--fly-rotate:-20deg;width:48px;height:48px}
+.halloween-toy-bat.bat-2{--fly-x:70px;--fly-y:-62px;--fly-rotate:12deg;width:40px;height:40px}
+.halloween-toy[data-open=true] .halloween-toy-bat{animation:toy-bat-flight 2s .3s both}
+.halloween-toy[data-open=true] .bat-1{animation-delay:.55s}.halloween-toy[data-open=true] .bat-2{animation-delay:.8s}
+.halloween-toy[data-open=true] .halloween-toy-bat img{animation:toy-wing .17s infinite alternate ease-in-out}
+@keyframes toy-bat-flight{0%{opacity:0;transform:translate(0,15px) scale(.25)}12%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(var(--fly-x),var(--fly-y)) rotate(var(--fly-rotate)) scale(1.1)}}
+@keyframes toy-wing{from{transform:scaleY(.68) rotate(-7deg)}to{transform:scaleY(1) rotate(7deg)}}
+@keyframes toy-candle{0%,100%{filter:brightness(1) drop-shadow(0 0 8px #ff8d3240)}17%,44%,72%{filter:brightness(1.13) drop-shadow(0 0 15px #ff8d3270)}23%,52%,81%{filter:brightness(.94) drop-shadow(0 0 5px #ff8d3225)}}
+.eco-toy-heading{display:flex;align-items:center;justify-content:center;gap:35px}.eco-toy-heading .eco-section-intro{text-align:left}.eco-toy-heading .eco-section-intro>p{margin-left:0}
+.marketplace-site .mkt-category-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+@media(max-width:600px){.eco-toy-heading{flex-direction:column;gap:8px}.eco-toy-heading .eco-section-intro{text-align:center}.eco-toy-heading .halloween-toy{flex-basis:auto}.marketplace-site .mkt-category-title .halloween-toy{width:160px;height:145px;flex-basis:160px}.marketplace-site .mkt-category-title .halloween-toy-coffin{width:140px;height:140px;left:-6px;bottom:4px}.marketplace-site .mkt-category-title .halloween-toy-pumpkin{width:88px;height:88px;right:0}.marketplace-site .mkt-category-title .halloween-toy-bat{left:45px;top:25px;--fly-x:65px}.marketplace-site .mkt-category-title .bat-1{--fly-x:-30px}.marketplace-site .mkt-category-title .bat-2{--fly-x:45px;--fly-y:-28px}}
+@media(prefers-reduced-motion:reduce){.halloween-toy *{animation:none!important;transition:none!important}.halloween-toy-bats{display:none}}

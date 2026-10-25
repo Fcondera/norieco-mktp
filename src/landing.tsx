@@ -1,3 +1,4 @@
+import { HalloweenToy } from './halloween-toy';
 import { ManagementLink } from './management-link';
 import { HeroCarousel } from './hero-carousel';
 import { GhostFlights } from './ghost-flights';
@@ -35,7 +36,7 @@ export function Landing() {
       <div className="eco-season-hero"><HeroCarousel /><Ghost className="eco-ghost-hero" /><span className="eco-season-star" aria-hidden="true">✧</span></div>
       <section id="solucoes" className="eco-section eco-season-section">
         <Ghost className="eco-ghost-left" />
-        <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
+        <div className="eco-toy-heading"><div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div><HalloweenToy /></div>
         <div className="eco-products eco-solutions">{solutions.map(solution => <article key={solution.name} className="eco-product eco-market"><div className="eco-product-symbol"><Icon name={solution.icon} size={32} /></div><h3>{solution.name}</h3><p>{solution.description}</p>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta}<span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta}<span aria-hidden="true">↗</span></a>}</article>)}</div>
       </section>
       <section id="como-funciona" className="eco-business eco-season-section">
