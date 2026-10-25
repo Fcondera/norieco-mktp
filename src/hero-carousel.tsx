@@ -81,6 +81,7 @@ export function HeroCarousel() {
       </div></div>
     </div>)}
     {!reduced && <button type="button" className="sr-only eco-carousel-pause" aria-label={stopped ? "Ativar reprodução automática" : "Pausar reprodução automática"} aria-pressed={stopped} onClick={() => setStopped(value => !value)}>{stopped ? "Retomar banner" : "Pausar banner"}</button>}
+    {!reduced && <div className="eco-carousel-progress" aria-hidden="true"><span key={`${index}-${cycle}`} style={{ animationPlayState: paused ? "paused" : "running" }} /></div>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </section>;
 }
