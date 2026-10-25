@@ -1,4 +1,3 @@
-import { HalloweenToy } from './halloween-toy';
 import { useEffect, useState, useRef } from "react";
 import { rpc } from "./lib/api";
 import { Link, navigate } from "./lib/router";
@@ -137,7 +136,7 @@ export function Home({
           />
         </div>
       </section>
-      <div className="mkt-category-title"><h2>Categorias</h2><HalloweenToy /></div>
+      <div className="mkt-category-title"><h2>Categorias</h2></div>
       <nav id="marketplace-categories" className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}

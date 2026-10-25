@@ -2,14 +2,16 @@ import { HalloweenToy } from './halloween-toy';
 import { ManagementLink } from './management-link';
 import { HeroCarousel } from './hero-carousel';
 import { GhostFlights } from './ghost-flights';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {useSiteTheme, ThemeToggle} from './site-theme';
 import { Link } from './lib/router';
 import { Icon } from './ui';
 import { contactLink } from './lib/core.mjs';
 
 function Ghost({ className = '' }: { className?: string }) {
-  return <img className={`eco-ghost ${className}`} src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} width="280" height="280" alt="" aria-hidden="true" loading="lazy" decoding="async" />;
+  const [dismissed, setDismissed] = useState(false);
+  if (dismissed) return null;
+  return <button type="button" className={`eco-ghost ${className}`} aria-label="Dispensar fantasma" onClick={() => setDismissed(true)}><img src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} width="280" height="280" alt="" aria-hidden="true" loading="lazy" decoding="async" /></button>;
 }
 export function Landing() {
   const {theme, toggle} = useSiteTheme();
@@ -36,7 +38,7 @@ export function Landing() {
       <div className="eco-season-hero"><HeroCarousel /><Ghost className="eco-ghost-hero" /><span className="eco-season-star" aria-hidden="true">✧</span></div>
       <section id="solucoes" className="eco-section eco-season-section">
         <Ghost className="eco-ghost-left" />
-        <div className="eco-toy-heading"><div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div><HalloweenToy /></div>
+        <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
         <div className="eco-products eco-solutions">{solutions.map(solution => <article key={solution.name} className="eco-product eco-market"><div className="eco-product-symbol"><Icon name={solution.icon} size={32} /></div><h3>{solution.name}</h3><p>{solution.description}</p>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta}<span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta}<span aria-hidden="true">↗</span></a>}</article>)}</div>
       </section>
       <section id="como-funciona" className="eco-business eco-season-section">
@@ -50,6 +52,6 @@ export function Landing() {
         <Ghost className="eco-ghost-plan" />
       </section>
     </main>
-    <footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>Seu negócio conectado. Do balcão ao Amazonas.</p></div><nav aria-label="Rodapé institucional"><Link href="/marketplace">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><small>© {new Date().getFullYear()} NoriEco.<span className="eco-footer-ghost" aria-hidden="true"><Ghost /></span></small></footer>
+    <footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>Seu negócio conectado. Do balcão ao Amazonas.</p></div><nav aria-label="Rodapé institucional"><Link href="/marketplace">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><div className="halloween-footer-ornament"><HalloweenToy /></div><small>© {new Date().getFullYear()} NoriEco.<span className="eco-footer-ghost"><Ghost /></span></small></footer>
   </div>;
 }

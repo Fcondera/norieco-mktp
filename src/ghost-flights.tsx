@@ -1,22 +1,22 @@
 import {useEffect, useRef} from 'react';
 
-// Decorative only: one cached image, three composited transforms, no render loop.
+// One cached image and three composited transforms; each ghost can be dismissed.
 export function GhostFlights() {
   const layer = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
-    const ghosts = Array.from(layer.current?.querySelectorAll('img') ?? []);
-    const active = new Map<HTMLImageElement, Animation>();
+    const ghosts = Array.from(layer.current?.querySelectorAll('button') ?? []);
+    const active = new Map<HTMLButtonElement, Animation>();
     const timers = new Set<ReturnType<typeof setTimeout>>();
-    const waiting = new Set<HTMLImageElement>();
+    const waiting = new Set<HTMLButtonElement>();
     let disposed = false;
     const random = (min: number, max: number) => min + Math.random() * (max - min);
-    function later(ghost: HTMLImageElement, delay: number) {
+    function later(ghost: HTMLButtonElement, delay: number) {
       const timer = setTimeout(() => { timers.delete(timer); fly(ghost); }, delay);
       timers.add(timer);
     }
-    function fly(ghost: HTMLImageElement) {
-      if (disposed || preference.matches) return;
+    function fly(ghost: HTMLButtonElement) {
+      if (disposed || preference.matches || ghost.hidden) return;
       if (document.hidden) { waiting.add(ghost); return; }
       const width = innerWidth, height = innerHeight;
       const size = random(width < 700 ? 36 : 48, width < 700 ? 64 : 100);
@@ -27,6 +27,7 @@ export function GhostFlights() {
       const destination = random(65, Math.max(66, height - size - 35));
       const duration = random(width < 700 ? 13000 : 19000, width < 700 ? 22000 : 31000);
       ghost.style.width = `${size}px`;
+      ghost.style.visibility = 'visible';
       const transform = (progress: number, y: number, angle: number) =>
         `translate3d(${from + (to - from) * progress}px,${y}px,0) rotate(${angle}deg) scaleX(${rightward ? 1 : -1})`;
       const animation = ghost.animate([
@@ -39,6 +40,7 @@ export function GhostFlights() {
       active.set(ghost, animation);
       void animation.finished.then(() => {
         active.delete(ghost);
+        ghost.style.visibility = 'hidden';
         animation.cancel();
         if (!disposed && !preference.matches) later(ghost, random(1800, 7000));
       }).catch(() => { /* Cancelled when motion is disabled or the page unmounts. */ });
@@ -63,7 +65,7 @@ export function GhostFlights() {
       document.removeEventListener('visibilitychange', visibility);
     };
   }, []);
-  return <div className="eco-ghost-flights" ref={layer} aria-hidden="true" inert>
-    {[0, 1, 2].map(id => <img key={id} src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} className="eco-flying-ghost" width="100" height="100" alt="" decoding="async" />)}
+  return <div className="eco-ghost-flights" ref={layer}>
+    {[0, 1, 2].map(id => <button key={id} type="button" className="eco-flying-ghost" aria-label="Dispensar fantasma voador" onClick={event => { event.currentTarget.hidden = true; event.currentTarget.getAnimations().forEach(animation => animation.cancel()); }}><img src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} width="100" height="100" alt="" decoding="async" /></button>)}
   </div>;
 }

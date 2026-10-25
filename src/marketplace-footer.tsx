@@ -1,3 +1,4 @@
+import { HalloweenToy } from './halloween-toy';
 import { Link } from "./lib/router";
 import { contactLink } from "./lib/core.mjs";
 import { Icon } from "./ui";
@@ -5,7 +6,7 @@ import { ManagementLink } from "./management-link";
 
 const support = () => contactLink(import.meta.env.VITE_SUPPORT_WHATSAPP || "5547992739983", "Olá! Preciso de ajuda com o marketplace NoriEco.");
 export function MarketplaceFooter() {
-  return <footer className="marketplace-footer"><div className="container"><div className="mkt-footer-grid">
+  return <footer className="marketplace-footer"><div className="container"><div className="halloween-footer-ornament"><HalloweenToy /></div><div className="mkt-footer-grid">
     <div className="mkt-footer-brand"><Link href="/" className="brand"><img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" /><strong>Nori<span>Eco</span></strong></Link><p>Lojas e serviços do Amazonas.</p><a href={support()} target="_blank" rel="noopener noreferrer" className="mkt-support-icon" aria-label="Falar com o suporte no WhatsApp"><Icon name="message" size={20} /></a></div>
     <nav aria-label="Acesso rápido"><h2>Acesso rápido</h2><Link href="/">Início</Link><Link href="/">Lojas e categorias</Link><Link href="/carrinho">Carrinho</Link><Link href="/ajuda">Como funciona</Link><a href="/">Ecossistema NoriEco</a></nav>
     <nav aria-label="Nori Gestão"><h2>Nori Gestão</h2><ManagementLink>Abrir Nori Gestão</ManagementLink><ManagementLink>Criar loja · 15 dias grátis</ManagementLink><Link href="/conta/pedidos">Meus pedidos</Link></nav>

@@ -18,7 +18,8 @@
 @keyframes toy-bat-flight{0%{opacity:0;transform:translate(0,15px) scale(.25)}12%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(var(--fly-x),var(--fly-y)) rotate(var(--fly-rotate)) scale(1.1)}}
 @keyframes toy-wing{from{transform:scaleY(.68) rotate(-7deg)}to{transform:scaleY(1) rotate(7deg)}}
 @keyframes toy-candle{0%,100%{filter:brightness(1) drop-shadow(0 0 8px #ff8d3240)}17%,44%,72%{filter:brightness(1.13) drop-shadow(0 0 15px #ff8d3270)}23%,52%,81%{filter:brightness(.94) drop-shadow(0 0 5px #ff8d3225)}}
-.eco-toy-heading{display:flex;align-items:center;justify-content:center;gap:35px}.eco-toy-heading .eco-section-intro{text-align:left}.eco-toy-heading .eco-section-intro>p{margin-left:0}
-.marketplace-site .mkt-category-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
-@media(max-width:600px){.eco-toy-heading{flex-direction:column;gap:8px}.eco-toy-heading .eco-section-intro{text-align:center}.eco-toy-heading .halloween-toy{flex-basis:auto}.marketplace-site .mkt-category-title .halloween-toy{width:160px;height:145px;flex-basis:160px}.marketplace-site .mkt-category-title .halloween-toy-coffin{width:140px;height:140px;left:-6px;bottom:4px}.marketplace-site .mkt-category-title .halloween-toy-pumpkin{width:88px;height:88px;right:0}.marketplace-site .mkt-category-title .halloween-toy-bat{left:45px;top:25px;--fly-x:65px}.marketplace-site .mkt-category-title .bat-1{--fly-x:-30px}.marketplace-site .mkt-category-title .bat-2{--fly-x:45px;--fly-y:-28px}}
+.halloween-footer-ornament{display:flex;justify-content:flex-end;max-width:1144px;margin:0 auto;padding:20px 24px 0}
+.marketplace-footer .halloween-footer-ornament{padding:0 0 20px}
+.eco-footer .halloween-footer-ornament{flex-basis:100%;max-width:none;margin:0;padding:0}
+@media(max-width:600px){.halloween-footer-ornament{justify-content:center;padding-top:0}}
 @media(prefers-reduced-motion:reduce){.halloween-toy *{animation:none!important;transition:none!important}.halloween-toy-bats{display:none}}

@@ -9,7 +9,7 @@ try{
   await page.route('**/rest/v1/rpc/marketplace_categories',r=>r.fulfill({json:[]}));
   await page.route('**/rest/v1/rpc/marketplace_search',r=>r.fulfill({json:[]}));
   for(const path of ['/','/marketplace']){
-   await page.goto('http://127.0.0.1:5174'+path);const toy=page.locator('.halloween-toy');await toy.scrollIntoViewIfNeeded();
+   await page.goto('http://127.0.0.1:5174'+path);const toy=page.locator('.halloween-toy');assert.equal(await page.locator('footer .halloween-toy').count(),1);await toy.scrollIntoViewIfNeeded();
    assert.equal(await toy.getAttribute('aria-pressed'),'false');
    if(mobile){await toy.tap();}else{await toy.hover();}
    await page.waitForTimeout(1000);assert.equal(await toy.getAttribute('aria-pressed'),'true');

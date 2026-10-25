@@ -1,6 +1,10 @@
 /* Seasonal artwork stays within the institutional page; storefronts are unchanged. */
 .eco-ghost-flights{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:8;contain:strict}
-.eco-flying-ghost{position:absolute;left:0;top:0;width:70px;height:auto;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity;filter:drop-shadow(0 4px 12px #ad63d52b)}
+.eco-flying-ghost{position:absolute;left:0;top:0;width:70px;height:auto;opacity:0;visibility:hidden;pointer-events:auto;user-select:none;will-change:transform,opacity;filter:drop-shadow(0 4px 12px #ad63d52b)}
+.eco-flying-ghost,.eco-ghost{padding:0;border:0;background:transparent;cursor:pointer;touch-action:manipulation}
+.eco-flying-ghost img,.eco-ghost img{display:block;width:100%;height:auto;pointer-events:none}
+.eco-flying-ghost[hidden]{display:none}
+.eco-ghost:focus-visible,.eco-flying-ghost:focus-visible{outline:2px solid #b983f5;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.eco-ghost-flights{display:none}}
 .eco-halloween{background:radial-gradient(ellipse at 2% 42%,#7035ba12,transparent 36%),radial-gradient(ellipse at 95% 72%,#ec76280a,transparent 30%),var(--eco-bg)}
 .eco-halloween .eco-hero.eco-carousel{background:radial-gradient(ellipse at 76% 48%,#50206955,transparent 60%),radial-gradient(ellipse at 85% 100%,#ed75251a,transparent 42%),#100c19;height:clamp(630px,78vh,740px)}
@@ -15,7 +19,7 @@
 .eco-halloween .eco-carousel .eco-slide-secondary:hover{background:#47315380}
 .eco-halloween .eco-carousel-progress{background:#af7ad124}.eco-halloween .eco-carousel-progress>span{background:linear-gradient(90deg,#9856df,#ed985b)}
 .eco-halloween .eco-season-star{right:8%;top:11%;font-size:30px;color:#e2bcf9;filter:drop-shadow(0 0 14px #bb77ee)}
-.eco-ghost{position:absolute;width:88px;height:auto;pointer-events:none;user-select:none;filter:drop-shadow(0 9px 19px #8c42cf40);animation:eco-ghost-float 7s ease-in-out infinite;z-index:0}
+.eco-ghost{position:absolute;width:88px;height:auto;pointer-events:auto;user-select:none;filter:drop-shadow(0 9px 19px #8c42cf40);animation:eco-ghost-float 7s ease-in-out infinite;z-index:1}
 .eco-ghost-hero{z-index:2;left:2%;top:27%;width:62px;opacity:.8;animation-delay:-2s}
 .eco-ghost-left{left:5px;top:38px;width:83px;transform:rotate(-14deg);animation-delay:-1s}
 .eco-ghost-right{right:39%;bottom:12px;width:72px;animation-delay:-4s}
