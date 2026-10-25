@@ -37,7 +37,7 @@ export function Login() {
     <section className="auth-card panel">
       <img
         className="auth-logo"
-        src={`${import.meta.env.BASE_URL}nori-logo.png`}
+        src={`${import.meta.env.BASE_URL}nori-logo-transparent.png`}
         alt="NoriEco"
       />
       <h1>Que bom ter você por aqui.</h1>

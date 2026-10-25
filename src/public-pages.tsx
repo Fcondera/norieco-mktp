@@ -137,7 +137,7 @@ export function Home({
         </div>
         <div className="intro-art">
           <img
-            src={`${import.meta.env.BASE_URL}nori-logo.png`}
+            src={`${import.meta.env.BASE_URL}nori-logo-transparent.png`}
             alt="NoriEco — descubra o que está perto"
           />
           <span>Da nossa região. Para o seu dia.</span>
