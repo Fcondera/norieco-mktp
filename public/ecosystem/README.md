@@ -9,6 +9,8 @@ Local production assets (alpha-preserving WebP, quality .88):
 - `gestao-3d-{420,700}.webp`: POS terminal and receipt printer.
 - `catalogo-3d-{420,700}.webp`: smartphone with restaurant catalog.
 - `marketplace-3d-{420,700}.webp`: regional commerce diorama.
+- `marketplace-brasil-3d-{420,700}.webp`: current Brazil-shaped commerce map.
+  Generation details: [brasil-prompt.md](brasil-prompt.md).
 
 The website uses responsive images, lazy loading, fixed aspect ratios, and the
 existing CSS hover/float effects. No WebGL or new runtime dependency was added.
