@@ -1,5 +1,6 @@
 import { ManagementLink } from './management-link';
 import { HeroCarousel } from './hero-carousel';
+import { GhostFlights } from './ghost-flights';
 import { useEffect, useState } from 'react';
 import { Link } from './lib/router';
 import { Icon } from './ui';
@@ -22,6 +23,7 @@ export function Landing() {
     { icon: 'pin', name: 'Marketplace regional', label: 'NA SUA REGIÃO', description: 'Um lugar para descobrir lojas e serviços do Amazonas. Encontre uma empresa e conheça o catálogo dela.', cta: 'Explorar marketplace', href: '/marketplace' },
   ];
   return <div className="eco-site eco-halloween" data-theme={theme}>
+    <GhostFlights />
     <a className="skip-link" href="#eco-main">Pular para o conteúdo</a>
     <header className="eco-header">
       <a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo.png`} alt="" /><span>Nori<span>Eco</span></span></a>

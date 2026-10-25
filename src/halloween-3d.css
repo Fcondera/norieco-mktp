@@ -1,4 +1,7 @@
 /* Seasonal artwork stays within the institutional page; storefronts are unchanged. */
+.eco-ghost-flights{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:8;contain:strict}
+.eco-flying-ghost{position:absolute;left:0;top:0;width:70px;height:auto;opacity:0;pointer-events:none;user-select:none;will-change:transform,opacity;filter:drop-shadow(0 4px 12px #ad63d52b)}
+@media(prefers-reduced-motion:reduce){.eco-ghost-flights{display:none}}
 .eco-halloween{background:radial-gradient(ellipse at 2% 42%,#7035ba12,transparent 36%),radial-gradient(ellipse at 95% 72%,#ec76280a,transparent 30%),var(--eco-bg)}
 .eco-halloween .eco-hero.eco-carousel{background:radial-gradient(ellipse at 76% 48%,#50206955,transparent 60%),radial-gradient(ellipse at 85% 100%,#ed75251a,transparent 42%),#100c19;height:clamp(630px,78vh,740px)}
 .eco-halloween .eco-carousel .eco-slide-image{inset:0 -1% 0 auto;width:64%;height:100%;object-fit:contain;object-position:center;pointer-events:none;filter:drop-shadow(0 22px 45px #00000040)}
