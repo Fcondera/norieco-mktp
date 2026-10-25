@@ -16,6 +16,7 @@ import "./styles.css";
 import "./landing.css";
 import "./marketplace-home.css";
 import "./landing-season.css";
+import "./halloween-3d.css";
 function Site() {
   const path = useLocation().split("?")[0];
   const storeSlug = publicStoreSlug(path);

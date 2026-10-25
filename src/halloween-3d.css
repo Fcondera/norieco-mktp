@@ -1,0 +1,30 @@
+/* Seasonal artwork stays within the institutional page; storefronts are unchanged. */
+.eco-halloween{background:radial-gradient(ellipse at 2% 42%,#7035ba12,transparent 36%),radial-gradient(ellipse at 95% 72%,#ec76280a,transparent 30%),var(--eco-bg)}
+.eco-halloween .eco-hero.eco-carousel{background:radial-gradient(ellipse at 76% 48%,#50206955,transparent 60%),radial-gradient(ellipse at 85% 100%,#ed75251a,transparent 42%),#100c19;height:clamp(630px,78vh,740px)}
+.eco-halloween .eco-carousel .eco-slide-image{inset:0 -1% 0 auto;width:64%;height:100%;object-fit:contain;object-position:center;pointer-events:none;filter:drop-shadow(0 22px 45px #00000040)}
+.eco-halloween .eco-carousel .eco-slide-shade{background:linear-gradient(90deg,#100c1980,transparent 55%);pointer-events:none}
+.eco-halloween .eco-carousel .eco-slide-inner{position:relative;z-index:1;padding-bottom:104px}
+.eco-halloween .eco-carousel .eco-slide-copy{max-width:51%}
+.eco-halloween .eco-carousel h1{font-size:clamp(39px,4.2vw,60px);line-height:1.08;letter-spacing:-2px;text-wrap:balance;text-shadow:0 3px 20px #100c1940}
+.eco-halloween .eco-carousel p{max-width:460px;font-size:16px;color:#d0c4dd;line-height:1.75}
+.eco-halloween .eco-carousel .eco-button{box-shadow:0 5px 27px #9856df28}
+.eco-halloween .eco-carousel .eco-slide-secondary{box-shadow:none;background:#20182b75;border-color:#a78cbd70}
+.eco-halloween .eco-carousel .eco-slide-secondary:hover{background:#47315380}
+.eco-halloween .eco-carousel-progress{background:#af7ad124}.eco-halloween .eco-carousel-progress>span{background:linear-gradient(90deg,#9856df,#ed985b)}
+.eco-halloween .eco-season-star{right:8%;top:11%;font-size:30px;color:#e2bcf9;filter:drop-shadow(0 0 14px #bb77ee)}
+.eco-ghost{position:absolute;width:88px;height:auto;pointer-events:none;user-select:none;filter:drop-shadow(0 9px 19px #8c42cf40);animation:eco-ghost-float 7s ease-in-out infinite;z-index:0}
+.eco-ghost-hero{z-index:2;left:2%;top:27%;width:62px;opacity:.8;animation-delay:-2s}
+.eco-ghost-left{left:5px;top:38px;width:83px;transform:rotate(-14deg);animation-delay:-1s}
+.eco-ghost-right{right:39%;bottom:12px;width:72px;animation-delay:-4s}
+.eco-ghost-plan{right:-19px;top:-40px;width:96px;animation-delay:-3s}
+.eco-footer-ghost{display:inline-flex}.eco-footer-ghost .eco-ghost{position:static;width:43px;height:43px;animation:none}
+.eco-halloween .eco-product{background:radial-gradient(ellipse at 100% 0,#9856df0c,transparent 70%),var(--eco-panel);box-shadow:0 12px 35px #05030b0d;transition:border-color .25s,box-shadow .25s}
+.eco-halloween .eco-product:hover{border-color:#9856df75;box-shadow:0 9px 42px #7035ba13}
+.eco-halloween .eco-product-symbol{filter:drop-shadow(0 0 10px #ec762829)}
+.eco-halloween .eco-plan{background:radial-gradient(ellipse at 0 100%,#ec76281b,transparent 65%),radial-gradient(ellipse at 90% 0,#9856df1f,transparent 65%),var(--eco-panel)}
+@keyframes eco-ghost-float{0%,100%{translate:0 0;rotate:-6deg}50%{translate:0 -12px;rotate:5deg}}
+@media(min-width:1700px){.eco-halloween .eco-carousel .eco-slide-image{width:58%;right:3%}.eco-ghost-hero{left:6%}}
+@media(max-width:1100px){.eco-halloween .eco-carousel .eco-slide-copy{max-width:49%}.eco-halloween .eco-carousel .eco-slide-image{width:65%;right:-5%}.eco-halloween .eco-carousel h1{font-size:43px}.eco-ghost-hero{top:12%;left:2%;width:42px}}
+@media(max-width:700px){.eco-halloween .eco-hero.eco-carousel{height:790px;background:radial-gradient(ellipse at 50% 78%,#50206966,transparent 60%),#100c19}.eco-halloween .eco-carousel .eco-slide-inner{padding:45px 26px 390px;align-items:flex-start}.eco-halloween .eco-carousel .eco-slide-copy{max-width:100%}.eco-halloween .eco-carousel h1{font-size:clamp(33px,8vw,40px);letter-spacing:-1.3px;line-height:1.12;max-width:500px;margin-bottom:18px}.eco-halloween .eco-carousel p{font-size:14px;line-height:1.65;margin-bottom:23px;max-width:440px}.eco-halloween .eco-carousel .eco-slide-image{inset:auto -7% 65px auto;width:114%;height:380px;object-fit:contain;filter:drop-shadow(0 10px 20px #00000030)}.eco-halloween .eco-carousel .eco-slide-shade{background:none}.eco-halloween .eco-carousel .eco-slide-actions{gap:10px}.eco-ghost-hero{left:auto;right:10px;top:auto;bottom:360px;width:43px;opacity:.65}.eco-ghost-left{top:9px;left:0;width:43px}.eco-ghost-right{left:-4px;right:auto;bottom:9px;width:49px}.eco-ghost-plan{top:-25px;right:-12px;width:61px}.eco-halloween .eco-season-star{top:auto;bottom:100px;right:8%;font-size:20px}.eco-halloween .eco-carousel .eco-button{min-height:47px;font-size:12px;padding:12px 15px;gap:10px}}
+@media(max-width:370px){.eco-halloween .eco-hero.eco-carousel{height:790px}.eco-halloween .eco-carousel .eco-slide-inner{padding:38px 22px 390px}.eco-halloween .eco-carousel .eco-slide-image{bottom:58px;height:330px}.eco-halloween .eco-carousel .eco-slide-actions{flex-direction:row;align-items:flex-start}.eco-halloween .eco-carousel .eco-button{font-size:11px;padding:12px}.eco-ghost-hero{bottom:330px}.eco-halloween .eco-carousel h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){.eco-ghost{animation:none}.eco-halloween .eco-product{transition:none}}

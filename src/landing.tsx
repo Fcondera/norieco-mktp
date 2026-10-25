@@ -5,17 +5,9 @@ import { Link } from './lib/router';
 import { Icon } from './ui';
 import { contactLink } from './lib/core.mjs';
 
-function Pumpkin({ className = '' }: { className?: string }) {
-  return <svg className={`eco-pumpkin ${className}`} viewBox="0 0 100 100" fill="none" aria-hidden="true" focusable="false">
-    <path d="M49 28c-3-12 6-19 15-17-7 4-8 11-7 18" fill="#799450" />
-    <path d="M51 31C19 12-3 50 13 76c8 14 24 17 38 12 16 6 33 1 39-13 14-30-8-61-39-44Z" fill="#ec7628" />
-    <ellipse cx="50" cy="59" rx="25" ry="32" fill="#fb9537" />
-    <ellipse cx="50" cy="59" rx="12" ry="32" fill="#ffad4c" />
-    <path d="m27 52 13-7 3 14Zm46 0-13-7-3 14ZM29 67l10 4 5-5 7 7 7-6 12 1c-8 18-32 20-41-1Z" fill="#3a2030" />
-    <path d="m49 60 4-7 4 8Z" fill="#3a2030" />
-  </svg>;
+function Ghost({ className = '' }: { className?: string }) {
+  return <img className={`eco-ghost ${className}`} src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} width="280" height="280" alt="" aria-hidden="true" loading="lazy" decoding="async" />;
 }
-
 export function Landing() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try { return localStorage.getItem('norieco-landing-theme') === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
@@ -42,23 +34,23 @@ export function Landing() {
       </div>
     </header>
     <main id="eco-main">
-      <div className="eco-season-hero"><HeroCarousel /><Pumpkin className="eco-pumpkin-hero" /><span className="eco-season-star" aria-hidden="true">✧</span></div>
+      <div className="eco-season-hero"><HeroCarousel /><Ghost className="eco-ghost-hero" /><span className="eco-season-star" aria-hidden="true">✧</span></div>
       <section id="solucoes" className="eco-section eco-season-section">
-        <Pumpkin className="eco-pumpkin-left" />
+        <Ghost className="eco-ghost-left" />
         <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
         <div className="eco-products eco-solutions">{solutions.map(solution => <article key={solution.name} className="eco-product eco-market"><div className="eco-product-symbol"><Icon name={solution.icon} size={32} /></div><h3>{solution.name}</h3><p>{solution.description}</p>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta}<span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta}<span aria-hidden="true">↗</span></a>}</article>)}</div>
       </section>
       <section id="como-funciona" className="eco-business eco-season-section">
         <div><h2>Crie sua loja.<br />Conheça na prática.</h2><p>Entre no Nori Gestão, cadastre seus produtos e compartilhe seu catálogo. Teste por 15 dias, sem cartão para começar.</p><ManagementLink className="eco-button">Começar meu teste grátis <Icon name="arrow" size={18} /></ManagementLink></div>
         <ol className="eco-steps"><li><span>01</span><div><h3>Crie sua conta</h3><p>Entre com Google e cadastre sua empresa.</p></div></li><li><span>02</span><div><h3>Deixe a loja do seu jeito</h3><p>Adicione a logo, os produtos e os preços.</p></div></li><li><span>03</span><div><h3>Comece a vender</h3><p>Use o PDV e compartilhe o link do catálogo.</p></div></li></ol>
-        <Pumpkin className="eco-pumpkin-right" />
+        <Ghost className="eco-ghost-right" />
       </section>
       <section className="eco-plan eco-season-section" aria-labelledby="eco-plan-title">
         <div className="eco-plan-copy"><h2 id="eco-plan-title">Mais controle.<br />Sem complicar.</h2><p>PDV, catálogo online e todos os módulos do Nori Gestão.</p></div>
         <div className="eco-plan-price"><p><strong>R$ 197</strong><span>/mês</span></p><span>15 dias grátis. A contratação é feita por você.</span><ManagementLink className="eco-button">Criar minha loja <Icon name="arrow" size={18} /></ManagementLink><a className="eco-plan-help" href={contact()} target="_blank" rel="noopener noreferrer">Ficou com dúvida? Fale com a gente ↗</a></div>
-        <Pumpkin className="eco-pumpkin-plan" />
+        <Ghost className="eco-ghost-plan" />
       </section>
     </main>
-    <footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>Seu negócio conectado. Do balcão ao Amazonas.</p></div><nav aria-label="Rodapé institucional"><Link href="/marketplace">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><small>© {new Date().getFullYear()} NoriEco.<span className="eco-footer-pumpkin" aria-hidden="true"><Pumpkin /></span></small></footer>
+    <footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>Seu negócio conectado. Do balcão ao Amazonas.</p></div><nav aria-label="Rodapé institucional"><Link href="/marketplace">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><small>© {new Date().getFullYear()} NoriEco.<span className="eco-footer-ghost" aria-hidden="true"><Ghost /></span></small></footer>
   </div>;
 }

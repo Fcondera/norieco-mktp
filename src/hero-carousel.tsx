@@ -70,7 +70,7 @@ export function HeroCarousel() {
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.25) select(index + (dx < 0 ? 1 : -1));
     }}>
     {slides.map((slide, position) => <div key={slide.key} className={`eco-slide${index === position ? " is-active" : ""}`} role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${slides.length}: ${slide.label}`} aria-hidden={index !== position} inert={index !== position}>
-      <img className="eco-slide-image" src={`${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg`} srcSet={`${import.meta.env.BASE_URL}hero/${slide.key}-800.jpg 800w, ${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg 1600w`} sizes="100vw" width="1600" height="900" alt="" decoding="async" loading={position === 0 ? "eager" : "lazy"} fetchPriority={position === 0 ? "high" : "low"} />
+      <img className="eco-slide-image" src={`${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp`} srcSet={`${import.meta.env.BASE_URL}halloween/scene-3d-700.webp 700w, ${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp 1200w`} sizes="(max-width: 700px) 100vw, 65vw" width="1200" height="800" alt="" decoding="async" loading={position === 0 ? "eager" : "lazy"} fetchPriority={position === 0 ? "high" : "low"} />
       <div className="eco-slide-shade" />
       <div className="eco-slide-inner"><div className="eco-slide-copy">
 
