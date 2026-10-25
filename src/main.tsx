@@ -1,3 +1,4 @@
+import { HardwarePage } from './hardware-shop';
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
@@ -27,11 +28,12 @@ function Site() {
   useEffect(() => {
     // Preserve old links and the existing Google callback while canonicalizing navigation.
     if (["/marktplace", "/markrplace"].includes(path)) navigate("/");
-    else if (!storeSlug && path !== "/" && path !== "/auth/callback" && !path.startsWith("/marketplace/") && path !== "/marketplace") {
+    else if (!storeSlug && path !== "/" && path !== "/auth/callback" && !path.startsWith("/equipamentos") && !path.startsWith("/marketplace/") && path !== "/marketplace") {
       history.replaceState({}, "", "/marketplace" + location.pathname + location.search + location.hash);
       dispatchEvent(new PopStateEvent("popstate"));
     }
   }, [path]);
+  if (path === "/equipamentos" || path === "/equipamentos/" || /^\/equipamentos\/pdv-completo(?:\/checkout)?\/?$/.test(path)) return <HardwarePage checkout={path.replace(/\/$/, "").endsWith("/checkout")} />;
   // The ecosystem account belongs to the existing Gestão PWA. Buyer details
   // remain secondary routes and never gate creating a store or using the PDV.
   if (["/conta", "/marketplace/conta"].includes(path.replace(/\/$/, ""))) {

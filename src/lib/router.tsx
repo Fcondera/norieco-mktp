@@ -3,6 +3,7 @@ import {publicStoreSlug} from './store-path.mjs';
 export const MARKETPLACE = "/marketplace";
 export function marketplacePath(path: string) {
   if (!path.startsWith("/") || path.startsWith("//")) return path;
+  if (/^\/equipamentos(?:[/?#]|$)/.test(path)) return path;
   if (publicStoreSlug(path.split('?')[0])) return path;
   if (path === MARKETPLACE || path.startsWith(MARKETPLACE + "/") || path.startsWith(MARKETPLACE + "?")) return path;
   return MARKETPLACE + (path === "/" ? "" : path);

@@ -1,3 +1,4 @@
+import { HardwareOfferCard } from './hardware-shop';
 import { SolutionsEcosystem } from './solutions-ecosystem';
 import { HalloweenToy } from './halloween-toy';
 import { ManagementLink } from './management-link';
@@ -37,6 +38,7 @@ export function Landing() {
         <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
         <SolutionsEcosystem />
       </section>
+      <HardwareOfferCard />
       <section id="como-funciona" className="eco-business eco-season-section">
         <div><h2>Crie sua loja.<br />Conheça na prática.</h2><p>Entre no Nori Gestão, cadastre seus produtos e compartilhe seu catálogo. Teste por 15 dias, sem cartão para começar.</p><ManagementLink className="eco-button">Começar meu teste grátis <Icon name="arrow" size={18} /></ManagementLink></div>
         <ol className="eco-steps"><li><span>01</span><div><h3>Crie sua conta</h3><p>Entre com Google e cadastre sua empresa.</p></div></li><li><span>02</span><div><h3>Deixe a loja do seu jeito</h3><p>Adicione a logo, os produtos e os preços.</p></div></li><li><span>03</span><div><h3>Comece a vender</h3><p>Use o PDV e compartilhe o link do catálogo.</p></div></li></ol>

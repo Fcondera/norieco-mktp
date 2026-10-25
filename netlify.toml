@@ -2,6 +2,9 @@
 [build]
   command = "node scripts/netlify-build.mjs"
   publish = "dist"
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 [build.environment]
   NODE_VERSION = "24"
 [[redirects]]
@@ -16,6 +19,18 @@
   force = true
 # Public catalogs reuse the shared Flutter build, with HTTP 200 (no redirect).
 # Keep every platform root route on the React site before matching store slugs.
+[[redirects]]
+  from = "/equipamentos"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/equipamentos/pdv-completo"
+  to = "/index.html"
+  status = 200
+[[redirects]]
+  from = "/equipamentos/pdv-completo/*"
+  to = "/index.html"
+  status = 200
 [[redirects]]
   from = "/marketplace"
   to = "/index.html"
@@ -188,6 +203,10 @@
     Content-Security-Policy = "script-src 'self'"
 [[headers]]
   for = "/marketplace/*"
+  [headers.values]
+    Content-Security-Policy = "script-src 'self'"
+[[headers]]
+  for = "/equipamentos/*"
   [headers.values]
     Content-Security-Policy = "script-src 'self'"
 [[headers]]
