@@ -52,6 +52,17 @@ export function Icon({ name, size = 22 }: { name: string; size?: number }) {
         <path d="M4 3v7h6V3M7 3v18M20 21V3c-7 3-7 10 0 10" />
       </>
     ),
+    burger: <><path d="M3 10c0-9 18-9 18 0ZM3 14h18M4 18h16l-1 3H5Z"/><path d="m3 13 4 2 5-2 5 2 4-2M8 6h.01M12 5h.01M16 6h.01"/></>,
+    shirt: <path d="m8 3-6 4 3 5 3-2v11h8V10l3 2 3-5-6-4c0 5-8 5-8 0Z"/>,
+    basket: <><path d="M3 9h18l-2 12H5ZM7 9l4-6m2 0 4 6M9 13v4m6-4v4"/></>,
+    pharmacy: <><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6Z"/></>,
+    beach: <><path d="M3 20c2-2 4 2 6 0s4 2 6 0 4 2 6 0M13 18l-3-9M3 10c-1-8 13-12 17-4l-8 2Z"/><path d="M10 3c-2 1-3 3-2 6m2-6c3 0 5 2 6 4"/></>,
+    gamepad: <><path d="M7 7h10c4 0 7 13 3 14-2 0-4-4-5-4H9c-1 0-3 4-5 4C0 20 3 7 7 7ZM7 10v5m-2-2h4M16 11h.01M19 14h.01M12 7V3"/></>,
+    sunset: <><path d="M3 16h18M5 20h14M7 16a5 5 0 0 1 10 0M12 2v3M3 7l3 2m15-2-3 2M2 12h2m16 0h2"/></>,
+    compass: <><circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6Z"/></>,
+    scissors: <><circle cx="5" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><path d="m8 7 13 14M8 17 21 3M12 12h.01"/></>,
+    fish: <><path d="M3 12c4-9 12-9 17 0-5 9-13 9-17 0Zm0 0L1 7v10ZM11 5l3-3 2 4M12 19l3 3 1-4"/><circle cx="16" cy="10" r=".5"/></>,
+    bottle: <><path d="M9 2h6v5l3 5v9H6v-9l3-5ZM9 5h6M6 13h12M6 18h12"/></>,
     drink: (
       <>
         <path d="M5 7h14l-2 14H7ZM12 7V3h6" />

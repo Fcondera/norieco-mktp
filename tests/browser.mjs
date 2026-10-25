@@ -334,6 +334,7 @@ try {
       .first()
       .waitFor();
     await page.getByPlaceholder("Buscar lojas, produtos ou serviços").fill("");
+    await page.getByRole('button',{name:'Ver todas categorias',exact:true}).click();
     await page.getByRole("button", { name: "Serviços", exact: true }).click();
     await page
       .getByRole("heading", { name: "Serviços", exact: true })

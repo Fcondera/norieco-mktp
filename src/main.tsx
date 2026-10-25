@@ -20,6 +20,7 @@ import "./marketplace-home.css";
 import "./landing-season.css";
 import "./halloween-3d.css";
 import "./marketplace-season.css";
+import "./category-tiles.css";
 function Site() {
   const path = useLocation().split("?")[0];
   const storeSlug = publicStoreSlug(path);

@@ -13,6 +13,7 @@ import { BusinessCard, Empty, Field, Icon, Loading, Notice, Photo } from "./ui";
 import { useApp } from "./state";
 import { discoverySections } from "./lib/discovery.mjs";
 import { BusinessInquiry } from "./business-inquiry";
+import {CategoryArtwork} from './category-artwork';
 export const categoryNames = [
   "Restaurantes",
   "Lanches",
@@ -42,6 +43,7 @@ export function Home({
     [loading, setLoading] = useState(true),
     [error, setError] = useState(""),
     [retry, setRetry] = useState(0);
+  const [expandedCategories, setExpandedCategories] = useState(false);
   useEffect(() => {
     rpc<Category[]>("marketplace_categories")
       .then(setCategories)
@@ -73,6 +75,8 @@ export function Home({
     };
   }, [query, city, category, retry]);
   const discovery = discoverySections(rows);
+  const allCategories=categories.length?categories:categoryNames.map((name)=>({id:name,name,icon:'shop'}));
+  const visibleCategories=expandedCategories?allCategories:allCategories.filter((c,index)=>index<11||c.id===category);
   const section = (
     title: string,
     list: Business[],
@@ -133,32 +137,28 @@ export function Home({
         </div>
       </section>
       <div className="mkt-category-title"><h2>Categorias</h2></div>
-      <nav className="categories mkt-categories" aria-label="Categorias">
+      <nav id="marketplace-categories" className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}
+          aria-pressed={!category}
           onClick={() => setCategory("")}
         >
-          <Icon name="shop" />
-          Explorar
+          <CategoryArtwork name="Explorar"/>
+          <span className="mkt-category-name">Explorar</span>
         </button>
-        {(categories.length
-          ? categories
-          : categoryNames.map((name, i) => ({
-              id: name,
-              name,
-              icon: i < 3 ? "food" : i > 5 && i < 10 ? "sun" : "shop",
-            }))
-        ).map((c) => (
+        {visibleCategories.map((c) => (
           <button
             key={c.id}
             className={category === c.id ? "selected" : ""}
+            aria-pressed={category === c.id}
             onClick={() => setCategory(category === c.id ? "" : c.id)}
           >
-            <Icon name={c.icon} />
-            {c.name}
+            <CategoryArtwork name={c.name} fallback={c.icon}/>
+            <span className="mkt-category-name">{c.name}</span>
           </button>
         ))}
       </nav>
+      {allCategories.length>11&&<div className="mkt-categories-more"><button type="button" className="button secondary" aria-expanded={expandedCategories} aria-controls="marketplace-categories" onClick={()=>setExpandedCategories(value=>!value)}>{expandedCategories?'Ver menos categorias':'Ver todas categorias'}<Icon name="arrow" size={16}/></button></div>}
       <div id="resultados">
         {loading ? (
           <Loading />
