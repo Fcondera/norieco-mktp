@@ -1,0 +1,91 @@
+/* Everything is scoped to the existing solutions section and its theme tokens. */
+#solucoes .ecosystem-solutions{
+  --ecosystem-screen:var(--light);
+  --ecosystem-ui-line:color-mix(in srgb,var(--eco-ink) 11%,var(--light));
+  --ecosystem-case:color-mix(in srgb,var(--eco-ink) 24%,var(--eco-bg));
+  --ecosystem-case-side:color-mix(in srgb,var(--eco-bg) 87%,var(--eco-ink));
+  --ecosystem-shadow:color-mix(in srgb,var(--eco-bg) 70%,black);
+  --ecosystem-food-dark:color-mix(in srgb,var(--eco-orange) 25%,var(--eco-bg));
+  --ecosystem-terrain:color-mix(in srgb,var(--green) 34%,var(--eco-panel));
+  --ecosystem-terrain-side:color-mix(in srgb,var(--green) 24%,var(--eco-bg));
+  --ecosystem-terrain-edge:color-mix(in srgb,var(--green) 65%,var(--muted));
+  --ecosystem-river:color-mix(in srgb,var(--eco-primary) 55%,var(--muted));
+  --ecosystem-river-bank:color-mix(in srgb,var(--eco-primary) 20%,var(--eco-panel));
+  --ecosystem-road:color-mix(in srgb,var(--muted) 60%,var(--ecosystem-terrain));
+  --ecosystem-building:color-mix(in srgb,var(--eco-ink) 60%,var(--eco-panel));
+  --ecosystem-building-side:color-mix(in srgb,var(--eco-ink) 30%,var(--eco-panel));
+  --ecosystem-roof:color-mix(in srgb,var(--eco-ink) 85%,var(--eco-panel));
+  --ecosystem-window:var(--eco-primary);
+  --ecosystem-paper:var(--eco-ink);
+  --ecosystem-paper-ink:var(--eco-bg);
+}
+.eco-halloween[data-theme=light] #solucoes .ecosystem-solutions{--ecosystem-paper:var(--eco-panel);--ecosystem-paper-ink:var(--eco-ink)}
+#solucoes .ecosystem-cards{gap:20px;margin-top:40px;grid-template-columns:repeat(3,minmax(0,1fr));position:relative;z-index:1}
+#solucoes .ecosystem-card{padding:24px 26px 20px;border-radius:18px;min-width:0;background:var(--eco-panel);box-shadow:0 12px 30px color-mix(in srgb,var(--ecosystem-shadow) 10%,transparent);transition:border-color .4s,box-shadow .4s,translate .4s;--tilt-x:0deg;--tilt-y:0deg}
+#solucoes .ecosystem-card:hover,#solucoes .ecosystem-card:focus-within{border-color:color-mix(in srgb,var(--eco-primary) 60%,var(--border));box-shadow:0 18px 38px color-mix(in srgb,var(--ecosystem-shadow) 20%,transparent);translate:0 -3px}
+#solucoes .ecosystem-card h3{font-size:23px;line-height:1.25;letter-spacing:-.7px;margin:5px 0 0}
+#solucoes .ecosystem-card>p{font-size:14px;line-height:1.75;margin:14px 0 24px}
+#solucoes .ecosystem-card .eco-product-link{min-height:49px;padding-top:16px;font-size:13px;line-height:1.5}
+#solucoes .ecosystem-card .eco-product-link>span{font-size:20px;transition:translate .35s}
+#solucoes .ecosystem-card .eco-product-link:hover>span{translate:4px 0}
+.ecosystem-illustration{height:240px;position:relative;display:grid;place-items:center;perspective:850px;isolation:isolate;margin:0 -12px 15px;pointer-events:none}
+.ecosystem-perspective{width:100%;height:100%;position:relative;transform:rotateX(var(--tilt-x)) rotateY(var(--tilt-y));transform-style:preserve-3d;transition:transform .4s ease-out}
+.ecosystem-float{animation:ecosystem-float 6s ease-in-out infinite;will-change:translate}
+.ecosystem-food{display:block;width:100%;height:100%;color:var(--eco-ink)}
+/* Terminal, stand and printer are independent planes with restrained depth. */
+.ecosystem-pos{position:relative;width:250px;height:230px;margin:5px auto 0;transform-style:preserve-3d;filter:drop-shadow(0 17px 14px color-mix(in srgb,var(--ecosystem-shadow) 30%,transparent))}
+.ecosystem-pos-foot{position:absolute;left:54px;bottom:23px;width:111px;height:32px;background:linear-gradient(150deg,var(--ecosystem-case),var(--ecosystem-case-side));border:1px solid var(--ecosystem-case);border-radius:50% 50% 9px 9px;transform:skewX(-15deg);box-shadow:0 6px 0 var(--ecosystem-case-side)}
+.ecosystem-pos-neck{position:absolute;left:94px;bottom:39px;width:35px;height:71px;background:linear-gradient(90deg,var(--ecosystem-case-side),var(--ecosystem-case));transform:skewX(-13deg);border-radius:2px 3px 0 0}
+.ecosystem-terminal{position:absolute;left:10px;top:18px;width:211px;height:146px;padding:8px 8px 11px;background:linear-gradient(120deg,var(--ecosystem-case),var(--ecosystem-case-side));border:1px solid color-mix(in srgb,var(--muted) 50%,var(--border));border-radius:10px;transform:perspective(600px) rotateY(-16deg) rotateX(7deg) rotateZ(-4deg);box-shadow:6px 4px 0 var(--ecosystem-case-side),7px 4px 0 color-mix(in srgb,var(--muted) 40%,var(--border))}
+.ecosystem-terminal-screen{height:100%;display:flex;overflow:hidden;background:var(--ecosystem-screen);border-radius:4px;color:var(--eco-ink);border:1px solid var(--ecosystem-ui-line)}
+.ecosystem-terminal-chin{position:absolute;bottom:3px;left:48%;width:7px;height:2px;border-radius:3px;background:var(--muted)}
+.ecosystem-pos-nav{width:19px;flex-shrink:0;border-right:1px solid var(--ecosystem-ui-line);display:flex;align-items:center;flex-direction:column;gap:12px;padding-top:12px}
+.ecosystem-pos-nav i{height:5px;width:6px;border-radius:1px;background:var(--muted);opacity:.55}.ecosystem-pos-nav i:first-child{background:var(--eco-primary);opacity:1}
+.ecosystem-pos-content{padding:8px;flex:1;min-width:0}
+.ecosystem-screen-heading{display:flex;justify-content:space-between;align-items:center;font-size:10px;line-height:1.3;margin-bottom:8px}
+.ecosystem-screen-heading>span{font-size:9px;color:var(--muted)}
+.ecosystem-pos-menu{display:flex;gap:5px}.ecosystem-pos-menu>div{flex:1;min-width:0;border:1px solid var(--ecosystem-ui-line);border-radius:4px;background:var(--eco-panel);overflow:hidden}.ecosystem-pos-menu svg{height:33px}.ecosystem-pos-menu>div>span{display:block;padding:2px 4px 4px;font-size:7px;line-height:1.3;color:var(--muted)}
+.ecosystem-order-line{display:flex;justify-content:space-between;font-size:7px;line-height:1.4;margin:6px 0;color:var(--muted)}
+.ecosystem-screen-action{display:flex;align-items:center;justify-content:space-between;padding:4px 6px;background:var(--eco-primary);color:var(--eco-bg);border-radius:3px;font-size:8px;font-weight:600}
+.ecosystem-printer{position:absolute;right:1px;bottom:18px;width:70px;height:59px;background:linear-gradient(145deg,var(--ecosystem-case),var(--ecosystem-case-side));border:1px solid var(--ecosystem-case);border-radius:9px 9px 7px 7px;transform:perspective(400px) rotateY(-17deg) rotateZ(-3deg);box-shadow:5px 4px 0 var(--ecosystem-case-side)}
+.ecosystem-printer-slot{position:absolute;left:9px;right:9px;top:15px;height:5px;border-radius:5px;background:var(--eco-bg)}
+.ecosystem-receipt{position:absolute;left:16px;bottom:40px;width:39px;height:44px;padding:8px 7px;background:var(--ecosystem-paper);clip-path:polygon(0 0,100% 0,100% 95%,90% 100%,80% 95%,70% 100%,60% 95%,50% 100%,40% 95%,30% 100%,20% 95%,10% 100%,0 95%);transform-origin:bottom center;animation:ecosystem-receipt 6s ease-in-out infinite}
+.ecosystem-receipt i{display:block;height:2px;background:var(--ecosystem-paper-ink);opacity:.3;margin-bottom:4px}.ecosystem-receipt i:last-child{width:60%}.ecosystem-printer>span{position:absolute;width:4px;height:3px;background:var(--eco-primary);border-radius:2px;bottom:9px;right:10px}
+/* A single phone, with its catalog contained inside the screen. */
+.ecosystem-phone{position:relative;left:0;top:0;width:139px;height:231px;margin:0 auto;padding:6px;background:linear-gradient(135deg,var(--ecosystem-case),var(--ecosystem-case-side));border:1px solid color-mix(in srgb,var(--muted) 75%,var(--border));border-radius:23px;transform:perspective(600px) rotateY(-17deg) rotateX(7deg) rotateZ(8deg);box-shadow:5px 2px 0 var(--ecosystem-case-side),6px 2px 0 var(--muted),14px 20px 25px color-mix(in srgb,var(--ecosystem-shadow) 28%,transparent);animation-delay:-2s}
+.ecosystem-phone:before{content:'';position:absolute;right:-5px;top:56px;width:3px;height:28px;border-radius:3px;background:var(--muted)}
+.ecosystem-phone-screen{position:relative;height:100%;border-radius:17px;overflow:hidden;background:var(--ecosystem-screen);color:var(--eco-ink);padding:8px 8px 0}
+.ecosystem-phone-camera{position:absolute;top:5px;width:37px;height:8px;border-radius:8px;left:calc(50% - 18px);background:var(--ecosystem-case-side)}
+.ecosystem-phone-status{display:flex;justify-content:space-between;font-size:6px;line-height:1;margin:0 1px 13px}
+.ecosystem-phone-heading>b{display:block;font-size:12px;letter-spacing:-.3px;line-height:1.3}.ecosystem-phone-heading>span{display:block;font-size:7px;line-height:1.3;color:var(--muted);margin-top:3px}
+.ecosystem-phone-feature{margin-top:8px;border:1px solid var(--ecosystem-ui-line);border-radius:8px;overflow:hidden;background:var(--eco-panel)}
+.ecosystem-phone-feature>svg{height:54px;background:color-mix(in srgb,var(--eco-orange) 8%,var(--eco-panel))}
+.ecosystem-phone-feature>div{padding:5px 6px}.ecosystem-phone-feature b,.ecosystem-phone-item b{display:block;font-size:8px;font-weight:600;line-height:1.4}
+.ecosystem-phone-feature>div>span{display:flex;justify-content:space-between;align-items:center;font-size:8px;margin-top:3px}.ecosystem-phone i{font-style:normal;display:grid;place-items:center;width:14px;height:14px;border-radius:4px;background:var(--eco-primary);color:var(--eco-bg);font-size:11px;line-height:1}
+.ecosystem-phone-item{display:flex;align-items:center;gap:4px;margin:7px 0}.ecosystem-phone-item>svg{width:32px;height:30px;flex-shrink:0;background:var(--eco-panel);border-radius:5px}.ecosystem-phone-item>div{flex:1}.ecosystem-phone-item>div>span{font-size:7px;color:var(--muted)}
+.ecosystem-phone-cart{display:flex;justify-content:space-between;background:var(--eco-primary);color:var(--eco-bg);border-radius:5px;padding:6px 7px;font-size:8px;font-weight:600;line-height:1.4}.ecosystem-phone-home{width:34px;height:2px;border-radius:3px;background:var(--muted);margin:6px auto 0;opacity:.55}
+.ecosystem-map{display:block;width:100%;height:100%;max-width:310px;margin:auto;filter:drop-shadow(0 15px 15px color-mix(in srgb,var(--ecosystem-shadow) 24%,transparent));animation-delay:-4s}
+.ecosystem-map-marker{animation:ecosystem-marker 4s ease-in-out infinite;animation-delay:var(--marker-delay)}
+.ecosystem-map-route{stroke-dasharray:8 92;animation:ecosystem-map-flow 7s linear infinite;opacity:.6}
+/* Connections occupy their own space; no absolute paths cross card contents. */
+.ecosystem-connections{display:block;width:100%;height:116px;overflow:visible;fill:var(--eco-primary);opacity:.75;pointer-events:none}
+.ecosystem-connections path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.ecosystem-connection{stroke:var(--border);stroke-width:1.5}
+.ecosystem-signal{stroke:var(--eco-primary);stroke-width:1.5;stroke-dasharray:8 92;stroke-dashoffset:100;animation:ecosystem-flow 5s linear infinite;opacity:.8}
+.ecosystem-node{stroke:var(--eco-bg);stroke-width:3}
+#solucoes .ecosystem-panel{max-width:830px;margin:0 auto;padding:35px 44px 36px;text-align:center;background:var(--eco-panel);border:1px solid var(--border);border-radius:18px;position:relative}
+#solucoes .ecosystem-panel h3{font-size:clamp(25px,2.6vw,33px);font-weight:700;letter-spacing:-1px;line-height:1.2;margin:0}
+.ecosystem-panel h3>span{color:var(--eco-primary)}
+#solucoes .ecosystem-panel>p{max-width:620px;font-size:14px;line-height:1.8;margin:17px auto 0}
+.ecosystem-solutions .ecosystem-card[data-revealed=true]{animation:ecosystem-enter .65s both;animation-delay:calc(var(--card-order) * .1s)}
+.ecosystem-solutions .ecosystem-panel[data-revealed=true]{animation:ecosystem-enter .8s .15s both}
+.ecosystem-solutions:not([data-visible=true]) .ecosystem-float,.ecosystem-solutions:not([data-visible=true]) .ecosystem-map-marker,.ecosystem-solutions:not([data-visible=true]) .ecosystem-map-route,.ecosystem-solutions:not([data-visible=true]) .ecosystem-receipt,.ecosystem-solutions:not([data-visible=true]) .ecosystem-signal{animation-play-state:paused}
+@keyframes ecosystem-float{0%,100%{translate:0 2px}50%{translate:0 -6px}}
+@keyframes ecosystem-receipt{0%,100%{transform:rotateX(0deg)}50%{transform:rotateX(9deg) translateY(-2px)}}
+@keyframes ecosystem-marker{0%,100%{opacity:.85;translate:0 0}50%{opacity:1;translate:0 -3px}}
+@keyframes ecosystem-flow{to{stroke-dashoffset:0}}
+@keyframes ecosystem-map-flow{to{stroke-dashoffset:-100}}
+@keyframes ecosystem-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:950px) and (min-width:701px){#solucoes .ecosystem-cards{gap:14px}#solucoes .ecosystem-card{padding:17px 18px 15px}#solucoes .ecosystem-card h3{font-size:20px}#solucoes .ecosystem-card>p{font-size:13px;line-height:1.7}.ecosystem-illustration{height:210px;margin-left:-10px;margin-right:-10px}.ecosystem-pos{transform:scale(.8);transform-origin:50% 30%;margin-left:calc(50% - 125px)}.ecosystem-phone{scale:.87;transform-origin:50% 25%}}
+@media(max-width:700px){#solucoes .ecosystem-cards{grid-template-columns:1fr;gap:20px;margin-top:30px}#solucoes .ecosystem-card{padding:22px 25px 17px}#solucoes .ecosystem-card h3{font-size:23px}.ecosystem-illustration{height:225px;margin-bottom:17px}.ecosystem-pos{scale:.95;transform-origin:center center}.ecosystem-phone{scale:.94;transform-origin:center top}.ecosystem-map{max-width:310px}.ecosystem-connections{display:none}#solucoes .ecosystem-panel{margin-top:28px;padding:28px 23px}#solucoes .ecosystem-panel h3{font-size:27px}.ecosystem-desktop-break{display:none}#solucoes .ecosystem-panel>p{font-size:14px;margin-top:15px}.ecosystem-float{animation-duration:7s}}
+@media(prefers-reduced-motion:reduce){#solucoes .ecosystem-solutions *,#solucoes .ecosystem-solutions *:before{animation:none!important;transition:none!important;will-change:auto!important}.ecosystem-perspective{transform:none}.ecosystem-signal{display:none}#solucoes .ecosystem-card:hover,#solucoes .ecosystem-card:focus-within{translate:none}}

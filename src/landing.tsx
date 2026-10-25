@@ -1,3 +1,4 @@
+import { SolutionsEcosystem } from './solutions-ecosystem';
 import { HalloweenToy } from './halloween-toy';
 import { ManagementLink } from './management-link';
 import { HeroCarousel } from './hero-carousel';
@@ -18,11 +19,6 @@ export function Landing() {
   useEffect(() => { document.title = 'NoriEco · Seu negócio conectado'; }, []);
   const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || '5547992739983';
   const contact = (product = 'o Nori Gestão') => contactLink(phone, `Olá! Quero conhecer ${product}.`);
-  const solutions = [
-    { icon: 'shop', name: 'Nori Gestão', label: 'NO BALCÃO', description: 'Vendas, mesas, cozinha e estoque no mesmo painel. Mais controle para você, menos correria para a equipe.', cta: 'Conhecer o PDV', message: 'o Nori Gestão' },
-    { icon: 'bag', name: 'Catálogo online', label: 'NA INTERNET', description: 'Sua marca, seu cardápio e um link para compartilhar. Os pedidos chegam direto ao seu painel.', cta: 'Conhecer o catálogo', message: 'o catálogo online' },
-    { icon: 'pin', name: 'Marketplace regional', label: 'NA SUA REGIÃO', description: 'Um lugar para descobrir lojas e serviços do Amazonas. Encontre uma empresa e conheça o catálogo dela.', cta: 'Explorar marketplace', href: '/marketplace' },
-  ];
   return <div className="eco-site eco-halloween" data-theme={theme}>
     <GhostFlights />
     <a className="skip-link" href="#eco-main">Pular para o conteúdo</a>
@@ -39,7 +35,7 @@ export function Landing() {
       <section id="solucoes" className="eco-section eco-season-section">
         <Ghost className="eco-ghost-left" />
         <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
-        <div className="eco-products eco-solutions">{solutions.map(solution => <article key={solution.name} className="eco-product eco-market"><div className="eco-product-symbol"><Icon name={solution.icon} size={32} /></div><h3>{solution.name}</h3><p>{solution.description}</p>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta}<span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta}<span aria-hidden="true">↗</span></a>}</article>)}</div>
+        <SolutionsEcosystem />
       </section>
       <section id="como-funciona" className="eco-business eco-season-section">
         <div><h2>Crie sua loja.<br />Conheça na prática.</h2><p>Entre no Nori Gestão, cadastre seus produtos e compartilhe seu catálogo. Teste por 15 dias, sem cartão para começar.</p><ManagementLink className="eco-button">Começar meu teste grátis <Icon name="arrow" size={18} /></ManagementLink></div>
