@@ -26,7 +26,7 @@ export function Landing() {
     <GhostFlights />
     <a className="skip-link" href="#eco-main">Pular para o conteúdo</a>
     <header className="eco-header">
-      <a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo-transparent.png`} alt="" /><span>Nori<span>Eco</span></span></a>
+      <a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" /><span>Nori<span>Eco</span></span></a>
       <nav aria-label="Navegação institucional"><a href="#solucoes">Soluções</a><a href="#como-funciona">Como começar</a><ManagementLink>Acessar gestão ↗</ManagementLink></nav>
       <div className="eco-header-actions">
         <button className="eco-light-switch" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} title={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} aria-pressed={theme === 'light'}>

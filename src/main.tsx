@@ -150,7 +150,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
       <header className="header">
         <div className="header-inner">
           <Link className="brand" href="/" aria-label="NoriEco início">
-            <img src={`${import.meta.env.BASE_URL}nori-logo-transparent.png`} alt="" />
+            <img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" />
             <strong>
               Nori<span>Eco</span>
             </strong>
