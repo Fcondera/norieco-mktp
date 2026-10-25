@@ -80,10 +80,7 @@ export function HeroCarousel() {
         </div>
       </div></div>
     </div>)}
-    <div className="eco-carousel-controls"><div className="eco-carousel-pagination" role="group" aria-label="Escolher slide">{slides.map((slide, position) => <button key={slide.key} type="button" aria-label={`Ir para slide ${position + 1}: ${slide.label}`} aria-current={index === position ? "true" : undefined} onClick={() => select(position)}><span className={index === position ? "is-active" : ""} /></button>)}</div>
-      <div className="eco-carousel-actions"><span aria-hidden="true" className="eco-slide-count">{String(index+1).padStart(2,"0")} / {String(slides.length).padStart(2,"0")}</span><button type="button" aria-label="Slide anterior" onClick={() => select(index - 1)}>←</button><button type="button" aria-label="Próximo slide" onClick={() => select(index + 1)}>→</button>{!reduced && <button type="button" aria-label={stopped ? "Ativar reprodução automática" : "Pausar reprodução automática"} aria-pressed={stopped} onClick={() => setStopped(value => !value)}>{stopped ? "▶" : "Ⅱ"}</button>}</div>
-    </div>
-    {!reduced && <div className="eco-carousel-progress" aria-hidden="true"><span key={`${index}-${cycle}`} style={{ animationPlayState: paused ? "paused" : "running" }} /></div>}
+    {!reduced && <button type="button" className="sr-only eco-carousel-pause" aria-label={stopped ? "Ativar reprodução automática" : "Pausar reprodução automática"} aria-pressed={stopped} onClick={() => setStopped(value => !value)}>{stopped ? "Retomar banner" : "Pausar banner"}</button>}
     <span className="sr-only" role="status" aria-live="polite">{announcement}</span>
   </section>;
 }
