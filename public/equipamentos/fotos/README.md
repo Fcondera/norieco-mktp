@@ -1,5 +1,17 @@
 # Fotos reais do PDV completo
 
+Fotos fornecidas pelo usuário em `C:\Users\maric\Downloads\pdvnorico`, copiadas
+sem edição e com os arquivos originais preservados:
+
+- `pdv.completo.webp` → `kit-computador.webp` (foto principal).
+- `cpu.info.webp` → `computador-conexoes.webp`.
+- `cpu.webp` → `gabinete-dimensoes.webp`.
+- `mause=cpu.webp` → `teclado-mouse.webp`.
+- `traseira.cpu.webp` → `monitor-conexoes.webp` (a imagem mostra as conexões do monitor).
+
+A impressora integra o kit NoriEco conforme orientação do usuário, mas nenhuma
+foto dela foi fornecida nesta pasta. As imagens são do kit do fornecedor.
+
 Adicione aqui fotos JPG, PNG ou WebP do kit e liste os arquivos em
 `public/equipamentos/pdv-completo.json`, por exemplo:
 

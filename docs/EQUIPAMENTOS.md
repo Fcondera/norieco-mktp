@@ -2,11 +2,24 @@
 
 O card abaixo do ecossistema abre `/equipamentos/pdv-completo`.
 O botão **Comprar kit** abre `/equipamentos/pdv-completo/checkout`.
-Produto: computador Intel Core i3, 4 GB de RAM, monitor, teclado, mouse e
-impressora. Valor dos equipamentos: R$ 1.650,00. Não foram presumidos marca,
-geração, armazenamento, tamanho do monitor, modelo da impressora ou estoque.
+Produto: computador Intel E7400 (Dual Core), 4 GB de RAM, SSD 120 GB, monitor
+de 15 polegadas, teclado e mouse USB e impressora. Valor dos equipamentos:
+R$ 1.650,00. Garantia do fornecedor: 3 meses. Peso bruto informado: 8,1 kg
+do kit do fornecedor + 800 g da impressora = 8,9 kg no total. Conex?es:
+USB, ?udio, rede e v?deo. Bivolt. N?o foram presumidos marca/modelo dos
+perif?ricos, vers?o do sistema operacional ou estoque.
+
+O topo da p?gina usa galeria com miniaturas laterais, descri??o no centro e
+coluna de compra ? direita. O carrinho armazena apenas o identificador de um
+kit em sessionStorage; n?o reserva estoque ou confirma pagamento.
 
 ## Fotos
+
+As cinco imagens de `C:\Users\maric\Downloads\pdvnorico` já foram copiadas
+sem edição para a pasta pública e configuradas na galeria. A primeira foto
+também aparece no card da página principal. O arquivo `traseira.cpu.webp`
+mostra as conexões do monitor e foi identificado dessa forma na galeria.
+Não há foto da impressora nessa pasta.
 
 Adicione as fotos reais em `public/equipamentos/fotos/` e liste-as em
 `public/equipamentos/pdv-completo.json`. Há um exemplo em
@@ -42,6 +55,9 @@ Configure variáveis **privadas de Functions** na Netlify, sem prefixo VITE_:
   como simulação e são bloqueadas no ambiente de produção.
 - `HARDWARE_PACKAGES_JSON`: lista de caixas com `width`, `height`, `length`
   em cm, `weight` em kg e `insurance` em reais. O seguro total deve somar 1650.
+  O peso informado do conjunto com impressora é 8,9 kg. As medidas de
+  35 × 30 × 17 cm na foto são somente do gabinete; não representam a caixa
+  completa de transporte com monitor e impressora.
   Exemplo estrutural: `[{"width":LARGURA,"height":ALTURA,"length":COMPRIMENTO,"weight":PESO,"insurance":1650}]`.
 - `HARDWARE_FEES_CONFIRMED=true`: somente após definir todas as taxas extras.
 - `HARDWARE_FEES_JSON`: por exemplo `[]` para nenhuma taxa extra, ou

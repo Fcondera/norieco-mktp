@@ -13,8 +13,9 @@ try{
   await page.route('**/.netlify/functions/hardware-shipping',async r=>{const cep=JSON.parse(r.request().postData()).cep;await r.fulfill(cep==='99999999'?{status:422,json:{error:'CEP não encontrado. Confira o número informado.'}}:{json:quote});});
   await page.goto(base+'/');
   const card=page.locator('.hw-offer-card');assert.equal(await card.getAttribute('href'),'/equipamentos/pdv-completo');
-  await card.click();await page.waitForURL('**/equipamentos/pdv-completo');assert.equal(await page.locator('.hw-product-grid').count(),1);assert.match(await page.locator('.hw-price').textContent(),/1\.650,00/);
+  await card.click();await page.waitForURL('**/equipamentos/pdv-completo');assert.equal(await page.locator('.hw-product-grid').count(),1);assert.equal(await page.locator('.hw-overview-panel .hw-product-description').count(),1);assert.match(await page.locator('h1').textContent(),/Intel E7400/);assert.match(await page.locator('#ficha-kit').textContent(),/8.900 g/);assert.match(await page.locator('#ficha-kit').textContent(),/3 meses/);assert.match(await page.locator('.hw-price').textContent(),/1\.650,00/);
   assert.equal(await page.locator('.hw-thumbnails button').count(),5);await page.getByRole('button',{name:'Impressora',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Impressora',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'Adicionar ao carrinho',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Remover do carrinho',exact:true}).getAttribute('aria-pressed'),'true');await page.getByRole('button',{name:'Remover do carrinho',exact:true}).click();
   for(const theme of ['dark','light']){
    if(theme==='light')await page.locator('.eco-light-switch').click();
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`product overflows at ${width}`);
@@ -25,7 +26,7 @@ try{
   await page.getByRole('textbox',{name:'CEP de entrega',exact:true}).fill('99999999');await page.getByRole('button',{name:'Consultar',exact:true}).click();await page.getByRole('alert').waitFor();
   await page.getByRole('textbox',{name:'CEP de entrega',exact:true}).fill('01001000');await page.getByRole('button',{name:'Consultar',exact:true}).click();await page.getByRole('status').waitFor();
   assert.match(await page.locator('.hw-shipping-result').textContent(),/São Paulo/);
-  await page.getByRole('link',{name:/Comprar kit/}).click();await page.waitForURL('**/equipamentos/pdv-completo/checkout?cep=01001000');assert.equal(await page.getByRole('textbox',{name:'CEP de entrega',exact:true}).inputValue(),'01001-000');
+  await page.getByRole('link',{name:/Comprar agora/}).click();await page.waitForURL('**/equipamentos/pdv-completo/checkout?cep=01001000');assert.equal(await page.getByRole('textbox',{name:'CEP de entrega',exact:true}).inputValue(),'01001-000');
   await page.getByLabel('Nome completo',{exact:true}).fill('Cliente de Teste');await page.getByLabel('E-mail',{exact:true}).fill('cliente@example.com');await page.getByLabel('WhatsApp com DDD',{exact:true}).fill('11999999999');
   await page.getByRole('button',{name:'Consultar',exact:true}).click();await page.getByRole('status').waitFor();assert.equal(await page.getByLabel('Rua ou avenida',{exact:true}).inputValue(),'Praça da Sé');
   await page.getByLabel('Número',{exact:true}).fill('123');await page.getByRole('button',{name:/Revisar pedido/}).click();
@@ -44,5 +45,10 @@ try{
  await page.route('**/equipamentos/pdv-completo.json',r=>r.fulfill({json:{photos:[]}}));
  await page.route('**/.netlify/functions/hardware-shipping',r=>r.fulfill({json:{...quote,mode:'quoted',feesConfirmed:true,fees:[{label:'Embalagem',amountCents:1000}],options:[{id:'1',name:'PAC',company:'Correios',amountCents:8500,days:8}]}}));
  await page.goto(base+'/equipamentos/pdv-completo/checkout');await page.getByRole('textbox',{name:'CEP de entrega',exact:true}).fill('01001000');await page.getByRole('button',{name:'Consultar',exact:true}).click();await page.getByRole('radio').check();assert.match(await page.locator('.hw-summary-total').textContent(),/Total previsto/);assert.match(await page.locator('.hw-summary-total').textContent(),/1\.745,00/);await context.close();
- console.log('OK: landing card → product LP → checkout, photo placeholders, CEP validation, manual/carrier totals, review consent, WhatsApp summary, stale CEP invalidation, no PII storage, accessibility and no overflow at 1440/820/390/320px.');
+ const realContext=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),realPage=await realContext.newPage();
+ await realPage.goto(base+'/equipamentos/pdv-completo');await realPage.locator('.hw-gallery-main img').waitFor();await realPage.locator('.hw-gallery-main img').evaluate(image=>image.decode());
+ const config=await realPage.evaluate(async()=>fetch('/equipamentos/pdv-completo.json').then(r=>r.json()));assert.equal(await realPage.locator('.hw-thumbnails button').count(),config.photos.length);
+ await realPage.locator('.hw-thumbnails button').last().click();await realPage.locator('.hw-gallery-main img').evaluate(image=>image.decode());assert.equal(await realPage.locator('.hw-gallery-main img').getAttribute('src'),config.photos.at(-1).src);
+ assert(!await realPage.locator('main').textContent().then(text=>text.includes('Intel Core i3')));await realContext.close();
+ console.log('OK: landing card → product LP → checkout, real photos and placeholders, current E7400 specs, cart, CEP validation, manual/carrier totals, review consent, WhatsApp summary, stale CEP invalidation, no PII storage, accessibility and no overflow at 1440/820/390/320px.');
 }finally{await browser.close();}

@@ -1,3 +1,9 @@
 {
-  "photos": []
+  "photos": [
+    {"src":"/equipamentos/fotos/kit-computador.webp","alt":"Computador, monitor de 15 polegadas, teclado e mouse do kit NoriEco"},
+    {"src":"/equipamentos/fotos/computador-conexoes.webp","alt":"Gabinete do computador e informações das conexões USB"},
+    {"src":"/equipamentos/fotos/gabinete-dimensoes.webp","alt":"Gabinete do computador com dimensões indicadas pelo fornecedor"},
+    {"src":"/equipamentos/fotos/teclado-mouse.webp","alt":"Teclado e mouse USB que acompanham o computador"},
+    {"src":"/equipamentos/fotos/monitor-conexoes.webp","alt":"Conexões HDMI, VGA e alimentação na parte traseira do monitor"}
+  ]
 }
