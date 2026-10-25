@@ -1,32 +1,64 @@
-import {ManagementLink} from './management-link';
-import { HeroCarousel } from "./hero-carousel";
-import { useEffect } from "react";
-import { Link } from "./lib/router";
-import { Icon } from "./ui";
-import { contactLink } from "./lib/core.mjs";
+import { ManagementLink } from './management-link';
+import { HeroCarousel } from './hero-carousel';
+import { useEffect, useState } from 'react';
+import { Link } from './lib/router';
+import { Icon } from './ui';
+import { contactLink } from './lib/core.mjs';
+
+function Pumpkin({ className = '' }: { className?: string }) {
+  return <svg className={`eco-pumpkin ${className}`} viewBox="0 0 100 100" fill="none" aria-hidden="true" focusable="false">
+    <path d="M49 28c-3-12 6-19 15-17-7 4-8 11-7 18" fill="#799450" />
+    <path d="M51 31C19 12-3 50 13 76c8 14 24 17 38 12 16 6 33 1 39-13 14-30-8-61-39-44Z" fill="#ec7628" />
+    <ellipse cx="50" cy="59" rx="25" ry="32" fill="#fb9537" />
+    <ellipse cx="50" cy="59" rx="12" ry="32" fill="#ffad4c" />
+    <path d="m27 52 13-7 3 14Zm46 0-13-7-3 14ZM29 67l10 4 5-5 7 7 7-6 12 1c-8 18-32 20-41-1Z" fill="#3a2030" />
+    <path d="m49 60 4-7 4 8Z" fill="#3a2030" />
+  </svg>;
+}
 
 export function Landing() {
-  useEffect(() => { document.title = "NoriEco · PDV, catálogo online e marketplace regional"; }, []);
-  const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || "5547992739983";
-  const contact = (product = "soluções da NoriEco") => contactLink(phone, `Olá! Quero conhecer ${product} e solicitar uma proposta para minha empresa.`);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try { return localStorage.getItem('norieco-landing-theme') === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
+  });
+  useEffect(() => { document.title = 'NoriEco · Seu negócio conectado'; }, []);
+  useEffect(() => { try { localStorage.setItem('norieco-landing-theme', theme); } catch { /* Theme still works when storage is unavailable. */ } }, [theme]);
+  const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || '5547992739983';
+  const contact = (product = 'o Nori Gestão') => contactLink(phone, `Olá! Quero conhecer ${product}.`);
   const solutions = [
-    { number: "01", icon: "shop", name: "Nori Gestão", label: "PDV PARA SUA OPERAÇÃO", description: "Organize as vendas do balcão, pedidos, mesas e cozinha. Acompanhe produtos e estoque com o PDV conectado ao seu catálogo.", tags: ["PDV e vendas", "Estoque", "Mesas e cozinha"], cta: "Conhecer o PDV", message: "o PDV Nori Gestão" },
-    { number: "02", icon: "bag", name: "Catálogo online", label: "SUA LOJA RECEBENDO PEDIDOS", description: "Apresente seus produtos em um catálogo próprio, com carrinho e pedidos conectados ao Nori Gestão. Sua marca, seus produtos e sua operação no mesmo fluxo.", tags: ["Produtos", "Carrinho", "Pedidos integrados"], cta: "Conhecer o catálogo", message: "o catálogo online integrado ao Nori Gestão" },
-    { number: "03", icon: "pin", name: "Marketplace regional", label: "O COMÉRCIO DA SUA REGIÃO", description: "Encontre lojas, restaurantes, produtos e serviços da região. As empresas aprovadas aparecem no marketplace, e os catálogos integrados recebem pedidos pelo Nori Gestão.", tags: ["Comércio local", "Lojas", "Descoberta por cidade"], cta: "Explorar marketplace", message: "o marketplace regional NoriEco", href: "/marketplace" },
+    { icon: 'shop', name: 'Nori Gestão', label: 'NO BALCÃO', description: 'Vendas, mesas, cozinha e estoque no mesmo painel. Mais controle para você, menos correria para a equipe.', cta: 'Conhecer o PDV', message: 'o Nori Gestão' },
+    { icon: 'bag', name: 'Catálogo online', label: 'NA INTERNET', description: 'Sua marca, seu cardápio e um link para compartilhar. Os pedidos chegam direto ao seu painel.', cta: 'Conhecer o catálogo', message: 'o catálogo online' },
+    { icon: 'pin', name: 'Marketplace regional', label: 'NA SUA REGIÃO', description: 'Um lugar para descobrir lojas e serviços do Amazonas. Encontre uma empresa e conheça o catálogo dela.', cta: 'Explorar marketplace', href: '/marketplace' },
   ];
-  return <div className="eco-site">
+  return <div className="eco-site eco-halloween" data-theme={theme}>
     <a className="skip-link" href="#eco-main">Pular para o conteúdo</a>
-    <header className="eco-header"><a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo.png`} alt="" /><span>Nori<span>Eco</span></span></a>
-      <nav aria-label="Navegação institucional"><a href="#solucoes">Soluções</a><a href="#como-funciona">Como funciona</a><ManagementLink>Acessar gestão ↗</ManagementLink></nav>
-      <Link href="/" className="eco-button eco-small">Marketplace <Icon name="arrow" size={16} /></Link>
+    <header className="eco-header">
+      <a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo.png`} alt="" /><span>Nori<span>Eco</span></span></a>
+      <nav aria-label="Navegação institucional"><a href="#solucoes">Soluções</a><a href="#como-funciona">Como começar</a><ManagementLink>Acessar gestão ↗</ManagementLink></nav>
+      <div className="eco-header-actions">
+        <button className="eco-light-switch" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} title={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} aria-pressed={theme === 'light'}>
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">{theme === 'dark' ? <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></> : <path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z" />}</svg>
+        </button>
+        <Link href="/marketplace" className="eco-button eco-small">Marketplace <Icon name="arrow" size={16} /></Link>
+      </div>
     </header>
     <main id="eco-main">
-      <HeroCarousel />
-      <div className="eco-strip"><span>Sua venda conectada, do balcão à internet.</span><span><Icon name="shop" size={18} /> PDV</span><span><Icon name="bag" size={18} /> Catálogo online</span><span><Icon name="pin" size={18} /> Marketplace regional</span></div>
-      <section id="solucoes" className="eco-section"><div className="eco-section-intro"><span className="eco-kicker">SOLUÇÕES NORIECO</span><h2>Menos improviso.<br />Mais espaço para crescer.</h2><p>Escolha o que sua empresa precisa agora. Converse com a gente sobre implantação e condições.</p></div><div className="eco-products eco-solutions">{solutions.map((solution) => <article key={solution.number} className="eco-product eco-market"><span className="eco-product-number">{solution.number} / {solution.label}</span><div className="eco-product-symbol"><Icon name={solution.icon} size={36} /></div><h3>{solution.name}</h3><p>{solution.description}</p><div className="eco-tags">{solution.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta} <span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta} <span aria-hidden="true">↗</span></a>}</article>)}</div></section>
-      <section id="como-funciona" className="eco-business"><div><span className="eco-kicker">DO PRIMEIRO CONTATO À IMPLANTAÇÃO</span><h2>A solução começa<br />entendendo sua empresa.</h2><p>Cada negócio tem sua rotina. Conte o que você precisa organizar e receba uma proposta com escopo, implantação e condições de contratação.</p><a href={contact()} target="_blank" rel="noopener noreferrer" className="eco-button">Conversar com a equipe <Icon name="arrow" size={18} /></a></div><ol className="eco-steps"><li><span>01</span><div><h3>Conte o que precisa</h3><p>Explique sua operação e os desafios do dia a dia.</p></div></li><li><span>02</span><div><h3>Conheça sua proposta</h3><p>Alinhe as funcionalidades, o escopo e as condições.</p></div></li><li><span>03</span><div><h3>Prepare sua implantação</h3><p>Combine a configuração e a orientação para sua equipe.</p></div></li></ol></section>
-      <section className="eco-market-callout"><div><span className="eco-kicker">QUER COMPRAR NA SUA REGIÃO?</span><h2>O comércio local tem seu lugar.</h2><p>No marketplace NoriEco, descubra lojas, produtos e serviços. Explore sem cadastro e entre na sua conta quando quiser comprar.</p></div><Link href="/" className="eco-button">Conhecer o marketplace <Icon name="arrow" size={18} /></Link></section>
-      <section className="eco-contact"><span className="eco-kicker">VAMOS TIRAR SUA IDEIA DO PAPEL?</span><h2>Sua próxima etapa<br />pode começar aqui.</h2><ManagementLink className="eco-button">Criar loja e testar 15 dias grátis ↗</ManagementLink></section>
-    </main><footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>PDV, catálogo online e marketplace regional.</p></div><nav aria-label="Rodapé institucional"><a href="#solucoes">Soluções</a><Link href="/">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><small>© {new Date().getFullYear()} NoriEco.</small></footer>
+      <div className="eco-season-hero"><HeroCarousel /><Pumpkin className="eco-pumpkin-hero" /><span className="eco-season-star" aria-hidden="true">✧</span></div>
+      <section id="solucoes" className="eco-section eco-season-section">
+        <Pumpkin className="eco-pumpkin-left" />
+        <div className="eco-section-intro"><h2>Seu negócio inteiro.<br />Tudo mais simples.</h2><p>Gerencie a operação, receba pedidos e apareça para novos clientes.</p></div>
+        <div className="eco-products eco-solutions">{solutions.map(solution => <article key={solution.name} className="eco-product eco-market"><div className="eco-product-symbol"><Icon name={solution.icon} size={32} /></div><h3>{solution.name}</h3><p>{solution.description}</p>{solution.href ? <Link className="eco-product-link" href={solution.href}>{solution.cta}<span aria-hidden="true">↗</span></Link> : <a className="eco-product-link" href={contact(solution.message)} target="_blank" rel="noopener noreferrer">{solution.cta}<span aria-hidden="true">↗</span></a>}</article>)}</div>
+      </section>
+      <section id="como-funciona" className="eco-business eco-season-section">
+        <div><h2>Crie sua loja.<br />Conheça na prática.</h2><p>Entre no Nori Gestão, cadastre seus produtos e compartilhe seu catálogo. Teste por 15 dias, sem cartão para começar.</p><ManagementLink className="eco-button">Começar meu teste grátis <Icon name="arrow" size={18} /></ManagementLink></div>
+        <ol className="eco-steps"><li><span>01</span><div><h3>Crie sua conta</h3><p>Entre com Google e cadastre sua empresa.</p></div></li><li><span>02</span><div><h3>Deixe a loja do seu jeito</h3><p>Adicione a logo, os produtos e os preços.</p></div></li><li><span>03</span><div><h3>Comece a vender</h3><p>Use o PDV e compartilhe o link do catálogo.</p></div></li></ol>
+        <Pumpkin className="eco-pumpkin-right" />
+      </section>
+      <section className="eco-plan eco-season-section" aria-labelledby="eco-plan-title">
+        <div className="eco-plan-copy"><h2 id="eco-plan-title">Mais controle.<br />Sem complicar.</h2><p>PDV, catálogo online e todos os módulos do Nori Gestão.</p></div>
+        <div className="eco-plan-price"><p><strong>R$ 197</strong><span>/mês</span></p><span>15 dias grátis. A contratação é feita por você.</span><ManagementLink className="eco-button">Criar minha loja <Icon name="arrow" size={18} /></ManagementLink><a className="eco-plan-help" href={contact()} target="_blank" rel="noopener noreferrer">Ficou com dúvida? Fale com a gente ↗</a></div>
+        <Pumpkin className="eco-pumpkin-plan" />
+      </section>
+    </main>
+    <footer className="eco-footer"><div><a className="eco-brand" href="/">Nori<span>Eco</span></a><p>Seu negócio conectado. Do balcão ao Amazonas.</p></div><nav aria-label="Rodapé institucional"><Link href="/marketplace">Marketplace</Link><ManagementLink>Nori Gestão</ManagementLink><Link href="/privacidade">Privacidade</Link><Link href="/termos">Termos</Link><a href={contact()} target="_blank" rel="noopener noreferrer">Contato</a></nav><small>© {new Date().getFullYear()} NoriEco.<span className="eco-footer-pumpkin" aria-hidden="true"><Pumpkin /></span></small></footer>
   </div>;
 }

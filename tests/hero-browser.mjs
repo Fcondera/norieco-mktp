@@ -36,7 +36,7 @@ try {
       const active=hero.locator('.eco-slide.is-active');
       const primary=active.locator('.eco-slide-actions a').first();
       const href=await primary.getAttribute('href');
-      assert.equal(href,i===2?'/marketplace':'#solucoes');
+      assert.equal(href,i===2?'/marketplace':i===0?'#como-funciona':'#solucoes');
       if(href.startsWith('#')) assert.equal(await page.locator(href).count(),1);
       const contact=new URL(await active.locator('.eco-slide-secondary').getAttribute('href'));
       assert.equal(contact.hostname,'wa.me');assert.equal(contact.pathname,'/5547992739983');

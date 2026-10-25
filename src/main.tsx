@@ -15,6 +15,7 @@ import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
 import "./landing.css";
 import "./marketplace-home.css";
+import "./landing-season.css";
 function Site() {
   const path = useLocation().split("?")[0];
   const storeSlug = publicStoreSlug(path);

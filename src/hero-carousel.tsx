@@ -5,9 +5,9 @@ import "./hero-carousel.css";
 
 const INTERVAL = 6000;
 const slides = [
-  { key: "gestao", label: "PDV NORI GESTÃO", title: "Seu negócio mais organizado, do caixa ao estoque.", description: "Controle vendas, pedidos, produtos, mesas e cozinha em um só sistema, conectado ao catálogo online da sua empresa.", primary: "Conhecer o PDV", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o PDV Nori Gestão para organizar as vendas e o estoque da minha empresa." },
-  { key: "catalogo", label: "CATÁLOGO ONLINE", title: "Seus produtos online. Seus pedidos no PDV.", description: "Um catálogo com a sua marca, produtos e carrinho. Receba os pedidos diretamente no Nori Gestão e acompanhe sua operação em um só lugar.", primary: "Conhecer o catálogo", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o catálogo online com carrinho e pedidos integrados ao Nori Gestão." },
-  { key: "marketplace", label: "MARKETPLACE NORIECO", title: "O comércio da sua região, em um só lugar.", description: "Descubra lojas, restaurantes, produtos e serviços perto de você. Os catálogos integrados ao Nori Gestão também aparecem no marketplace regional.", primary: "Explorar Marketplace", href: "/marketplace", secondary: "Quero divulgar minha loja", message: "Olá! Quero divulgar minha loja no marketplace regional NoriEco. Como faço para participar?" },
+  { key: "gestao", label: "PDV NORI GESTÃO", title: "Menos correria. Mais controle do seu negócio.", description: "Caixa, pedidos, mesas e estoque conectados. Cuide da operação em um só lugar e ganhe tempo para atender melhor.", primary: "Ver como funciona", href: "#como-funciona", secondary: "Tirar uma dúvida", message: "Olá! Quero conhecer o Nori Gestão e o teste de 15 dias." },
+  { key: "catalogo", label: "CATÁLOGO ONLINE", title: "Sua loja aberta para novos pedidos.", description: "Compartilhe seu catálogo com a sua marca. Seu cliente escolhe, faz o pedido e você acompanha tudo no Nori Gestão.", primary: "Conhecer o catálogo", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o catálogo online integrado ao Nori Gestão." },
+  { key: "marketplace", label: "MARKETPLACE NORIECO", title: "O próximo achado está perto de você.", description: "Descubra lojas, restaurantes e serviços do Amazonas. Explore à vontade, sem precisar entrar na conta.", primary: "Explorar Marketplace", href: "/marketplace", secondary: "Quero divulgar minha loja", message: "Olá! Quero divulgar minha loja no marketplace NoriEco." },
 ];
 
 export function HeroCarousel() {
@@ -73,7 +73,7 @@ export function HeroCarousel() {
       <img className="eco-slide-image" src={`${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg`} srcSet={`${import.meta.env.BASE_URL}hero/${slide.key}-800.jpg 800w, ${import.meta.env.BASE_URL}hero/${slide.key}-1600.jpg 1600w`} sizes="100vw" width="1600" height="900" alt="" decoding="async" loading={position === 0 ? "eager" : "lazy"} fetchPriority={position === 0 ? "high" : "low"} />
       <div className="eco-slide-shade" />
       <div className="eco-slide-inner"><div className="eco-slide-copy">
-        <span className="eco-slide-label">{slide.label}</span>
+
         <h1>{slide.title}</h1><p>{slide.description}</p>
         <div className="eco-slide-actions">{slide.href.startsWith("/") ? <Link href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↗</span></Link> : <a href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↓</span></a>}
           <a className="eco-button eco-slide-secondary" href={contactLink(phone, slide.message)} target="_blank" rel="noopener noreferrer">{slide.secondary}<span aria-hidden="true">↗</span></a>
