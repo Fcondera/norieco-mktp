@@ -1,7 +1,8 @@
 import { ManagementLink } from './management-link';
 import { HeroCarousel } from './hero-carousel';
 import { GhostFlights } from './ghost-flights';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import {useSiteTheme, ThemeToggle} from './site-theme';
 import { Link } from './lib/router';
 import { Icon } from './ui';
 import { contactLink } from './lib/core.mjs';
@@ -10,11 +11,8 @@ function Ghost({ className = '' }: { className?: string }) {
   return <img className={`eco-ghost ${className}`} src={`${import.meta.env.BASE_URL}halloween/ghost-3d.webp`} width="280" height="280" alt="" aria-hidden="true" loading="lazy" decoding="async" />;
 }
 export function Landing() {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    try { return localStorage.getItem('norieco-landing-theme') === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
-  });
+  const {theme, toggle} = useSiteTheme();
   useEffect(() => { document.title = 'NoriEco · Seu negócio conectado'; }, []);
-  useEffect(() => { try { localStorage.setItem('norieco-landing-theme', theme); } catch { /* Theme still works when storage is unavailable. */ } }, [theme]);
   const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || '5547992739983';
   const contact = (product = 'o Nori Gestão') => contactLink(phone, `Olá! Quero conhecer ${product}.`);
   const solutions = [
@@ -29,9 +27,7 @@ export function Landing() {
       <a className="eco-brand" href="/" aria-label="NoriEco início"><img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" /><span>Nori<span>Eco</span></span></a>
       <nav aria-label="Navegação institucional"><a href="#solucoes">Soluções</a><a href="#como-funciona">Como começar</a><ManagementLink>Acessar gestão ↗</ManagementLink></nav>
       <div className="eco-header-actions">
-        <button className="eco-light-switch" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} title={theme === 'dark' ? 'Acender as luzes' : 'Apagar as luzes'} aria-pressed={theme === 'light'}>
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">{theme === 'dark' ? <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></> : <path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z" />}</svg>
-        </button>
+        <ThemeToggle theme={theme} toggle={toggle}/>
         <Link href="/marketplace" className="eco-button eco-small">Marketplace <Icon name="arrow" size={16} /></Link>
       </div>
     </header>

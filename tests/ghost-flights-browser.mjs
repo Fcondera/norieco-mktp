@@ -30,6 +30,9 @@ try {
   const next=await page.locator('.eco-flying-ghost').first().evaluate(g=>g.getAnimations()[0].effect.getKeyframes().map(k=>k.transform));
   assert.notDeepEqual(path.frames,next,'A new flight should get a fresh random path');
   await page.locator('.eco-header').getByRole('link',{name:'Marketplace',exact:true}).click();
+  assert.equal(await page.locator('.eco-site').count(),0);
+  await page.locator('.marketplace-site .eco-ghost-flights').waitFor();
+  await page.locator('.marketplace-footer').getByRole('link',{name:'Termos de uso',exact:true}).click();
   assert.equal(await page.locator('.eco-ghost-flights').count(),0);
   assert.deepEqual(errors,[]);
   await context.close();

@@ -6,12 +6,12 @@ import { ManagementLink } from "./management-link";
 const support = () => contactLink(import.meta.env.VITE_SUPPORT_WHATSAPP || "5547992739983", "Olá! Preciso de ajuda com o marketplace NoriEco.");
 export function MarketplaceFooter() {
   return <footer className="marketplace-footer"><div className="container"><div className="mkt-footer-grid">
-    <div className="mkt-footer-brand"><Link href="/" className="brand"><img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" /><strong>Nori<span>Eco</span></strong></Link><p>Lojas, produtos, serviços e experiências. O comércio da sua cidade, mais perto de você.</p><a href={support()} target="_blank" rel="noopener noreferrer" className="mkt-support-icon" aria-label="Falar com o suporte no WhatsApp"><Icon name="message" size={20} /></a></div>
+    <div className="mkt-footer-brand"><Link href="/" className="brand"><img src={`${import.meta.env.BASE_URL}nori-logo-official.png`} alt="" /><strong>Nori<span>Eco</span></strong></Link><p>Lojas e serviços do Amazonas.</p><a href={support()} target="_blank" rel="noopener noreferrer" className="mkt-support-icon" aria-label="Falar com o suporte no WhatsApp"><Icon name="message" size={20} /></a></div>
     <nav aria-label="Acesso rápido"><h2>Acesso rápido</h2><Link href="/">Início</Link><Link href="/">Lojas e categorias</Link><Link href="/carrinho">Carrinho</Link><Link href="/ajuda">Como funciona</Link><a href="/">Ecossistema NoriEco</a></nav>
-    <nav aria-label="Nori Gestão"><h2>Nori Gestão</h2><ManagementLink>Abrir Nori Gestão</ManagementLink><ManagementLink>Criar loja · 15 dias grátis</ManagementLink><Link href="/conta/compras">Minhas compras</Link><Link href="/conta/pedidos">Meus pedidos</Link></nav>
-    <nav aria-label="Suporte"><h2>Suporte</h2><Link href="/ajuda">Central de ajuda</Link><Link href="/ajuda">Perguntas frequentes</Link><a href={support()} target="_blank" rel="noopener noreferrer">Fale com a NoriEco ↗</a></nav>
+    <nav aria-label="Nori Gestão"><h2>Nori Gestão</h2><ManagementLink>Abrir Nori Gestão</ManagementLink><ManagementLink>Criar loja · 15 dias grátis</ManagementLink><Link href="/conta/pedidos">Meus pedidos</Link></nav>
+    <nav aria-label="Suporte"><h2>Suporte</h2><Link href="/ajuda">Central de ajuda</Link><a href={support()} target="_blank" rel="noopener noreferrer">Fale com a NoriEco ↗</a></nav>
     <nav aria-label="Informações legais"><h2>Legal</h2><Link href="/termos">Termos de uso</Link><Link href="/privacidade">Política de privacidade</Link><Link href="/ajuda">Compras e cancelamentos</Link></nav>
-  </div><div className="mkt-footer-bottom"><p>Dúvidas sobre a plataforma ou privacidade? <a href={support()} target="_blank" rel="noopener noreferrer">Fale com a NoriEco.</a></p><small>© {new Date().getFullYear()} NoriEco. Conectando o comércio local no Amazonas.</small></div></div></footer>;
+  </div><div className="mkt-footer-bottom"><small>© {new Date().getFullYear()} NoriEco. Conectando o comércio local no Amazonas.</small></div></div></footer>;
 }
 export function MarketplaceHelp() {
   return <section className="narrow mkt-help"><span className="eyebrow">AJUDA NORIECO</span><h1>Compre perto. Entenda cada etapa.</h1><p>Informações para descobrir lojas, comprar e vender no marketplace.</p>{[

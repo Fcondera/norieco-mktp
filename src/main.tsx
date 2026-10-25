@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
 import { Link, usePath, useLocation, navigate } from "./lib/router";
 import { Landing } from "./landing";
+import {GhostFlights} from './ghost-flights';
+import {useSiteTheme, ThemeToggle} from './site-theme';
 import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
@@ -17,6 +19,7 @@ import "./landing.css";
 import "./marketplace-home.css";
 import "./landing-season.css";
 import "./halloween-3d.css";
+import "./marketplace-season.css";
 function Site() {
   const path = useLocation().split("?")[0];
   const storeSlug = publicStoreSlug(path);
@@ -67,6 +70,7 @@ function Protected({
   return children;
 }
 function App({publicSlug}:{publicSlug?:string|null}) {
+  const {theme, toggle} = useSiteTheme();
   const pathWithQuery = usePath(),
     path = pathWithQuery.split("?")[0];
   const { user, profile, cart, total, authLoading } = useApp();
@@ -143,7 +147,8 @@ function App({publicSlug}:{publicSlug?:string|null}) {
       </Empty>
     );
   return (
-    <>
+    <div className="marketplace-site" data-theme={theme}>
+      {path==='/' && !publicSlug && <GhostFlights/>}
       <a className="skip-link" href="#main">
         Pular para o conteúdo
       </a>
@@ -174,6 +179,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
             <span>{city || "Todo o Amazonas"}</span>
             <span aria-hidden="true">⌄</span>
           </button>
+          <ThemeToggle theme={theme} toggle={toggle}/>
           <ManagementLink className="header-login" ariaLabel="Acessar Nori Gestão">
             {safeImage(profile?.avatar_url || "") ? (
               <img
@@ -286,7 +292,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           Gestão
         </ManagementLink>
       </nav>
-    </>
+    </div>
   );
 }
 function VisitorAccount() {

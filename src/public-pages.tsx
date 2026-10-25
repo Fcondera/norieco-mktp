@@ -75,18 +75,12 @@ export function Home({
   const discovery = discoverySections(rows);
   const section = (
     title: string,
-    description: string,
     list: Business[],
-    icon: string,
   ) =>
     list.length ? (
       <section className="home-section">
         <div className="section-heading">
           <div>
-            <span className={`eyebrow ${icon}`}>
-              <Icon name={icon} size={18} />
-              {description}
-            </span>
             <h2>{title}</h2>
           </div>
         </div>
@@ -101,13 +95,12 @@ export function Home({
     <div className="mkt-home">
       <section className="intro mkt-hero">
         <div className="intro-copy">
-          <span className="eyebrow">COMPRE LOCAL. VALORIZE QUEM É DAQUI.</span>
           <h1>
             Tudo o que você procura
-            <br />
+            <br />{' '}
             <span>no comércio da sua cidade</span>
           </h1>
-          <p>Lojas, sabores, serviços e experiências em um só lugar.</p>
+          <p>Encontre lojas, restaurantes e serviços do Amazonas.</p>
           <form className="hero-search" role="search" onSubmit={(event) => {
             event.preventDefault();
             document.getElementById("resultados")?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? "instant" : "smooth" });
@@ -129,21 +122,17 @@ export function Home({
               Buscar
             </button>
           </form>
-          <small>
-            <Icon name="pin" size={15} />
-            {city || "Explore todas as cidades do Amazonas"}
-          </small>
-          <Link className="mkt-how" href="/ajuda">Como funciona o marketplace <Icon name="arrow" size={14} /></Link>
         </div>
-        <div className="intro-art">
+        <div className="intro-art" aria-hidden="true">
           <img
-            src={`${import.meta.env.BASE_URL}nori-logo-official.png`}
-            alt="NoriEco — descubra o que está perto"
+            src={`${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp`}
+            srcSet={`${import.meta.env.BASE_URL}halloween/scene-3d-700.webp 700w, ${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp 1200w`}
+            sizes="(max-width: 760px) 100vw, 50vw"
+            width="1200" height="800" alt="" decoding="async" fetchPriority="high"
           />
-          <span>Da nossa região. Para o seu dia.</span>
         </div>
       </section>
-      <div className="mkt-category-title"><h2>Categorias da sua cidade</h2><p>Da refeição de hoje ao serviço que você precisa.</p></div>
+      <div className="mkt-category-title"><h2>Categorias</h2></div>
       <nav className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}
@@ -207,21 +196,20 @@ export function Home({
           </section>
         ) : (
           <>
-            {section("Em destaque", "UMA VITRINE DO COMÉRCIO LOCAL", discovery.featured, "star")}
+            {section("Em destaque", discovery.featured)}
             <section className="home-section mkt-ranking">
-              <div className="section-heading"><div><span className="eyebrow"><Icon name="star" size={18} /> QUEM MOVIMENTA A REGIÃO</span><h2>Top 3 vendedores</h2><p>Os mais avaliados entre as lojas desta seleção. A ordem considera a quantidade de avaliações publicadas.</p></div></div>
+              <div className="section-heading"><div><h2>Top 3 vendedores</h2><p>Por avaliações publicadas.</p></div></div>
               {discovery.topReviewed.length ? <div className="mkt-podium">{discovery.topReviewed.map((b,i) => <Link key={b.id} href={`/loja/${b.slug}`} className="mkt-rank-card"><span className="mkt-rank-number">{String(i+1).padStart(2,"0")}</span><Photo src={b.logo_url} alt={b.name} /><div><h3>{b.name}</h3><p>{b.category_name} · {b.city}</p><span className="mkt-rating"><Icon name="star" size={14} /> {Number(b.rating).toFixed(1)} <small>· {b.review_count} avaliações</small></span></div><Icon name="arrow" size={17} /></Link>)}</div> : <p className="mkt-pending">O ranking aparece quando as lojas receberem avaliações publicadas.</p>}
             </section>
-            {section("Melhores lojas", "MAIORES NOTAS NESTA SELEÇÃO · DESEMPATE POR AVALIAÇÕES", discovery.bestRated, "check")}
-            {section("Explore as lojas", city || "COMPRE DE QUEM ESTÁ PERTO", rows, "shop")}
+            {section("Melhores lojas", discovery.bestRated)}
+            {section("Explore as lojas", rows)}
           </>
         )}
       </div>
       <section className="business-cta">
         <div>
-          <span className="eyebrow">SEU NEGÓCIO TEM LUGAR AQUI</span>
-          <h2>Mais gente descobrindo o que você faz.</h2>
-          <p>Cadastre sua empresa e conecte-se com clientes da sua região.</p>
+          <h2>Sua loja pode estar aqui.</h2>
+          <p>Crie sua loja e teste o Nori Gestão por 15 dias.</p>
         </div>
         <Link className="button primary" href="/cadastrar-empresa">
           Cadastrar minha empresa
