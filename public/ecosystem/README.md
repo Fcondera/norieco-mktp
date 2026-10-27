@@ -1,5 +1,20 @@
 # NoriEco realistic 3D ecosystem artwork
 
+## Current artwork — supplied by the user, 2026-10-27
+
+The three active illustrations were supplied in `C:\Users\maric\Downloads\norieco`:
+
+- `Estação PDV Nori com impressora.png` → `gestao-nori-3d-{420,700}.webp`.
+- `Catálogo online em smartphone premium.png` → `catalogo-nori-3d-{420,700}.webp`.
+- `Rede luminosa pelo mapa do Brasil.png` → `marketplace-brasil-nori-3d-{420,700}.webp`.
+
+Only resized and exported as WebP (quality .90), retaining transparency and the
+full image composition. No content was generated or retouched. Source PNGs are
+unchanged in the supplied folder. The responsive cards, links and animations
+remain the same. Previous artwork below is retained as an archive.
+
+## Previous artwork
+
 Created with the built-in image_gen tool, transparent background enabled, one
 generation per subject. These are illustrative product renders, not screenshots
 of customer installations. The Amazonas diorama is not a geographic map.

@@ -44,9 +44,9 @@ export function SolutionsEcosystem() {
   }
   const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || '5547992739983';
   const solutions = [
-    { name: 'Gestão', description: 'Vendas, mesas, cozinha e estoque no mesmo painel. Mais controle para você, menos correria para a equipe.', cta: 'Conhecer o sistema', message: 'o Nori Gestão', illustration: <ProductRender asset="gestao" kind="pos" /> },
-    { name: 'Catálogo online', description: 'Sua marca, seu cardápio e um link para compartilhar. Os pedidos chegam direto ao seu painel.', cta: 'Conhecer o catálogo', message: 'o catálogo online', illustration: <ProductRender asset="catalogo" kind="phone" /> },
-    { name: 'Marketplace regional', description: 'Um lugar para descobrir lojas e serviços do Amazonas. Encontre uma empresa e conheça o catálogo dela.', cta: 'Explorar marketplace', href: '/marketplace', illustration: <ProductRender asset="marketplace-brasil" kind="map" /> },
+    { name: 'Gestão', description: 'Vendas, mesas, cozinha e estoque no mesmo painel. Mais controle para você, menos correria para a equipe.', cta: 'Conhecer o sistema', message: 'o Nori Gestão', illustration: <ProductRender asset="gestao-nori" kind="pos" /> },
+    { name: 'Catálogo online', description: 'Sua marca, seu cardápio e um link para compartilhar. Os pedidos chegam direto ao seu painel.', cta: 'Conhecer o catálogo', message: 'o catálogo online', illustration: <ProductRender asset="catalogo-nori" kind="phone" /> },
+    { name: 'Marketplace regional', description: 'Um lugar para descobrir lojas e serviços do Amazonas. Encontre uma empresa e conheça o catálogo dela.', cta: 'Explorar marketplace', href: '/marketplace', illustration: <ProductRender asset="marketplace-brasil-nori" kind="map" /> },
   ];
   return <div className="ecosystem-solutions" ref={section}>
     <div className="eco-products eco-solutions ecosystem-cards">
