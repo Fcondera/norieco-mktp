@@ -11,7 +11,7 @@ try {
   await page.goto(process.env.TEST_BASE_URL || 'http://127.0.0.1:5174');
   await page.locator('.eco-site[data-theme=dark]').waitFor();
   await page.locator('.eco-slide.is-active .eco-slide-image').evaluate(image=>image.decode());
-  assert.match(await page.locator('.eco-slide.is-active .eco-slide-image').getAttribute('src'),/halloween\/scene-3d/);
+  assert.match(await page.locator('.eco-slide.is-active .eco-slide-image').getAttribute('src'),/hero\/nori-estudio/);
   assert.equal(await page.locator('.eco-ghost').first().evaluate(image=>getComputedStyle(image).animationName),'none');
   await page.getByRole('button',{name:'Acender as luzes'}).click();
   await page.locator('.eco-site[data-theme=light]').waitFor();
@@ -25,7 +25,7 @@ try {
   assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(21, 17, 28)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   await page.screenshot({path:`test-results/landing-dark-${width}.png`,fullPage:true});
-  assert.equal(await page.locator('.eco-ghost[aria-hidden=true]').count(),5);
+  assert.equal(await page.locator('.eco-ghost').count(),5);
   assert.deepEqual(errors,[]);
   await context.close();
  }

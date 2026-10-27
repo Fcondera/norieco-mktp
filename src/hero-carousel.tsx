@@ -4,11 +4,15 @@ import { contactLink } from "./lib/core.mjs";
 import "./hero-carousel.css";
 
 const INTERVAL = 6000;
-const slides = [
-  { key: "gestao", label: "PDV NORI GESTÃO", title: "Menos correria. Mais controle do seu negócio.", description: "Caixa, pedidos, mesas e estoque conectados. Cuide da operação em um só lugar e ganhe tempo para atender melhor.", primary: "Ver como funciona", href: "#como-funciona", secondary: "Tirar uma dúvida", message: "Olá! Quero conhecer o Nori Gestão e o teste de 15 dias." },
-  { key: "catalogo", label: "CATÁLOGO ONLINE", title: "Sua loja aberta para novos pedidos.", description: "Compartilhe seu catálogo com a sua marca. Seu cliente escolhe, faz o pedido e você acompanha tudo no Nori Gestão.", primary: "Conhecer o catálogo", href: "#solucoes", secondary: "Falar com a equipe", message: "Olá! Quero conhecer o catálogo online integrado ao Nori Gestão." },
-  { key: "marketplace", label: "MARKETPLACE NORIECO", title: "O próximo achado está perto de você.", description: "Descubra lojas, restaurantes e serviços do Amazonas. Explore à vontade, sem precisar entrar na conta.", primary: "Explorar Marketplace", href: "/marketplace", secondary: "Quero divulgar minha loja", message: "Olá! Quero divulgar minha loja no marketplace NoriEco." },
-];
+import { heroCampaigns as slides, type HeroCampaign } from './hero-campaigns';
+
+function CampaignImage({slide, position}: {slide: HeroCampaign; position: number}) {
+  const base = import.meta.env.BASE_URL + 'hero/' + slide.asset + '-';
+  return <img className="eco-slide-image" src={base + '1600.webp'}
+    srcSet={`${base}800.webp 800w, ${base}1600.webp 1600w, ${base}1960.webp 1960w`}
+    sizes="100vw" width={slide.width} height={slide.height} alt="" decoding="async"
+    loading={position === 0 ? 'eager' : 'lazy'} fetchPriority={position === 0 ? 'high' : 'low'} />;
+}
 
 export function HeroCarousel() {
   const [{ index, cycle }, setSlide] = useState({ index: 0, cycle: 0 });
@@ -55,7 +59,7 @@ export function HeroCarousel() {
     };
   }, [index, cycle, paused, select]);
 
-  return <section className="eco-hero eco-carousel" aria-label="Soluções NoriEco" aria-roledescription="carrossel"
+  return <section className="eco-hero eco-carousel eco-campaign-carousel" aria-label="Soluções NoriEco" aria-roledescription="carrossel"
     onPointerEnter={event => { if (event.pointerType === "mouse") setHovered(true); }}
     onPointerLeave={() => setHovered(false)}
     onFocusCapture={() => setFocused(true)}
@@ -69,14 +73,14 @@ export function HeroCarousel() {
       const dx = event.clientX - start.x, dy = event.clientY - start.y;
       if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.25) select(index + (dx < 0 ? 1 : -1));
     }}>
-    {slides.map((slide, position) => <div key={slide.key} className={`eco-slide${index === position ? " is-active" : ""}`} role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${slides.length}: ${slide.label}`} aria-hidden={index !== position} inert={index !== position}>
-      <img className="eco-slide-image" src={`${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp`} srcSet={`${import.meta.env.BASE_URL}halloween/scene-3d-700.webp 700w, ${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp 1200w`} sizes="(max-width: 700px) 100vw, 65vw" width="1200" height="800" alt="" decoding="async" loading={position === 0 ? "eager" : "lazy"} fetchPriority={position === 0 ? "high" : "low"} />
+    {slides.map((slide, position) => <div key={slide.key} className={`eco-slide eco-campaign-${slide.layout}${index === position ? " is-active" : ""}`} role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${slides.length}: ${slide.label}`} aria-hidden={index !== position} inert={index !== position}>
+      {slide.layout === 'banner' ? <a className="eco-campaign-art" href={contactLink(phone, slide.message)} target="_blank" rel="noopener noreferrer" aria-label={slide.label}><CampaignImage slide={slide} position={position} /></a> : <CampaignImage slide={slide} position={position} />}
       <div className="eco-slide-shade" />
-      <div className="eco-slide-inner"><div className="eco-slide-copy">
+      <div className={`eco-slide-inner${slide.layout === "banner" ? " eco-campaign-caption" : ""}`}><div className="eco-slide-copy">
 
         <h1>{slide.title}</h1><p>{slide.description}</p>
-        <div className="eco-slide-actions">{slide.href.startsWith("/") ? <Link href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↗</span></Link> : <a href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↓</span></a>}
-          <a className="eco-button eco-slide-secondary" href={contactLink(phone, slide.message)} target="_blank" rel="noopener noreferrer">{slide.secondary}<span aria-hidden="true">↗</span></a>
+        <div className="eco-slide-actions">{slide.layout === "banner" ? <a className="eco-button" href={contactLink(phone, slide.message)} target="_blank" rel="noopener noreferrer">{slide.primary}<span aria-hidden="true">↗</span></a> : slide.href.startsWith("/") ? <Link href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↗</span></Link> : <a href={slide.href} className="eco-button">{slide.primary}<span aria-hidden="true">↓</span></a>}
+          {slide.layout === "scene" && <a className="eco-button eco-slide-secondary" href={contactLink(phone, slide.message)} target="_blank" rel="noopener noreferrer">{slide.secondary}<span aria-hidden="true">↗</span></a>}
         </div>
       </div></div>
     </div>)}

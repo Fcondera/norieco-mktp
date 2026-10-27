@@ -1,5 +1,24 @@
 # Hero photography
 
+## Active campaigns — user supplied, 2026-10-27
+
+Source folder: `C:\Users\maric\Downloads\norieco\hero`.
+
+- `Nori Gestão PDV em estúdio premium.png` → `nori-estudio-{800,1600,1960}.webp` (initial slide).
+- `Nori Gestão com 1 mês grátis.png` → `nori-assinatura-{800,1600,1960}.webp`.
+- `Ofertas Nori Gestão com PDV completo.png` → `nori-ofertas-{800,1600,1960}.webp`.
+
+The original composition, text and colors are preserved. Exports only resize
+and encode the supplied PNGs as WebP, quality .92. Original files remain unchanged.
+Desktop promotional slides show the full banner, without duplicate HTML text
+on top. Mobile captions repeat the main offer in readable HTML below the art.
+The text-free studio scene uses the HTML headline and existing CTA navigation.
+Autoplay, touch gestures, keyboard pause and the filling progress bar remain.
+Promotional banner links open the official WhatsApp for offer confirmation;
+this artwork update does not change trial durations or grant subscription access.
+
+## Archived photography
+
 Generated using the built-in image_gen tool, one original image per slide. Illustrative scenes, not screenshots or photographs of actual customers or product installations. Approved originals remain in Codex generated_images. These local responsive JPEG exports are the production assets; no remote image dependency.
 
 Current files: `gestao-{800,1600}.jpg`, `catalogo-{800,1600}.jpg`, `marketplace-{800,1600}.jpg`. JPEG quality 83. The workspace photograph originally generated as `sites` is reused as `catalogo`, illustrating the digital storefront rather than advertising site creation. Attendance photographs are no longer published.
