@@ -1,0 +1,13 @@
+.black-friday-banner{position:relative;isolation:isolate;background:var(--eco-bg,#fffdf7);overflow:hidden}
+.black-friday-ribbons{position:relative;display:block;height:128px;color:inherit;overflow:hidden;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.black-friday-tape{position:absolute;top:calc(50% - 21px);left:-80px;width:calc(100% + 160px);height:42px;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;box-shadow:0 4px 7px #00000024;transform-origin:center}
+.black-friday-tape--black{background:#141414;color:#fff;transform:rotate(-2.8deg);z-index:1;border-block:1px solid #3b3b3b}
+.black-friday-tape--yellow{background:#ffcb05;color:#111;transform:rotate(2.8deg);z-index:2;border-block:1px solid #e7ad00}
+.black-friday-repeat{display:flex;align-items:center;flex-shrink:0;gap:22px;width:max-content}
+.black-friday-wordmark{display:inline-flex;align-items:center;gap:14px;white-space:nowrap;flex-shrink:0}
+.black-friday-wordmark strong{font-family:Arial,Helvetica,sans-serif;font-size:25px;font-weight:900;line-height:1;letter-spacing:-.7px}
+.black-friday-wordmark i{font-family:Georgia,'Times New Roman',serif;font-size:16px;font-style:italic;font-weight:400;line-height:1;transform:rotate(-9deg)}
+.black-friday-ribbons:hover .black-friday-tape--yellow{background:#ffd52f}
+.black-friday-ribbons:focus-visible{outline:3px solid var(--eco-ink,#143a29);outline-offset:-5px;border-radius:2px}
+@media(min-width:1700px){.black-friday-ribbons{height:154px}}
+@media(max-width:700px){.black-friday-ribbons{height:104px}.black-friday-tape{height:34px;top:calc(50% - 17px)}.black-friday-tape--black{transform:rotate(-5deg)}.black-friday-tape--yellow{transform:rotate(5deg)}.black-friday-wordmark strong{font-size:21px}.black-friday-wordmark i{font-size:14px}.black-friday-repeat{gap:18px}.black-friday-wordmark{gap:12px}}

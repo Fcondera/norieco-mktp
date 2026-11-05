@@ -1,4 +1,5 @@
 import { contactLink } from './lib/core.mjs';
+import './black-friday-banner.css';
 
 export function ChristmasOrnament({ className = '' }: { className?: string }) {
   return <svg className={`christmas-ornament ${className}`} viewBox="0 0 100 126" fill="none" aria-hidden="true" focusable="false">
@@ -33,10 +34,13 @@ export function BlackFridayBanner() {
   const phone = import.meta.env.VITE_SUPPORT_WHATSAPP || '5547992739983';
   const href = contactLink(phone, 'Olá! Quero consultar as condições da Black Friday NoriEco para meu negócio.');
   return <aside className="black-friday-banner" aria-label="Black Friday NoriEco">
-    <div className="black-friday-inner">
-      <span className="black-friday-badge">BLACK <strong>FRIDAY</strong><span aria-hidden="true">↗</span></span>
-      <p>Seu próximo passo começa aqui.<span>Conheça o PDV e o Nori Gestão para o seu negócio.</span></p>
-      <a href={href} target="_blank" rel="noopener noreferrer">Consultar condições <span aria-hidden="true">↗</span></a>
-    </div>
+    <a className="black-friday-ribbons" href={href} target="_blank" rel="noopener noreferrer"
+      aria-label="Consultar condições da Black Friday NoriEco pelo WhatsApp">
+      {['black', 'yellow'].map(color => <div key={color} className={`black-friday-tape black-friday-tape--${color}`} aria-hidden="true">
+        <div className="black-friday-repeat">{Array.from({ length: 18 }, (_, index) =>
+          <span className="black-friday-wordmark" key={index}><strong>BLACK FRIDAY</strong><i>Sale</i></span>
+        )}</div>
+      </div>)}
+    </a>
   </aside>;
 }

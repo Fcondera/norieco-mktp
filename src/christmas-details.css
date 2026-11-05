@@ -23,33 +23,16 @@
 .christmas-greeting strong{font-family:Manrope,Arial,sans-serif;font-size:19px;font-weight:700;letter-spacing:-.5px}
 .christmas-greeting span{color:var(--muted);font-size:12px;line-height:1.5}
 .eco-footer .christmas-greeting{padding-bottom:0}
-.black-friday-banner{position:relative;background:#111713;color:#fff6e0;border-top:1px solid #7c694030;border-bottom:1px solid #af8c4745;isolation:isolate}
-.black-friday-banner::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 14% 0,#bb8d2223,transparent 50%);pointer-events:none}
-.black-friday-inner{max-width:1240px;margin:auto;padding:20px 48px;display:flex;align-items:center;gap:30px}
-.black-friday-badge{display:flex;align-items:center;gap:7px;font-family:Manrope,Arial,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.6px;white-space:nowrap;flex-shrink:0}
-.black-friday-badge strong{color:#f0cb83;font-weight:800}
-.black-friday-badge>span{margin-left:6px;color:#f0cb83;font-size:26px;font-weight:400}
-.black-friday-inner>p{margin:0!important;flex:1;font-size:14px!important;line-height:1.5!important;font-weight:600;color:#fff6e0!important}
-.black-friday-inner>p>span{display:block;font-size:12px;font-weight:400;color:#c5c9bd;margin-top:3px}
-.black-friday-inner>a{display:inline-flex;align-items:center;justify-content:center;gap:16px;border:1px solid #f0cb83;border-radius:7px;padding:12px 18px;color:#18271d;background:#f0cb83;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;min-height:44px}
-.black-friday-inner>a:hover{background:#ffe0a6;border-color:#ffe0a6}
-.black-friday-inner>a:focus-visible{outline:3px solid #fff;outline-offset:4px}
 .marketplace-site .mkt-hero .intro-art img{width:100%;margin:0;filter:drop-shadow(0 12px 28px #275b3c12)}
 .marketplace-site .mkt-home .intro h1 span{background-image:linear-gradient(110deg,#93dfb6,#edca86)}
 .marketplace-site[data-theme=light] .mkt-home .intro h1 span{background-image:linear-gradient(110deg,#216045,#92601e)}
 .marketplace-site .mkt-rank-card:first-child{background:radial-gradient(ellipse at 100% 0,#d0b77614,transparent 70%),var(--mkt-panel)}
 .marketplace-site .category-tile.selected,.marketplace-site .mkt-categories button.selected{border-color:var(--mkt-accent)}
 @keyframes christmas-glow{0%,100%{opacity:.6}50%{opacity:1}}
-@media(max-width:950px){.black-friday-inner{padding:18px 26px;gap:20px}.black-friday-badge{font-size:16px}.black-friday-inner>p{font-size:13px!important}}
 @media(max-width:700px){
-  .black-friday-inner{padding:19px 22px;display:grid;grid-template-columns:1fr auto;gap:9px 14px}
-  .black-friday-badge{font-size:17px;grid-column:1/-1}
-  .black-friday-inner>p{font-size:12px!important}.black-friday-inner>p>span{font-size:11px;max-width:240px}
-  .black-friday-inner>a{padding:10px 12px;font-size:11px;gap:8px;white-space:normal;text-align:center;max-width:140px}
   .christmas-ornament-hero{width:29px;right:10px}.christmas-ornament-left{width:30px;left:8px}
   .christmas-ornament-right{display:none}.christmas-ornament-plan{width:32px;right:12px}
   .christmas-greeting{justify-content:center;padding-bottom:24px}.christmas-greeting svg{width:44px;height:55px}
   .christmas-lights>span:nth-child(even){display:none}
 }
-@media(max-width:370px){.black-friday-inner{grid-template-columns:1fr}.black-friday-inner>a{max-width:none;justify-self:start;margin-top:5px}.black-friday-inner>p>span{max-width:none}}
 @media(prefers-reduced-motion:reduce){.christmas-lights>span{animation:none}}

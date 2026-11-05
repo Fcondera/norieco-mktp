@@ -13,7 +13,9 @@ claro/escuro continua compartilhada, e as luzes respeitam movimento reduzido.
 
 A faixa de Black Friday aparece somente na página institucional. O marketplace
 começa diretamente nas categorias, com pesquisa pelo cabeçalho, sem o bloco de
-apresentação com texto, árvore e busca duplicada. O botão da faixa abre o WhatsApp configurado para consultar condições;
+apresentação com texto, árvore e busca duplicada. A faixa usa fitas cruzadas
+amarelas e pretas com “BLACK FRIDAY” repetido, conforme a referência visual.
+As fitas são clicáveis e abrem o WhatsApp configurado para consultar condições;
 não anuncia percentual de desconto, prazo ou preço promocional novo. O texto e
 o contato ficam em `src/christmas-season.tsx`; a faixa não é inserida no checkout.
 Não há desligamento automático por data: remover/atualizar a campanha ao encerrá-la.
