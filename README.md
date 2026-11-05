@@ -4,6 +4,23 @@ Fonte oficial: https://github.com/Fcondera/norieco-mktp
 
 Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV e catálogos permanecem no repositório `vendapeixe`. Navegação e carrinho públicos; login ao comprar ou vender.
 
+## Campanha sazonal — Natal e Black Friday
+
+A página institucional e o marketplace usam a identidade de Natal em verde,
+dourado e vermelho, com luzes decorativas, enfeites e ilustração vetorial própria.
+Os componentes de Halloween não são mais carregados pelas páginas. A preferência
+claro/escuro continua compartilhada, e as luzes respeitam movimento reduzido.
+
+A faixa de Black Friday aparece na página institucional e na descoberta do
+marketplace. O botão abre o WhatsApp configurado para consultar condições;
+não anuncia percentual de desconto, prazo ou preço promocional novo. O texto e
+o contato ficam em `src/christmas-season.tsx`; a faixa não é inserida no checkout.
+Não há desligamento automático por data: remover/atualizar a campanha ao encerrá-la.
+
+Estilos: `src/christmas-theme.css`, `src/christmas-details.css` e
+`src/marketplace-season.css`. Ilustração: `public/christmas/marketplace-scene.svg`.
+As três artes comerciais existentes no carrossel foram preservadas.
+
 ## Divisão de endereços
 
 - `https://norieco.com.br/`: landing page institucional do ecossistema.

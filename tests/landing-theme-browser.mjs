@@ -12,22 +12,22 @@ try {
   await page.locator('.eco-site[data-theme=dark]').waitFor();
   await page.locator('.eco-slide.is-active .eco-slide-image').evaluate(image=>image.decode());
   assert.match(await page.locator('.eco-slide.is-active .eco-slide-image').getAttribute('src'),/hero\/nori-estudio/);
-  assert.equal(await page.locator('.eco-ghost').first().evaluate(image=>getComputedStyle(image).animationName),'none');
+  assert.equal(await page.locator('.christmas-ornament').first().evaluate(image=>getComputedStyle(image).animationName),'none');
   await page.getByRole('button',{name:'Acender as luzes'}).click();
   await page.locator('.eco-site[data-theme=light]').waitFor();
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(255, 252, 248)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(255, 253, 247)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   await page.screenshot({path:`test-results/landing-light-${width}.png`,fullPage:true});
   await page.reload();
   await page.locator('.eco-site[data-theme=light]').waitFor();
   await page.getByRole('button',{name:'Apagar as luzes'}).click();
   await page.locator('.eco-site[data-theme=dark]').waitFor();
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(21, 17, 28)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(11, 33, 25)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   await page.screenshot({path:`test-results/landing-dark-${width}.png`,fullPage:true});
-  assert.equal(await page.locator('.eco-ghost').count(),5);
+  assert.equal(await page.locator('.christmas-ornament').count(),4);
   assert.deepEqual(errors,[]);
   await context.close();
  }
- console.log('OK: light/dark, saved preference, Halloween decorations and no horizontal overflow at 1440/390/320px.');
+ console.log('OK: light/dark, saved preference, Christmas decorations and no horizontal overflow at 1440/390/320px.');
 }finally{await browser.close();}

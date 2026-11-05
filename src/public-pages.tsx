@@ -129,9 +129,7 @@ export function Home({
         </div>
         <div className="intro-art" aria-hidden="true">
           <img
-            src={`${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp`}
-            srcSet={`${import.meta.env.BASE_URL}halloween/scene-3d-700.webp 700w, ${import.meta.env.BASE_URL}halloween/scene-3d-1200.webp 1200w`}
-            sizes="(max-width: 760px) 100vw, 50vw"
+            src={`${import.meta.env.BASE_URL}christmas/marketplace-scene.svg`}
             width="1200" height="800" alt="" decoding="async" fetchPriority="high"
           />
         </div>

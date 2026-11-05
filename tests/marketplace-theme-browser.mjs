@@ -33,5 +33,5 @@ try {
   assert.equal(await page.locator('.eco-ghost-flights').count(),0);
   assert.deepEqual(errors,[]);await context.close();
  }
- console.log('OK: shared landing/marketplace theme, day/night persistence, 3D hero, clean headings, city picker and no header overlap at 1440/390/320px.');
+ console.log('OK: shared landing/marketplace theme, day/night persistence, Christmas hero, clean headings, city picker and no header overlap at 1440/390/320px.');
 }finally{await browser.close();}

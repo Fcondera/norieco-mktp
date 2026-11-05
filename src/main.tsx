@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
 import { Link, usePath, useLocation, navigate } from "./lib/router";
 import { Landing } from "./landing";
-import {GhostFlights} from './ghost-flights';
+import { ChristmasLights, BlackFridayBanner } from './christmas-season';
 import {useSiteTheme, ThemeToggle} from './site-theme';
 import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
@@ -18,10 +18,10 @@ import { brl, contactLink, safeImage } from "./lib/core.mjs";
 import "./styles.css";
 import "./landing.css";
 import "./marketplace-home.css";
-import "./landing-season.css";
-import "./halloween-3d.css";
+import "./christmas-theme.css";
 import "./marketplace-season.css";
 import "./category-tiles.css";
+import "./christmas-details.css";
 function Site() {
   const path = useLocation().split("?")[0];
   const storeSlug = publicStoreSlug(path);
@@ -151,7 +151,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
     );
   return (
     <div className="marketplace-site" data-theme={theme}>
-      {path==='/' && !publicSlug && <GhostFlights/>}
+      {path==='/' && !publicSlug && <ChristmasLights/>}
       <a className="skip-link" href="#main">
         Pular para o conteúdo
       </a>
@@ -250,6 +250,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           </form>
         )}
       </header>
+      {path === '/' && !publicSlug && <BlackFridayBanner />}
       <main id="main" tabIndex={-1} className="container">
         {page}
       </main>
