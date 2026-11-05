@@ -24,6 +24,10 @@ Estilos: `src/christmas-theme.css`, `src/christmas-details.css` e
 `src/marketplace-season.css`. Ilustração: `public/christmas/marketplace-scene.svg`.
 As três artes comerciais existentes no carrossel foram preservadas.
 
+O marketplace não exibe rodapé de informações nem navegação fixa inferior.
+A busca, o acesso à gestão e o carrinho continuam no cabeçalho. As rotas de
+ajuda, termos e privacidade continuam disponíveis; o rodapé institucional é separado.
+
 ## Divisão de endereços
 
 - `https://norieco.com.br/`: landing page institucional do ecossistema.

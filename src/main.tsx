@@ -6,7 +6,7 @@ import { Link, usePath, useLocation, navigate } from "./lib/router";
 import { Landing } from "./landing";
 import { ChristmasLights } from './christmas-season';
 import {useSiteTheme, ThemeToggle} from './site-theme';
-import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
+import { MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
 import { Login, AuthCallback, ProfileForm, Account } from "./account-pages";
 import { Administration } from "./business-pages";
@@ -253,7 +253,6 @@ function App({publicSlug}:{publicSlug?:string|null}) {
       <main id="main" tabIndex={-1} className="container">
         {page}
       </main>
-      <MarketplaceFooter />
       {!!cart.length && !["/carrinho", "/finalizar"].includes(path) && (
         <Link className="floating-cart" href="/carrinho">
           <Icon name="bag" size={20} />
@@ -263,38 +262,6 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           <strong>Ver carrinho →</strong>
         </Link>
       )}
-      <nav className="bottom-nav" aria-label="Navegação principal">
-        <Link className={path === "/" ? "active" : ""} href="/">
-          <Icon name="home" />
-          Início
-        </Link>
-        <button
-          onClick={() => {
-            navigate("/");
-            setTimeout(
-              () =>
-                document
-                  .querySelector(".categories")
-                  ?.scrollIntoView({ behavior: "smooth" }),
-              50,
-            );
-          }}
-        >
-          <Icon name="search" />
-          Explorar
-        </button>
-        <Link
-          href="/conta/pedidos"
-          className={path.includes("/pedidos") ? "active" : ""}
-        >
-          <Icon name="bag" />
-          Pedidos
-        </Link>
-        <ManagementLink ariaLabel="Acessar Nori Gestão">
-          <Icon name="user" />
-          Gestão
-        </ManagementLink>
-      </nav>
     </div>
   );
 }

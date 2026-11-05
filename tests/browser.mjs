@@ -266,7 +266,7 @@ try {
     assert.equal(await page.locator('.eco-site').getByText(/Controle de ponto|NoriEco Sites|Sites e landing pages/).count(), 0);
     await page.locator(".eco-header").getByRole("link", {name: "Marketplace", exact: true}).click();
     assert.equal(new URL(page.url()).pathname, "/marketplace");
-    await page.getByRole("heading", { name: /Tudo o que/ }).waitFor();
+    await page.getByRole("heading", { name: "Categorias", level: 1, exact: true }).waitFor();
     await page
       .getByRole("link", { name: /Restaurante de teste/ })
       .first()
@@ -277,8 +277,7 @@ try {
     await page.getByRole("heading", {name:"Top 3 vendedores",exact:true}).waitFor();
     await page.getByRole("heading", {name:"Melhores lojas",exact:true}).waitFor();
     assert.equal(await page.locator('.mkt-rank-card').count(),2);
-    for (const name of ["Acesso rápido", "Nori Gestão", "Suporte", "Informações legais"])
-      assert.equal(await page.locator('.marketplace-footer').getByRole('navigation',{name,exact:true}).count(),1);
+    assert.equal(await page.locator('.marketplace-footer, .bottom-nav').count(),0);
     const accountIcon = page.locator(".header").getByRole("link", {name: "Acessar Nori Gestão", exact: true});
     assert.equal(await accountIcon.isVisible(), true, "Ícone da conta oculto no celular");
     const accountBox = await accountIcon.boundingBox();
@@ -297,7 +296,7 @@ try {
       path: `test-results/home-${width}.png`,
       fullPage: true,
     });
-    await page.locator('.marketplace-footer').getByRole('link',{name:'Central de ajuda',exact:true}).click();
+    await page.goto(base + '/ajuda');
     await page.getByRole('heading',{name:'Compre perto. Entenda cada etapa.'}).waitFor();
     await noOverflow(page, `ajuda ${width}`);
     await page.goto(base);
@@ -454,7 +453,7 @@ try {
   await p2.getByLabel("Bairro", { exact: true }).fill("Centro");
   await p2.getByRole("checkbox").first().check();
   await p2.getByRole("button", { name: "Concluir cadastro" }).click();
-  await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
+  await p2.getByRole("heading", { name: "Categorias", level: 1, exact: true }).waitFor();
   await p2.goto(`${base}/conta`);
   await p2.getByRole('heading',{name:'Sua loja começa com 15 dias grátis.'}).waitFor();
   await p2.goto(`${base}/conta/compras`);
@@ -487,7 +486,7 @@ try {
   await p2.evaluate(()=>window.dispatchEvent(new Event('focus')));
   await profileRequest;
   await p2.getByRole("button", { name: "Sair da conta" }).click();
-  await p2.getByRole("heading", { name: /Tudo o que/ }).waitFor();
+  await p2.getByRole("heading", { name: "Categorias", level: 1, exact: true }).waitFor();
   const staleResponse=p2.waitForResponse('**/rest/v1/rpc/marketplace_my_profile');
   finishProfile();
   await staleResponse;

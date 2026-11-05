@@ -28,7 +28,8 @@ try {
   await page.locator('.city-picker').getByRole('button',{name:'Aplicar',exact:true}).click();
   assert.match(await page.locator('.city-button').innerText(),/Manaus/);
   await page.screenshot({path:`test-results/marketplace-dark-${width}.png`,fullPage:true});
-  await page.locator('.marketplace-footer').getByRole('link',{name:'Termos de uso',exact:true}).click();
+  assert.equal(await page.locator('.marketplace-footer, .bottom-nav').count(),0);
+  await page.goto((process.env.TEST_BASE_URL || 'http://127.0.0.1:5174') + '/marketplace/termos');
   await page.locator('.marketplace-site[data-theme=dark]').waitFor();
   assert.equal(await page.locator('.eco-ghost-flights').count(),0);
   assert.deepEqual(errors,[]);await context.close();
