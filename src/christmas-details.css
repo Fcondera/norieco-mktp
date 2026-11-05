@@ -1,13 +1,7 @@
 /* Shared festive details. Decorations never intercept navigation or checkout. */
-.eco-christmas,.marketplace-site{--purple:#28734f;--eco-accent:#e8c47f;position:relative}
+.eco-christmas,.marketplace-site{position:relative}
 .eco-christmas .eco-brand>span>span{color:var(--eco-primary)}
 .eco-christmas .eco-season-section{position:relative}
-.eco-christmas .eco-plan{border-color:var(--border);background:radial-gradient(ellipse at 100% 0,#e8c47f12,transparent 65%),var(--eco-panel)}
-.eco-christmas .eco-product{background:linear-gradient(145deg,#4c97700a,transparent 65%),var(--eco-panel)}
-.eco-christmas .eco-product:hover{border-color:#bda46f}
-.eco-christmas .eco-carousel .eco-carousel-progress>span{background:linear-gradient(90deg,#39876b,#e8c47f,#bd4c59)}
-.eco-christmas .eco-carousel a:focus-visible,.eco-christmas .eco-carousel button:focus-visible{outline-color:#a85b22}
-.eco-site.eco-christmas .eco-campaign-carousel .eco-slide-secondary{color:#1c533b;border-color:#28734f60}
 .eco-christmas .eco-section-intro>h2,.eco-christmas .eco-plan h2{ text-wrap:balance }
 .christmas-lights{position:absolute;inset:0 0 auto;display:flex;justify-content:space-around;height:18px;z-index:6;pointer-events:none;overflow:hidden;border-top:1px solid #67837070}
 .christmas-lights>span{width:5px;height:9px;margin-top:0;border-radius:0 0 5px 5px;background:#e9c57a;box-shadow:0 2px 9px #e9c57a80;animation:christmas-glow 4s ease-in-out infinite}
@@ -18,15 +12,14 @@
 .christmas-ornament-left{left:0;top:0;width:53px}
 .christmas-ornament-right{right:0;top:-20px;width:43px}
 .christmas-ornament-plan{right:16px;top:0;width:42px}
+.marketplace-site .mkt-category-title{display:flex;align-items:center;gap:12px}
+.marketplace-site .mkt-category-title h1{margin:0}
+.christmas-ornament.christmas-category-tree{position:static;width:28px;height:36px;flex-shrink:0}
 .christmas-greeting{display:flex;align-items:center;justify-content:flex-end;gap:13px;color:var(--eco-ink,var(--mkt-ink));flex-basis:100%;padding:4px 0 20px}
 .christmas-greeting>div{display:grid;gap:5px}
 .christmas-greeting strong{font-family:Manrope,Arial,sans-serif;font-size:19px;font-weight:700;letter-spacing:-.5px}
 .christmas-greeting span{color:var(--muted);font-size:12px;line-height:1.5}
 .eco-footer .christmas-greeting{padding-bottom:0}
-.marketplace-site .mkt-hero .intro-art img{width:100%;margin:0;filter:drop-shadow(0 12px 28px #275b3c12)}
-.marketplace-site .mkt-home .intro h1 span{background-image:linear-gradient(110deg,#93dfb6,#edca86)}
-.marketplace-site[data-theme=light] .mkt-home .intro h1 span{background-image:linear-gradient(110deg,#216045,#92601e)}
-.marketplace-site .mkt-rank-card:first-child{background:radial-gradient(ellipse at 100% 0,#d0b77614,transparent 70%),var(--mkt-panel)}
 .marketplace-site .category-tile.selected,.marketplace-site .mkt-categories button.selected{border-color:var(--mkt-accent)}
 @keyframes christmas-glow{0%,100%{opacity:.6}50%{opacity:1}}
 @media(max-width:700px){

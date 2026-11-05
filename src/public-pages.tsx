@@ -14,6 +14,7 @@ import { useApp } from "./state";
 import { discoverySections } from "./lib/discovery.mjs";
 import { BusinessInquiry } from "./business-inquiry";
 import {CategoryArtwork} from './category-artwork';
+import { ChristmasOrnament } from './christmas-season';
 export const categoryNames = [
   "Restaurantes",
   "Lanches",
@@ -95,7 +96,7 @@ export function Home({
     ) : null;
   return (
     <div className="mkt-home">
-      <div className="mkt-category-title"><h1>Categorias</h1></div>
+      <div className="mkt-category-title"><h1>Categorias</h1><ChristmasOrnament className="christmas-category-tree" /></div>
       <nav id="marketplace-categories" className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}

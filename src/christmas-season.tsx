@@ -3,12 +3,13 @@ import './black-friday-banner.css';
 
 export function ChristmasOrnament({ className = '' }: { className?: string }) {
   return <svg className={`christmas-ornament ${className}`} viewBox="0 0 100 126" fill="none" aria-hidden="true" focusable="false">
-    <path d="M50 0v22" stroke="currentColor" strokeWidth="2" />
-    <path d="M40 25h20v13H40z" fill="#e5bd74" />
-    <circle cx="50" cy="76" r="40" fill="#ad3744" />
-    <path d="M17 54c21 18 45 24 70 22M14 75c23 19 47 24 68 21" stroke="#f0d397" strokeWidth="3" />
-    <path d="m50 51 4 12 13 1-10 8 3 13-10-7-11 7 4-13-11-8 13-1z" fill="#f7e2ae" />
-    <path d="M29 50c-8 7-12 17-12 25" stroke="#fff" strokeOpacity=".35" strokeWidth="5" strokeLinecap="round" />
+    <path d="M50 0v26" stroke="currentColor" strokeWidth="2" />
+    <path d="m50 22 5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z" fill="#e8c47f" />
+    <path d="m50 43 22 26H62l20 24H69l23 25H8l23-25H18l20-24H28z" fill="#39876b" />
+    <path d="M46 118h8v8h-8z" fill="#b78c59" />
+    <path d="M37 72c8 6 17 9 29 10M27 98c14 8 29 12 47 12" stroke="#efd49b" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="48" cy="66" r="3" fill="#dc6570" /><circle cx="58" cy="96" r="4" fill="#dc6570" />
+    <circle cx="32" cy="107" r="3" fill="#efc976" />
   </svg>;
 }
 

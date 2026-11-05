@@ -15,14 +15,14 @@ try {
   assert.equal(await page.locator('.christmas-ornament').first().evaluate(image=>getComputedStyle(image).animationName),'none');
   await page.getByRole('button',{name:'Acender as luzes'}).click();
   await page.locator('.eco-site[data-theme=light]').waitFor();
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(255, 253, 247)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(255, 252, 248)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   await page.screenshot({path:`test-results/landing-light-${width}.png`,fullPage:true});
   await page.reload();
   await page.locator('.eco-site[data-theme=light]').waitFor();
   await page.getByRole('button',{name:'Apagar as luzes'}).click();
   await page.locator('.eco-site[data-theme=dark]').waitFor();
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(11, 33, 25)');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.eco-site')).backgroundColor),'rgb(21, 17, 28)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   await page.screenshot({path:`test-results/landing-dark-${width}.png`,fullPage:true});
   assert.equal(await page.locator('.christmas-ornament').count(),4);

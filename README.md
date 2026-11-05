@@ -6,8 +6,8 @@ Marketplace público do Amazonas em React/TypeScript/Vite, Node 24. Gestão/PDV 
 
 ## Campanha sazonal — Natal e Black Friday
 
-A página institucional e o marketplace usam a identidade de Natal em verde,
-dourado e vermelho, com luzes decorativas, enfeites e ilustração vetorial própria.
+A página institucional e o marketplace mantêm a identidade original em roxo,
+com enfeites de Natal sobrepostos: luzes decorativas e ícones vetoriais de árvores.
 Os componentes de Halloween não são mais carregados pelas páginas. A preferência
 claro/escuro continua compartilhada, e as luzes respeitam movimento reduzido.
 
