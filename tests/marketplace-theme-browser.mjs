@@ -13,8 +13,8 @@ try {
   await page.getByRole('button',{name:'Acender as luzes'}).click();
   await page.locator('.eco-header').getByRole('link',{name:'Marketplace',exact:true}).click();
   await page.locator('.marketplace-site[data-theme=light]').waitFor();
-  const art=page.locator('.mkt-hero .intro-art img');await art.evaluate(i=>i.decode());
-  assert((await art.boundingBox()).height>180,'Seasonal illustration should be prominent');
+  assert.equal(await page.locator('.mkt-hero, .black-friday-banner').count(),0);
+  await page.getByRole('heading',{name:'Categorias',level:1,exact:true}).waitFor();
   assert.equal(await page.locator('.mkt-home .eyebrow').count(),0);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   const boxes=await Promise.all(['.brand','.header-search','.city-button','.eco-light-switch','.header-login','.cart-top'].map(s=>page.locator('.header '+s).boundingBox()));
@@ -33,5 +33,5 @@ try {
   assert.equal(await page.locator('.eco-ghost-flights').count(),0);
   assert.deepEqual(errors,[]);await context.close();
  }
- console.log('OK: shared landing/marketplace theme, day/night persistence, Christmas hero, clean headings, city picker and no header overlap at 1440/390/320px.');
+ console.log('OK: shared landing/marketplace theme, day/night persistence, direct category access, clean headings, city picker and no header overlap at 1440/390/320px.');
 }finally{await browser.close();}

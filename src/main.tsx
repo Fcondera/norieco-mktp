@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { Provider, useApp } from "./state";
 import { Link, usePath, useLocation, navigate } from "./lib/router";
 import { Landing } from "./landing";
-import { ChristmasLights, BlackFridayBanner } from './christmas-season';
+import { ChristmasLights } from './christmas-season';
 import {useSiteTheme, ThemeToggle} from './site-theme';
 import { MarketplaceFooter, MarketplaceHelp } from "./marketplace-footer";
 import { Home, BusinessPage, CartPage, Checkout } from "./public-pages";
@@ -97,7 +97,7 @@ function App({publicSlug}:{publicSlug?:string|null}) {
   let page: React.ReactNode;
   if (publicSlug) page = <BusinessPage key={publicSlug} slug={publicSlug} />;
   else if (path === "/")
-    page = <Home query={query} city={city} onQuery={setQuery} />;
+    page = <Home query={query} city={city} />;
   else if (path.startsWith("/loja/"))
     page = (
       <BusinessPage
@@ -250,7 +250,6 @@ function App({publicSlug}:{publicSlug?:string|null}) {
           </form>
         )}
       </header>
-      {path === '/' && !publicSlug && <BlackFridayBanner />}
       <main id="main" tabIndex={-1} className="container">
         {page}
       </main>

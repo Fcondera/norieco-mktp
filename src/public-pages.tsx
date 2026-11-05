@@ -31,11 +31,9 @@ export const categoryNames = [
 export function Home({
   query,
   city,
-  onQuery,
 }: {
   query: string;
   city: string;
-  onQuery: (s: string) => void;
 }) {
   const [categories, setCategories] = useState<Category[]>([]),
     [category, setCategory] = useState(""),
@@ -97,44 +95,7 @@ export function Home({
     ) : null;
   return (
     <div className="mkt-home">
-      <section className="intro mkt-hero">
-        <div className="intro-copy">
-          <h1>
-            Tudo o que você procura
-            <br />{' '}
-            <span>no comércio da sua cidade</span>
-          </h1>
-          <p>Encontre lojas, restaurantes e serviços do Amazonas.</p>
-          <form className="hero-search" role="search" onSubmit={(event) => {
-            event.preventDefault();
-            document.getElementById("resultados")?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? "instant" : "smooth" });
-          }}>
-            <Icon name="search" />
-            <label className="sr-only" htmlFor="marketplace-query">Buscar lojas, produtos ou serviços</label>
-            <input
-              id="marketplace-query"
-              type="search"
-              value={query}
-              onChange={(e) => onQuery(e.target.value)}
-              placeholder="Buscar lojas, produtos ou serviços"
-              maxLength={100}
-            />
-            <button
-              className="button primary"
-              type="submit"
-            >
-              Buscar
-            </button>
-          </form>
-        </div>
-        <div className="intro-art" aria-hidden="true">
-          <img
-            src={`${import.meta.env.BASE_URL}christmas/marketplace-scene.svg`}
-            width="1200" height="800" alt="" decoding="async" fetchPriority="high"
-          />
-        </div>
-      </section>
-      <div className="mkt-category-title"><h2>Categorias</h2></div>
+      <div className="mkt-category-title"><h1>Categorias</h1></div>
       <nav id="marketplace-categories" className="categories mkt-categories" aria-label="Categorias">
         <button
           className={!category ? "selected" : ""}
