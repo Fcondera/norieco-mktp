@@ -180,6 +180,14 @@
   to = "https://gestao.norieco.com.br/icons/:splat"
   status = 200
 [[redirects]]
+  from = "/slsestetica"
+  to = "https://gestao.norieco.com.br/slsestetica.html"
+  status = 200
+[[redirects]]
+  from = "/slsestetica/"
+  to = "https://gestao.norieco.com.br/slsestetica.html"
+  status = 200
+[[redirects]]
   from = "/:slug"
   to = "https://gestao.norieco.com.br/index.html"
   status = 200
